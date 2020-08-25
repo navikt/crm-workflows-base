@@ -9,7 +9,7 @@ All workflows used for all SFDX projects.
   - SFDX Auth Url for the preprod Sandbox (ask [@magnushamrin](https://github.com/magnushamrin))
 - INTEGRATION_SANDBOX_SFDX_URL
   - SFDX Auth Url for the Integration Sandbox (ask [@magnushamrin](https://github.com/magnushamrin))
-- PREPROD_SFDX_URL
+- DEV_SFDX_URL
   - SFDX Auth Url for the your own dev Sandbox (create your own)
 - PACKAGE_KEY
   - The password for packages in NAV CRM
