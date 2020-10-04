@@ -37,24 +37,18 @@ jobs:
           rm -f ./PROD_SFDX_URL.txt
 
       # Authenticate integration-sandbox
-      - name: Authenticate prod
+      - name: Authenticate integration-sandbox
         run: |
           echo ${{ secrets.INTEGRATION_SANDBOX_SFDX_URL}} > ./INTEGRATION_SANDBOX_SFDX_URL.txt
           sfdx force:auth:sfdxurl:store -f ./INTEGRATION_SANDBOX_SFDX_URL.txt -a integration-sandbox -s
           rm -f ./INTEGRATION_SANDBOX_SFDX_URL.txt
 
-      # Delete unpackagable
-      - name: "Delete unpackagable"
-        run: |
-          rm -rf ./unpackagable
-          rm -rf ./force-app/unpackagable
-
       # Create package version
+      # TODO throw error on below 75% code coverage
       - name: "Create package version"
         id: package-version-create
         run: |
-          sfdx force:package:version:create -f config/project-scratch-def.json -p $(cat sfdx-project.json | jq '.packageDirectories[0].package' -r) -k ${{ secrets.PACKAGE_KEY }} -w 90 --json | tee output
-
+          sfdx force:package:version:create -f config/project-scratch-def.json -p $(cat sfdx-project.json | jq '.packageDirectories[0].package' -r) -k ${{ secrets.PACKAGE_KEY }} -w 90 -c --json | tee output
           echo "::set-output name=result::$(cat output | jq -c .)"
 
           status=$(cat output |jq '.status')
@@ -98,6 +92,7 @@ jobs:
           echo "::set-output name=releaseName::$(echo $versionNumber)-beta$(echo $packageAliases)"
           echo "::set-output name=bodyVersion::$(echo $versionNumber).$(echo $packageAliases)"
           echo "::set-output name=bodyPackage::${{ steps.extract-data-package-version-create.outputs.packageVersionId }}"
+          echo "::set-output name=codeCoverage::$( sfdx force:package:version:report -p ${{ steps.extract-data-package-version-create.outputs.packageVersionId }} --json | jq '.result.CodeCoverage.apexCodeCoveragePercentage' -r )"
 
           echo "::set-output name=packageCreation::✅ Package Creation"
 
@@ -128,6 +123,8 @@ jobs:
           body: |
             **Version**: ${{ steps.release-fields.outputs.bodyVersion }}
             **Package ID**: ${{ steps.release-fields.outputs.bodyPackage }}
+            **Code Coverage**: ${{ steps.release-fields.outputs.codeCoverage }}%
+
             **Author**: ${{ github.actor }}
 
             ${{ steps.release-fields.outputs.packageCreation }}
@@ -236,7 +233,7 @@ jobs:
     if: ${{ needs.check-code-coverage-secret.outputs.shouldContinue == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      # Install SFDX
+       # Install SFDX
       - name: Install SFDX
         uses: sfdx-actions/setup-sfdx@v1
 
@@ -254,7 +251,7 @@ jobs:
       # Create scratch org
       - name: "Create scratch org"
         run: sfdx force:org:create -f config/project-scratch-def.json -a scratch-org -s -d 1 --json
-
+   
       # Install sfpowerkit plugin used to install multiple packages only by version number
       - name: "Install sfpowerkit plugin"
         run: "echo y | sfdx plugins:install sfpowerkit"
@@ -278,14 +275,26 @@ jobs:
         run: "sfdx force:source:push"
 
       # Sleep for 1 minute while permset groups are updating
+      # TODO replace with soql checker
       - name: Sleep for 1 minute while permset groups are updating
         uses: jakejarvis/wait-action@master
         with:
           time: "1m"
 
+      # Get all test classes from current repo
+      - name: Get all test classes from currentrepo
+        id: test-classes-in-repo
+        run: |
+          classes=""
+          for p in $( grep -r -l -i --include="*.cls" "@istest" . | sed 's@.*/@@' ); do
+            classes+=$(echo $p | cut -f 1 -d '.')","
+          done
+
+          echo "::set-output name=classes::$( echo $classes | sed 's/\(.*\),/\1 /' )"
+
       # Run Apex tests in scratch org
       - name: "Run Apex tests"
-        run: "sfdx force:apex:test:run -c -r human -d ./tests/apex -w 20"
+        run: "sfdx force:apex:test:run -t ${{ steps.test-classes-in-repo.outputs.classes }} -c -r human -d ./tests/apex -w 20"
 
       # Upload code coverage data
       - name: "Upload code coverage for Apex to Codecov.io"
