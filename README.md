@@ -1,5 +1,7 @@
-# crm-platform-workflows
-All workflows used for all SFDX projects.
+All workflows used for all SFDX projects in NAV.
+
+# Installing
+Copy the [workflows](workflows) folder to .github/workflows in your repo.
 
 # Secrets needed
 
@@ -33,6 +35,3 @@ sfdx force:org:display -u [LOGIN_TO_ORG] --verbose
   - The administrator of the repo needs to [create a PAT](https://docs.github.com/en/enterprise/2.17/user/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) with "REPO" access
 - SLACK_WEBHOOK **[OPTIONAL]**
   - If you want to post logins to a functional scratch orgs after a PR has been created, create a [Slack Webhook](https://slack.com/intl/en-no/help/articles/115005265063-Incoming-Webhooks-for-Slack)
-
-# Installing
-Copy the [workflows](workflows) folder to .github/workflows in your repo.
