@@ -3,6 +3,13 @@ All workflows used for all SFDX projects.
 
 # Secrets needed
 
+## SFDX Auth URL
+
+Use the following command to get a SFDX Auth URL:
+```bash
+sfdx force:org:display -u [LOGIN_TO_ORG] --verbose
+```
+
 - PROD_SFDX_URL
   - SFDX Auth Url for the prod env (ask [@magnushamrin](https://github.com/magnushamrin))
 - PREPROD_SFDX_URL
@@ -11,6 +18,15 @@ All workflows used for all SFDX projects.
   - SFDX Auth Url for the Integration Sandbox (ask [@magnushamrin](https://github.com/magnushamrin))
 - DEV_SFDX_URL
   - SFDX Auth Url for the your own dev Sandbox (create your own)
+
+## Parameters
+
+- DEPLOY_TO_DEV_AFTER_PACKAGE_CREATION
+  - Set to '1' if you want to auto-deploy to DEV_SFDX_URL after package creation
+  - Set to '0' to NOT install the package anywhere
+
+## Other
+
 - PACKAGE_KEY
   - The password for packages in NAV CRM
 - DEPLOYMENT_PAT
