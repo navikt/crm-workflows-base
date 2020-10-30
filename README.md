@@ -17,7 +17,7 @@ SFDX Auth Url for production, pre-production and integration sandbox. Ask [@magn
 
 SFDX Auth Url for development and UAT sandboxes. These sandboxes must be unique for each team or repo. [Create your own SFDX Auth Url](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_view_info.htm) to add them as secrets here (also look at the bottom of this readme for the command).
 
-- UAT_SANDBOX_SFDX_URL ```[OPTIONAL]```
+- UAT_SFDX_URL ```[OPTIONAL]```
 - DEV_SFDX_URL ```[OPTIONAL]```
 
 ## Parameters
