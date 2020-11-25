@@ -13,6 +13,13 @@ SFDX Auth Url for production, pre-production and integration sandbox. Ask [@magn
 - PREPROD_SFDX_URL ```[REQUIRED]```
 - INTEGRATION_SANDBOX_SFDX_URL ```[REQUIRED]```
 
+## Other Required Secrets
+
+- PACKAGE_KEY ```[REQUIRED]```
+  - The password for packages in NAV CRM
+- DEPLOYMENT_PAT ```[REQUIRED]```
+  - The administrator of the repo needs to [create a PAT](https://docs.github.com/en/enterprise/2.17/user/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) with "REPO" access
+
 ## Optional Environment Secrets
 
 SFDX Auth Url for development and UAT sandboxes. These sandboxes must be unique for each team or repo. [Create your own SFDX Auth Url](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_view_info.htm) to add them as secrets here (also look at the bottom of this readme for the command).
@@ -32,13 +39,6 @@ SFDX Auth Url for development and UAT sandboxes. These sandboxes must be unique 
 0 // will NOT auto-deploy
 null // will NOT auto-deploy if the secret is not set
 ```
-
-## Other
-
-- PACKAGE_KEY ```[REQUIRED]```
-  - The password for packages in NAV CRM
-- DEPLOYMENT_PAT ```[REQUIRED]```
-  - The administrator of the repo needs to [create a PAT](https://docs.github.com/en/enterprise/2.17/user/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) with "REPO" access
 
 # SFDX Auth URL
 
