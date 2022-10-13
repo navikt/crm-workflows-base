@@ -2,7 +2,7 @@ All workflows used for all SFDX projects in NAV.
 
 # Installing
 
-Copy the [workflows](workflows) folder to .github/workflows in your repo.
+Copy the workflows folder to .github/workflows in your repo.
 
 # Secrets
 
@@ -29,3 +29,12 @@ sfdx force:org:display -u [ORG_ALIAS] --verbose
 ```
 
 Source: [Create your own SFDX Auth Url](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_view_info.htm)
+
+# Update other repos with updated workflows
+
+Use the script (copyWorkflows.command) in the bin folder to update the workflows in all other repoes in the same folder. Currently it only works on Mac.
+
+## Short guide
+1. Clone all relevant repos to a local folder on your computer
+2. Run the script from this repos folder: ``.../crm-workflows-base/bin/copyWorkflows.command``
+3. It will then move up to levels and loop over all folders replace the content in all the .github folders with the content of this repos .github folder and it pushes the change to master branch.
