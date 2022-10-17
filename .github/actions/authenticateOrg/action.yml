@@ -19,16 +19,16 @@ runs:
     # Authenticate org
     - name: Authenticate org
       run: |
-        defaultValues = ""
-        if [ ${{ github.event.inputs.setDefaultUsername }} == true ]; then
-          defaultValues += " -d"
-        fi
-
-        if [ ${{ github.event.inputs.setDefaultDevhubUsername }} == true ]; then
-          defaultValues += " -s"
-        fi
-
         echo ${{ github.event.inputs.auth-URL }} > ./SFDX_URL.txt
-          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ github.event.inputs.alias }}$(defaultValues)
+        
+        if [ ${{ github.event.inputs.setDefaultUsername }} == true && github.event.inputs.setDefaultDevhubUsername }} == true ]; then
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ github.event.inputs.alias }} --setdefaultdevhubusername --setdefaultusername
+        elif [ ${{ github.event.inputs.setDefaultUsername }} == true]; then
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ github.event.inputs.alias }} --setdefaultusername
+        elif [ ${{ github.event.inputs.setDefaultDevhubUsername }} == true ]; then
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ github.event.inputs.alias }} --setdefaultdevhubusername
+        el
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ github.event.inputs.alias }}
+        fi
         rm -f ./SFDX_URL.txt
       shell: bash

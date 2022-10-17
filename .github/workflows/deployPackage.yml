@@ -40,16 +40,17 @@ jobs:
             echo "target=$(echo ${{ secrets.CRM_SIT_SFDX_URL }})" >> $GITHUB_ENV
             echo "'preprod' was set"
           el
-            echo "'preprod' was set"
+            echo "target=$(echo ${{ github.event.inputs.org }})" >> $GITHUB_ENV
+            echo "input org was set to input"
           fi
 
       # Install SFDX
       - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+        uses: ./actions/installSFDX@master
 
       # Authorize SFDX
       - name: Authorize SFDX
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        uses: ./actions/authenticateOrg@master
         with:
           sfdx-auth-url: ${{ env.target }}
           alias: targetOrg
