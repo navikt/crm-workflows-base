@@ -16,11 +16,11 @@ runs:
     # Authenticate org
     - name: Authenticate org
       run: |
-        echo ${{ auth-URL }} > ./SFDX_URL.txt
+        echo ${{ github.event.inputs.auth-URL }} > ./SFDX_URL.txt
         if [ ${{ github.event.inputs.isProd }} == true ];then
-          sfdx auth:sfdxurl:store -f ./SFDX_URL.txt -a ${{ auth-URL }} -d
+          sfdx auth:sfdxurl:store -f ./SFDX_URL.txt -a ${{ github.event.inputs.alias }} -d
         el
-          sfdx auth:sfdxurl:store -f ./SFDX_URL.txt -a ${{ auth-URL }} -s
+          sfdx auth:sfdxurl:store -f ./SFDX_URL.txt -a ${{ github.event.inputs.alias }} -s
         fi
         rm -f ./SFDX_URL.txt
       shell: bash

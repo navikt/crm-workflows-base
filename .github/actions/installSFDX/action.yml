@@ -11,6 +11,6 @@ runs:
     # Install SFDX
     - name: Install SFDX
       run: |
-        npm install --global sfdx-cli@${{ version }}
+        npm install --global sfdx-cli@${{ github.event.inputs.version }}
       shell: bash
       
