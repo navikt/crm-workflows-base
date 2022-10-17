@@ -1,0 +1,73 @@
+name: Deploy package
+on:
+  workflow_call:
+    inputs:
+      packageId:
+        description: "Package ID"
+        required: true
+        type: string
+      org:
+        description: "Org (prod, preprod, dev, uat, sit)"
+        required: true
+        type: string
+      unpackagable:
+        description: "Path to unpackageable folder"
+        required: false
+        type: string
+    secrets:
+jobs:
+  deploy-package:
+    name: Deploy Package
+    runs-on: ubuntu-latest
+    steps:
+      # Set SFDX Auth URL
+      - name: Set SFDX Auth URL
+        id: auth-url
+        run: |
+          if [ ${{ github.event.inputs.org }} == "prod" ];then
+            echo "target=$(echo ${{ secrets.CRM_PROD_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'prod' was set"
+          elif [ ${{ github.event.inputs.org }} == "preprod" ];then
+            echo "target=$(echo ${{ secrets.CRM_PREPROD_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'preprod' was set"
+          elif [ ${{ github.event.inputs.org }} == "dev" ];then
+            echo "target=$(echo ${{ secrets.DEV_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'dev' was set"
+          elif [ ${{ github.event.inputs.org }} == "uat" ];then
+            echo "target=$(echo ${{ secrets.CRM_UAT_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'preprod' was set"
+          elif [ ${{ github.event.inputs.org }} == "sit" ];then
+            echo "target=$(echo ${{ secrets.CRM_SIT_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'preprod' was set"
+          el
+            echo "'preprod' was set"
+          fi
+
+      # Install SFDX
+      - name: Install SFDX
+        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+
+      # Authorize SFDX
+      - name: Authorize SFDX
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        with:
+          sfdx-auth-url: ${{ env.target }}
+          alias: targetOrg
+          setDefaultUsername: true
+          setDefaultDevhubUsername: false
+
+      # Install package in target org
+      - name: Install package in target org
+        run: sfdx force:package:install --package ${{ github.event.inputs.packageId }} --installationkey ${{ secrets.CRM_PACKAGE_KEY }} --wait 10 --publishwait 10 --noprompt
+
+      # Checkout source code
+      - name: Checkout source code from master
+        uses: actions/checkout@v3
+
+      # Deploy unpackagable content
+      - name: Deploy unpackagable content
+        run: |
+          if [ -d "${{ github.event.inputs.unpackagable }}" ]; then
+            echo "Starting deployment of ${{ github.event.inputs.unpackagable }}"
+            sfdx force:source:deploy -p ${{ github.event.inputs.unpackagable }} --testlevel RunLocalTests
+          fi
