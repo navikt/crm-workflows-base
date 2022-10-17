@@ -1,0 +1,26 @@
+name: "Authenticate org"
+description: "Authenticate a Salesforce org"
+inputs:
+  auth-URL:
+    description: "The auth URL for use with sfdx auth:sfdxurl:store"
+    required: true
+  alias:
+    description: "Alias for the authenticated org"
+    required: true
+  isProd:
+    description: "Set the authenticated org as the default dev hub org for scratch org creation"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    # Authenticate org
+    - name: Authenticate org
+      run: |
+        echo ${{ auth-URL }} > ./SFDX_URL.txt
+        if [ ${{ github.event.inputs.isProd }} == true ];then
+          sfdx auth:sfdxurl:store -f ./SFDX_URL.txt -a ${{ auth-URL }} -d
+        el
+          sfdx auth:sfdxurl:store -f ./SFDX_URL.txt -a ${{ auth-URL }} -s
+        fi
+        rm -f ./SFDX_URL.txt
+      shell: bash
