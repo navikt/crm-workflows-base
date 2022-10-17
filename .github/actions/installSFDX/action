@@ -1,0 +1,15 @@
+name: "Install SFDX"
+description: "Install SFDX cli with npm"
+inputs:
+  version:
+    description: "Version for the SFDX CLI version"
+    default: "7.170.0"
+    required: false
+runs:
+  using: "composite"
+  steps:
+    # Install SFDX
+    - name: Install SFDX
+      run: |
+        npm install --global sfdx-cli@${{ version }}
+      shell: bash
