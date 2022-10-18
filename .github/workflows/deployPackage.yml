@@ -34,10 +34,10 @@ jobs:
             echo "'dev' was set"
           elif [ ${{ inputs.org }} == "uat" ];then
             echo "target=$(echo ${{ secrets.CRM_UAT_SFDX_URL }})" >> $GITHUB_ENV
-            echo "'preprod' was set"
+            echo "'uat' was set"
           elif [ ${{ inputs.org }} == "sit" ];then
             echo "target=$(echo ${{ secrets.CRM_SIT_SFDX_URL }})" >> $GITHUB_ENV
-            echo "'preprod' was set"
+            echo "'sit' was set"
           else
             echo "target=$(echo ${{ github.event.inputs.org }})" >> $GITHUB_ENV
             echo "input org was set to input"
@@ -45,11 +45,11 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: ./actions/installSFDX@master
+        uses: actions/installSFDX@master
 
       # Authorize SFDX
       - name: Authorize SFDX
-        uses: ./actions/authenticateOrg@master
+        uses: actions/authenticateOrg@master
         with:
           auth-url: ${{ env.target }}
           alias: targetOrg
