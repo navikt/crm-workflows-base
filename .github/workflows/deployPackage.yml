@@ -14,7 +14,6 @@ on:
         description: "Path to unpackageable folder"
         required: false
         type: string
-    secrets:
 jobs:
   deploy-package:
     name: Deploy Package
