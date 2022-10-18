@@ -19,16 +19,16 @@ runs:
     # Authenticate org
     - name: Authenticate org
       run: |
-        echo ${{ github.event.inputs.auth-URL }} > ./SFDX_URL.txt
+        echo ${{ inputs.auth-URL }} > ./SFDX_URL.txt
         
-        if [ ${{ github.event.inputs.setDefaultUsername }} == true && github.event.inputs.setDefaultDevhubUsername }} == true ]; then
-          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ github.event.inputs.alias }} --setdefaultdevhubusername --setdefaultusername
-        elif [ ${{ github.event.inputs.setDefaultUsername }} == true]; then
-          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ github.event.inputs.alias }} --setdefaultusername
-        elif [ ${{ github.event.inputs.setDefaultDevhubUsername }} == true ]; then
-          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ github.event.inputs.alias }} --setdefaultdevhubusername
+        if [ (${{ inputs.setDefaultUsername }} == true && ${{ inputs.setDefaultDevhubUsername }} == true) ]; then
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultdevhubusername --setdefaultusername
+        elif [ ${{ inputs.setDefaultUsername }} == true]; then
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultusername
+        elif [ ${{ inputs.setDefaultDevhubUsername }} == true ]; then
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultdevhubusername
         el
-          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ github.event.inputs.alias }}
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }}
         fi
         rm -f ./SFDX_URL.txt
       shell: bash
