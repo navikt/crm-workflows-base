@@ -27,7 +27,7 @@ runs:
           sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultusername
         elif [ ${{ inputs.setDefaultDevhubUsername }} == true ]; then
           sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultdevhubusername
-        el
+        else
           sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }}
         fi
         rm -f ./SFDX_URL.txt
