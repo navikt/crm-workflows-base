@@ -45,11 +45,11 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: actions/installSFDX@master
+        uses: ./.github/actions/installSFDX@master
 
       # Authorize SFDX
       - name: Authorize SFDX
-        uses: actions/authenticateOrg@master
+        uses: ./.github/actions/authenticateOrg@master
         with:
           auth-url: ${{ env.target }}
           alias: targetOrg
@@ -62,7 +62,7 @@ jobs:
 
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v3
+        uses: ./.github/actions/checkout@v3
 
       # Deploy unpackagable content
       - name: Deploy unpackagable content
