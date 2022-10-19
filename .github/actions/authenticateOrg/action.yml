@@ -7,8 +7,11 @@ inputs:
   alias:
     description: "Alias for the authenticated org"
     required: true
-  isProd:
-    description: "Set the authenticated org as the default dev hub org for scratch org creation"
+  setDefaultUsername:
+    description: Set the authenticated org as the default username that all commands run against.
+    required: true
+  setDefaultDevhubUsername:
+    description: Set the authenticated org as the default dev hub org for scratch org creation
     required: true
 runs:
   using: "composite"
@@ -16,11 +19,16 @@ runs:
     # Authenticate org
     - name: Authenticate org
       run: |
-        echo ${{ github.event.inputs.auth-URL }} > ./SFDX_URL.txt
-        if [ ${{ github.event.inputs.isProd }} == true ];then
-          sfdx auth:sfdxurl:store -f ./SFDX_URL.txt -a ${{ github.event.inputs.alias }} -d
-        el
-          sfdx auth:sfdxurl:store -f ./SFDX_URL.txt -a ${{ github.event.inputs.alias }} -s
+        echo ${{ inputs.auth-URL }} > ./SFDX_URL.txt
+        
+        if [ ${{ inputs.setDefaultUsername }} && ${{ inputs.setDefaultDevhubUsername }} ]; then
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultdevhubusername --setdefaultusername
+        elif [ ${{ inputs.setDefaultUsername }} ]; then
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultusername
+        elif [ ${{ inputs.setDefaultDevhubUsername }} ]; then
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultdevhubusername
+        else
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }}
         fi
         rm -f ./SFDX_URL.txt
       shell: bash
