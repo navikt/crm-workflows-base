@@ -62,7 +62,7 @@ jobs:
 
       # Checkout source code
       - name: Checkout source code from master
-        uses: ./.github/actions/checkout@v3
+        uses: actions/checkout@v3
 
       # Deploy unpackagable content
       - name: Deploy unpackagable content
