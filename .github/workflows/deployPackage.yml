@@ -78,6 +78,7 @@ jobs:
         run: |
           if [ -d "${{ inputs.unpackagable }}" ]; then
             echo "Starting deployment of ${{ inputs.unpackagable }}"
+            echo "installMetadata=true" >> $GITHUB_OUTPUT
             sfdx force:source:deploy --sourcepath ${{ inputs.unpackagable }} --testlevel RunLocalTests | tee output
             echo "deployOutput=$(cat output | jq '.message')" >> $GITHUB_OUTPUT
             if [ $(cat output | jq '.status') == "0" ]; then
@@ -85,10 +86,13 @@ jobs:
             else
               echo "successfullyDeployedMetadata=false" >> $GITHUB_OUTPUT
             fi
+          else
+            echo "installMetadata=false" >> $GITHUB_OUTPUT
           fi
 
     outputs:
       successfullyInstalledPackage: ${{ steps.installPackage.outputs.successfullyInstalled }}
       installPackageOutput: ${{ steps.installPackage.outputs.installOutput }}
+      installMetadata: ${{ steps.deployMetadata.outputs.installMetadata }}
       successfullyDeployedMetadata: ${{ steps.deployMetadata.outputs.successfullyDeployedMetadata }}
       deployMetadataOutput: ${{ steps.deployMetadata.outputs.deployOutput }}
