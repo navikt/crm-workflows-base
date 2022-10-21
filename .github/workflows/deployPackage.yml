@@ -75,10 +75,10 @@ jobs:
         run: |
           sfdx force:package:install --package ${{ inputs.packageId }} --installationkey ${{ secrets.CRM_PACKAGE_KEY }} --wait 10 --publishwait 10 --noprompt --json | tee output
           echo "$output"
-          echo "MESSAGE: $(jq '.message' <<< output)"
-          echo "STATUS: $(jq '.status' <<< output)"
-          echo "installOutput=$(jq '.message' <<< output)" >> $GITHUB_OUTPUT
-          if [[ $(jq '.status' <<< output) == 0 ]]; then
+          echo "MESSAGE: $(jq '.message' <<< $output)"
+          echo "STATUS: $(jq '.status' <<< $output)"
+          echo "installOutput=$(jq '.message' <<< $output)" >> $GITHUB_OUTPUT
+          if [[ $(jq '.status' <<< $output) == 0 ]]; then
             echo "successfullyInstalled=true" >> $GITHUB_OUTPUT
           else
             echo "successfullyInstalled=false" >> $GITHUB_OUTPUT
@@ -96,8 +96,8 @@ jobs:
             echo "Starting deployment of ${{ inputs.unpackagable }}"
             echo "deployMetadata=true" >> $GITHUB_OUTPUT
             sfdx force:source:deploy --sourcepath ${{ inputs.unpackagable }} --testlevel RunLocalTests | tee output
-            echo "deployOutput=$(jq -r '.message' <<< output)" >> $GITHUB_OUTPUT
-            if [ $(jq -r '.status' <<< output) == "0" ]; then
+            echo "deployOutput=$(jq -r '.message' <<< $output)" >> $GITHUB_OUTPUT
+            if [ $(jq -r '.status' <<< $output) == "0" ]; then
               echo "successfullyDeployedMetadata=true" >> $GITHUB_OUTPUT
             else
               echo "successfullyDeployedMetadata=false" >> $GITHUB_OUTPUT
