@@ -78,8 +78,11 @@ jobs:
         id: installPackage
         run: |
           sfdx force:package:install --package ${{ inputs.packageId }} --installationkey ${{ secrets.CRM_PACKAGE_KEY }} --wait 10 --publishwait 10 --noprompt | tee output
+          echo "$output"
           echo "installOutput=$(jq -r '.message' <<< output)" >> $GITHUB_OUTPUT
-          if [ $(jq -r '.status' <<< output) == "0" ]; then
+          echo "$installOutput"
+          echo "$(jq -r '.status' <<< output)"
+          if [[ $(jq -r '.status' <<< output) == "0" ]]; then
             echo "successfullyInstalled=true" >> $GITHUB_OUTPUT
           else
             echo "successfullyInstalled=false" >> $GITHUB_OUTPUT
