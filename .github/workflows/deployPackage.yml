@@ -29,6 +29,12 @@ jobs:
   deploy-package:
     name: Deploy Package
     runs-on: ubuntu-latest
+    outputs:
+      successfullyInstalledPackage: ${{ steps.installPackage.outputs.successfullyInstalled }}
+      installPackageOutput: ${{ steps.installPackage.outputs.installOutput }}
+      installMetadata: ${{ steps.deployMetadata.outputs.installMetadata }}
+      successfullyDeployedMetadata: ${{ steps.deployMetadata.outputs.successfullyDeployedMetadata }}
+      deployMetadataOutput: ${{ steps.deployMetadata.outputs.deployOutput }}
     steps:
       # Set SFDX Auth URL
       - name: Set SFDX Auth URL
@@ -72,8 +78,8 @@ jobs:
         id: installPackage
         run: |
           sfdx force:package:install --package ${{ inputs.packageId }} --installationkey ${{ secrets.CRM_PACKAGE_KEY }} --wait 10 --publishwait 10 --noprompt | tee output
-          echo "installOutput=$(cat output | jq '.message')" >> $GITHUB_OUTPUT
-          if [ $(cat output | jq '.status') == "0" ]; then
+          echo "installOutput=$(jq -r '.message' <<< output)" >> $GITHUB_OUTPUT
+          if [ $(jq -r '.status' <<< output) == "0" ]; then
             echo "successfullyInstalled=true" >> $GITHUB_OUTPUT
           else
             echo "successfullyInstalled=false" >> $GITHUB_OUTPUT
@@ -91,19 +97,13 @@ jobs:
             echo "Starting deployment of ${{ inputs.unpackagable }}"
             echo "installMetadata=true" >> $GITHUB_OUTPUT
             sfdx force:source:deploy --sourcepath ${{ inputs.unpackagable }} --testlevel RunLocalTests | tee output
-            echo "deployOutput=$(cat output | jq '.message')" >> $GITHUB_OUTPUT
-            if [ $(cat output | jq '.status') == "0" ]; then
+            echo "deployOutput=$(jq -r '.message' <<< output)" >> $GITHUB_OUTPUT
+            if [ $(jq -r '.status' <<< output) == "0" ]; then
               echo "successfullyDeployedMetadata=true" >> $GITHUB_OUTPUT
             else
               echo "successfullyDeployedMetadata=false" >> $GITHUB_OUTPUT
             fi
           else
             echo "installMetadata=false" >> $GITHUB_OUTPUT
+            echo "successfullyDeployedMetadata=true" >> $GITHUB_OUTPUT
           fi
-
-    outputs:
-      successfullyInstalledPackage: ${{ steps.installPackage.outputs.successfullyInstalled }}
-      installPackageOutput: ${{ steps.installPackage.outputs.installOutput }}
-      installMetadata: ${{ steps.deployMetadata.outputs.installMetadata }}
-      successfullyDeployedMetadata: ${{ steps.deployMetadata.outputs.successfullyDeployedMetadata }}
-      deployMetadataOutput: ${{ steps.deployMetadata.outputs.deployOutput }}
