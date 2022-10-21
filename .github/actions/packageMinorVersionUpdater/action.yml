@@ -8,7 +8,7 @@ runs:
         newVersion=$(jq -r '.packageDirectories[0].versionNumber' sfdx-project.json |
           awk -F. -v OFS=. '{$2++ ; print}')
         file=$(mktemp)
-        jq -r ".packageDirectories[0].versionNumber = $newVersion" sfdx-project.json > "$file"
+        jq -r ".packageDirectories[0].versionNumber = \"$newVersion\"" sfdx-project.json > "$file"
         cat "$file" > sfdx-project.json
         rm "$file"
       shell: bash
