@@ -73,7 +73,7 @@ jobs:
       - name: Install package in target org
         id: installPackage
         run: |
-          sfdx force:package:install --package ${{ inputs.packageId }} --installationkey ${{ secrets.CRM_PACKAGE_KEY }} --wait 10 --publishwait 10 --noprompt | tee output
+          sfdx force:package:install --package ${{ inputs.packageId }} --installationkey ${{ secrets.CRM_PACKAGE_KEY }} --wait 10 --publishwait 10 --noprompt --json | tee output
           echo "$output"
           echo "installOutput=$(jq -r '.message' <<< output)" >> $GITHUB_OUTPUT
           echo "$installOutput"
