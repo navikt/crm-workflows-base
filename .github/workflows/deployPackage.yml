@@ -100,11 +100,11 @@ jobs:
             else
               echo "successfullyDeployedMetadata=false" >> $GITHUB_OUTPUT
             fi
+            rm output.json
           else
             echo "deployMetadata=false" >> $GITHUB_OUTPUT
             echo "successfullyDeployedMetadata=true" >> $GITHUB_OUTPUT
           fi
-          rm output.json
 
   report-deploy-status:
     name: Report install
