@@ -15,11 +15,16 @@ on:
         required: false
         type: string
     outputs:
-      successfullyInstalledPackage: ${{ jobs.deploy-package.outputs.successfullyInstalled }}
-      installPackageOutput: ${{ jobs.deploy-package.outputs.installOutput }}
-      installMetadata: ${{ jobs.deploy-package.outputs.installMetadata }}
-      successfullyDeployedMetadata: ${{ jobs.deploy-package.outputs.successfullyDeployedMetadata }}
-      deployMetadataOutput: ${{ jobs.deploy-package.outputs.deployOutput }}
+      successfullyInstalledPackage:
+        value: ${{ jobs.deploy-package.outputs.successfullyInstalled }}
+      installPackageOutput:
+        value: ${{ jobs.deploy-package.outputs.installOutput }}
+      installMetadata:
+        value: ${{ jobs.deploy-package.outputs.installMetadata }}
+      successfullyDeployedMetadata:
+        value: ${{ jobs.deploy-package.outputs.successfullyDeployedMetadata }}
+      deployMetadataOutput:
+        value: ${{ jobs.deploy-package.outputs.deployOutput }}
 jobs:
   deploy-package:
     name: Deploy Package
