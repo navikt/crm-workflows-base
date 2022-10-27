@@ -22,7 +22,7 @@ runs:
         echo ${{ inputs.auth-URL }} > ./SFDX_URL.txt
         
         if [ ${{ inputs.setDefaultUsername }} && ${{ inputs.setDefaultDevhubUsername }} ]; then
-          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultdevhubusername --setdefaultusername
+          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} -d -s
         elif [ ${{ inputs.setDefaultUsername }} ]; then
           sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultusername
         elif [ ${{ inputs.setDefaultDevhubUsername }} ]; then
