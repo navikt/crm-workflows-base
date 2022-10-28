@@ -16,7 +16,7 @@ on:
         type: string
     outputs:
       successfullyInstalledPackage:
-        value: ${{ jobs.deploy-package.outputs.successfullyInstalled }}
+        value: ${{ jobs.deploy-package.outputs.successfullyInstalledPackage }}
       deployMetadata:
         value: ${{ jobs.deploy-package.outputs.deployMetadata }}
       successfullyDeployedMetadata:
