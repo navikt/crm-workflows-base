@@ -51,14 +51,16 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: sfdx-actions/setup-sfdx@v1
+        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
       
       # Authenticate dev hub
       - name: Authenticate Dev Hub
-        run: |
-          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./CRM_PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./CRM_PROD_SFDX_URL.txt -a devhub -d
-          rm -f ./CRM_PROD_SFDX_URL.txt
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: prod
+          setDefaultUsername: true
+          setDefaultDevhubUsername: true
       
       # Create scratch org
       - name: Create scratch org
@@ -259,14 +261,16 @@ jobs:
       
       # Install SFDX
       - name: Install SFDX
-        uses: sfdx-actions/setup-sfdx@v1
-
+        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+      
       # Authenticate dev hub
       - name: Authenticate Dev Hub
-        run: |
-          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./CRM_PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./CRM_PROD_SFDX_URL.txt -a devhub -d
-          rm -f ./CRM_PROD_SFDX_URL.txt
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: prod
+          setDefaultUsername: false
+          setDefaultDevhubUsername: true
       
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
