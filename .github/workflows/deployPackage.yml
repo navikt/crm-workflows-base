@@ -52,7 +52,7 @@ jobs:
             echo "target=$(echo ${{ secrets.CRM_SIT_SFDX_URL }})" >> $GITHUB_ENV
             echo "'sit' was set"
           else
-            echo "target=$(echo ${{ github.event.inputs.org }})" >> $GITHUB_ENV
+            echo "target=$(echo ${{ inputs.org }})" >> $GITHUB_ENV
             echo "input org was set to input"
           fi
 
