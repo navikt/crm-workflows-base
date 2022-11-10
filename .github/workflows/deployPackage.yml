@@ -45,14 +45,17 @@ jobs:
           elif [ ${{ inputs.org }} == "dev" ];then
             echo "target=$(echo ${{ secrets.DEV_SFDX_URL }})" >> $GITHUB_ENV
             echo "'dev' was set"
-          elif [ ${{ inputs.org }} == "uat" ];then
+          elif [ ${{ inputs.org }} == "crm-uat" ];then
             echo "target=$(echo ${{ secrets.CRM_UAT_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'crm-uat' was set"  
+          elif [ ${{ inputs.org }} == "uat" ];then
+            echo "target=$(echo ${{ secrets.UAT_SFDX_URL }})" >> $GITHUB_ENV
             echo "'uat' was set"
           elif [ ${{ inputs.org }} == "sit" ];then
             echo "target=$(echo ${{ secrets.CRM_SIT_SFDX_URL }})" >> $GITHUB_ENV
             echo "'sit' was set"
           else
-            echo "target=$(echo ${{ github.event.inputs.org }})" >> $GITHUB_ENV
+            echo "target=$(echo ${{ inputs.org }})" >> $GITHUB_ENV
             echo "input org was set to input"
           fi
 

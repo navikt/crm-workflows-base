@@ -1,9 +1,10 @@
-name: "[HELPER] Create Scratch Org"
+name: "Create Scratch Org"
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       branchName:
-        description: "New branch (or pick existing above)"
+        type: string
+        required: true
 jobs:
   
   print:
@@ -12,7 +13,7 @@ jobs:
     steps:
       - name: Print input values
         run: |
-          echo "Branch Name: ${{ github.event.inputs.branchName }}"
+          echo "Branch Name: ${{ inputs.branchName }}"
           echo "Initated Branch: ${{ github.ref }}"
           echo "Initiator: ${{ github.actor }}"
 
@@ -28,15 +29,15 @@ jobs:
         id: branch
         run: |
           # if 
-          if [ ${{ github.event.inputs.branchName }} != "" ]; then
-            echo "::set-output name=branch::$(echo ${{ github.event.inputs.branchName }})"
-            echo "'${{ github.event.inputs.branchName }}' was set as branch"
-          elif [ ${GITHUB_REF/refs\/heads\//} == "master" ] || [ ${GITHUB_REF/refs\/heads\//} == "main" ]; then
+          if [ ${{ inputs.branchName }} != "" ]; then
+            echo "branch=$(echo ${{ inputs.branchName }})" >> GITHUB_OUTPUT
+            echo "'${{ inputs.branchName }}' was set as branch"
+          elif [ ${GITHUB_REF/refs\/heads\//} == "master" ] || [ ${GITHUB_REF/refs\/heads\//} == "main" ]; then
             echo ""
             echo "::error::You didn't type a branch name and left the default main/master branch in the dropdown menu. You cannot push changes directly to master, please use a separate branch."
             exit 125
           else
-            echo "::set-output name=branch::${GITHUB_REF/refs\/heads\//}"
+            echo "branch=${GITHUB_REF/refs\/heads\//}" >> GITHUB_OUTPUT
             echo "'${GITHUB_REF/refs\/heads\//}' was set as branch"
           fi
 
@@ -50,14 +51,16 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: sfdx-actions/setup-sfdx@v1
+        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
       
       # Authenticate dev hub
       - name: Authenticate Dev Hub
-        run: |
-          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./CRM_PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./CRM_PROD_SFDX_URL.txt -a devhub -d
-          rm -f ./CRM_PROD_SFDX_URL.txt
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: prod
+          setDefaultUsername: true
+          setDefaultDevhubUsername: true
       
       # Create scratch org
       - name: Create scratch org
@@ -90,7 +93,7 @@ jobs:
               keys+=$p":${{ secrets.CRM_PACKAGE_KEY }} "
           done
 
-          echo "::set-output name=keys::$(echo $keys)"
+          echo "keys=$(echo $keys)" >> GITHUB_OUTPUT
       
       # Install packages this repo is dependant on
       - name: Install dependant packages
@@ -258,14 +261,16 @@ jobs:
       
       # Install SFDX
       - name: Install SFDX
-        uses: sfdx-actions/setup-sfdx@v1
-
+        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+      
       # Authenticate dev hub
       - name: Authenticate Dev Hub
-        run: |
-          echo ${{ secrets.CRM_PROD_SFDX_URL}} > ./CRM_PROD_SFDX_URL.txt
-          sfdx auth:sfdxurl:store -f ./CRM_PROD_SFDX_URL.txt -a devhub -d
-          rm -f ./CRM_PROD_SFDX_URL.txt
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: prod
+          setDefaultUsername: false
+          setDefaultDevhubUsername: true
       
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
