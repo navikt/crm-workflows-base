@@ -47,7 +47,7 @@ jobs:
             echo "'dev' was set"
           elif [ ${{ inputs.org }} == "crm-uat" ];then
             echo "target=$(echo ${{ secrets.CRM_UAT_SFDX_URL }})" >> $GITHUB_ENV
-            echo "'uat' was set"  
+            echo "'crm-uat' was set"  
           elif [ ${{ inputs.org }} == "uat" ];then
             echo "target=$(echo ${{ secrets.UAT_SFDX_URL }})" >> $GITHUB_ENV
             echo "'uat' was set"
