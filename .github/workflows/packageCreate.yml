@@ -1,6 +1,9 @@
 name: "Create Package"
 on:
   workflow_call:
+    outputs:
+      packageId:
+        value: ${{ jobs.create-package.outputs.packageId }}
 jobs:
   create-package:
     name: Create Package
