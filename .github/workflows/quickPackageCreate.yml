@@ -65,7 +65,7 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # set release variables
       - name: Set release fields
