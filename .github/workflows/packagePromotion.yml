@@ -37,7 +37,7 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           persist-credentials: false
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
@@ -67,7 +67,7 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           persist-credentials: false
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
@@ -86,7 +86,7 @@ jobs:
 
       # The main branch is protected
       - name: Create new branch and pull request for updated package version ID
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v4
         with:
           title: "Added new package version ID"
           commit-message: ${{steps.build-commit-message.outputs.message}}
@@ -110,7 +110,7 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           persist-credentials: true # ! set to true to be able to checkout correctly
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
