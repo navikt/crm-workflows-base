@@ -1,0 +1,11 @@
+name: "Install Salesforce code analyzer plugin"
+description: "Install Salesforce code analyzer plugin for SFDX"
+runs:
+  using: "composite"
+  steps:
+    # Install Salesforce code analyzer
+    - name: Install Salesforce code analyzer
+      run: |
+        sfdx plugins:install @salesforce/sfdx-scanner
+      shell: bash
+      
