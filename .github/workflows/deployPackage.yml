@@ -28,7 +28,7 @@ jobs:
     outputs:
       successfullyInstalledPackage: ${{ steps.installPackage.outputs.successfullyInstalled }}
       installPackageOutput: ${{ steps.installPackage.outputs.installOutput }}
-      installMetadata: ${{ steps.deployMetadata.outputs.deployMetadata }}
+      deployMetadata: ${{ steps.deployMetadata.outputs.deployMetadata }}
       successfullyDeployedMetadata: ${{ steps.deployMetadata.outputs.successfullyDeployedMetadata }}
       deployMetadataOutput: ${{ steps.deployMetadata.outputs.deployOutput }}
     steps:
