@@ -22,11 +22,8 @@ jobs:
     name: Deploy metadata
     runs-on: ubuntu-latest
     outputs:
-      successfullyInstalledPackage: ${{ steps.installPackage.outputs.successfullyInstalled }}
-      installPackageOutput: ${{ steps.installPackage.outputs.installOutput }}
-      deployMetadata: ${{ steps.deployMetadata.outputs.deployMetadata }}
       successfullyDeployedMetadata: ${{ steps.deployMetadata.outputs.successfullyDeployedMetadata }}
-      deployMetadataOutput: ${{ steps.deployMetadata.outputs.deployOutput }}
+      deployOutput: ${{ steps.deployMetadata.outputs.deployOutput }}
     steps:
       # Set SFDX Auth URL
       - name: Set SFDX Auth URL
@@ -79,7 +76,7 @@ jobs:
       - name: Deploy unpackagable content
         id: deployMetadata
         run: |
-          if[output.validateOnly == true]; then
+          if[inputs.validateOnly == true]; then
             sfdx force:source:deploy --sourcepath ${{input.path}} --testlevel --checkonly RunLocalTests --json | tee output.json
           else
             sfdx force:source:deploy --sourcepath ${{input.path}} --testlevel RunLocalTests --json | tee output.json
@@ -104,7 +101,7 @@ jobs:
 
       - name: Report Metadata Install Status
         run: |
-          if [ ${{ needs.deploy-package.outputs.successfullyDeployedMetadata }} == "true" ]; then
+          if [ ${{ needs.deploy-metadata.outputs.successfullyDeployedMetadata }} == "true" ]; then
             echo
             echo SUCCESSFUL DEPLOYMENT OF UNPACKAGED METADATA
             echo
@@ -112,7 +109,7 @@ jobs:
             echo
             echo FAILED TO DEPLOY UNPACKAGED METADATA
             echo
-            echo ${{ needs.deploy-package.outputs.deployOutput }}
+            echo ${{ needs.deploy-metadata.outputs.deployOutput }}
 
             exit 125
           fi
