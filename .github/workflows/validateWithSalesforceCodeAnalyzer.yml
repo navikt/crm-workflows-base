@@ -21,9 +21,7 @@ jobs:
 
       # Install Salesforce Code Analyzer
       - name: Install Salesforce Code Analyzer
-        run: |
-          sfdx plugins:install @salesforce/sfdx-scanner
-        shell: bash
+        uses: navikt/crm-workflows-base/.github/actions/installSalesforceCodeAnalyzer@master
 
       - name: Run copy pasta detection
         run: |
