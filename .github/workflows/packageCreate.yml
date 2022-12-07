@@ -1,6 +1,11 @@
 name: "Create Package"
 on:
   workflow_call:
+    inputs:
+       SFDX_ENV:
+        description: "Environent variables to be set for sfdx commands"
+        required: false
+        type: string
     outputs:
       packageId:
         value: ${{ jobs.create-package.outputs.packageId }}
@@ -60,6 +65,7 @@ jobs:
       packageId: ${{ needs.create-package.outputs.packageId }}
       org: sit
       unpackagable: ./force-app/unpackagable-with-auto-deploy
+      SFDX_ENV: ${{ inputs.SFDX_ENV }}
     secrets: inherit
 
   create-release:
