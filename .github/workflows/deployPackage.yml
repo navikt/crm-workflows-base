@@ -14,6 +14,10 @@ on:
         description: "Path to unpackageable folder"
         required: false
         type: string
+      SFDX_ENV:
+        description: "Environent variables to be set for sfdx commands"
+        required: false
+        type: string
     outputs:
       successfullyInstalledPackage:
         value: ${{ jobs.deploy-package.outputs.successfullyInstalledPackage }}
@@ -96,7 +100,7 @@ jobs:
           if [ -d "${{ inputs.unpackagable }}" ]; then
             echo "Starting deployment of ${{ inputs.unpackagable }}"
             echo "deployMetadata=true" >> $GITHUB_OUTPUT
-            sfdx force:source:deploy --sourcepath ${{ inputs.unpackagable }} --testlevel RunLocalTests --json | tee output.json
+            ${{ inputs.SFDX_ENV }} sfdx force:source:deploy --sourcepath ${{ inputs.unpackagable }} --testlevel RunLocalTests --json | tee output.json
             echo "deployOutput=$(jq -r '.message' output.json)" >> $GITHUB_OUTPUT
             if [ $(jq -r '.status' output.json) == "0" ]; then
               echo "successfullyDeployedMetadata=true" >> $GITHUB_OUTPUT
