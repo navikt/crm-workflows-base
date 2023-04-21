@@ -140,7 +140,7 @@ jobs:
       # Generate changelog from commits
       - name: Generate changelog
         id: changelog
-        uses: metcalfc/changelog-generator@v0.4.3
+        uses: metcalfc/changelog-generator@v4.1.0
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
 
