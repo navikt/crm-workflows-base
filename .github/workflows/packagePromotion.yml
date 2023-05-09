@@ -57,7 +57,7 @@ jobs:
 
       # Promote package
       - name: Promote package
-        run: sfdx force:package:version:promote --package ${{ github.event.inputs.packageId }} --noprompt
+        run: sf package version promote --package ${{ github.event.inputs.packageId }} --no-prompt
 
 
   push-new-version-number-to-master:
@@ -135,7 +135,7 @@ jobs:
           echo "tagName=v$(cat sfdx-project.json | jq '.packageDirectories | map(select(.package != null))[0].versionNumber' -r | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
           echo "releaseName=$(cat sfdx-project.json | jq '.packageDirectories | map(select(.package != null))[0].versionNumber' -r | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
           echo "bodyVersion=$(cat sfdx-project.json | jq '.packageDirectories | map(select(.package != null))[0].versionNumber' -r | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
-          echo "codeCoverage=$( sfdx force:package:version:report -p ${{ github.event.inputs.packageId }} --json | jq '.result.CodeCoverage.apexCodeCoveragePercentage' -r )" >> $GITHUB_OUTPUT
+          echo "codeCoverage=$( sf package version report --package ${{ github.event.inputs.packageId }} --json | jq '.result.CodeCoverage.apexCodeCoveragePercentage' -r )" >> $GITHUB_OUTPUT
 
       # Generate changelog from commits
       - name: Generate changelog
