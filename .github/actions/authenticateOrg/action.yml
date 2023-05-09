@@ -22,13 +22,13 @@ runs:
         echo ${{ inputs.auth-URL }} > ./SFDX_URL.txt
         
         if [ ${{ inputs.setDefaultUsername }} ] && [ ${{ inputs.setDefaultDevhubUsername }} ]; then
-          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultdevhubusername --setdefaultusername
+          sf org login sfdx-url --sfdx-url-file ./SFDX_URL.txt --alias ${{ inputs.alias }} --set-default-dev-hub --set-default
         elif [ ${{ inputs.setDefaultUsername }} ]; then
-          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultusername
+          sf org login sfdx-url --sfdx-url-file ./SFDX_URL.txt --alias ${{ inputs.alias }} --set-default
         elif [ ${{ inputs.setDefaultDevhubUsername }} ]; then
-          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }} --setdefaultdevhubusername
+          sf org login sfdx-url --sfdx-url-file ./SFDX_URL.txt --alias ${{ inputs.alias }} --set-default-dev-hub
         else
-          sfdx auth:sfdxurl:store --sfdxurlfile ./SFDX_URL.txt -a ${{ inputs.alias }}
+          sf org login sfdx-url --sfdx-url-file ./SFDX_URL.txt --alias ${{ inputs.alias }}
         fi
         rm -f ./SFDX_URL.txt
       shell: bash
