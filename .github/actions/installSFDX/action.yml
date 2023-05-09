@@ -3,7 +3,7 @@ description: "Install SFDX cli with npm"
 inputs:
   version:
     description: "Version for the SFDX CLI version"
-    default: "7.193.2"
+    default: "7.199.7"
     required: false
 runs:
   using: "composite"
@@ -16,4 +16,3 @@ runs:
         echo SFDX version $output
         SFDX_DISABLE_DNS_CHECK=true
       shell: bash
-      
