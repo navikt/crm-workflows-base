@@ -57,4 +57,4 @@ jobs:
 
       - name: Publish
         run: |
-          sfdx force:community:publish --name ${{ inputs.communityname }}
+          sf community publish --name ${{ inputs.communityname }}
