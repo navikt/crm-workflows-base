@@ -86,7 +86,7 @@ jobs:
         id: changelog
         uses: metcalfc/changelog-generator@v4.1.0
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
+          mytoken: ${{ secrets.GITHUB_TOKEN }}
 
       # create github release
       - name: Create Release
