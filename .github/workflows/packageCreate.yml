@@ -45,7 +45,7 @@ jobs:
       - name: Create package version
         id: package-version-create
         run: |
-          sfdx force:package:version:create --targetdevhubusername prod --definitionfile config/project-scratch-def.json --package $(jq -r '.packageDirectories[0].package' sfdx-project.json) --installationkey ${{ secrets.CRM_PACKAGE_KEY }} --wait 90 --codecoverage --json | tee output
+          sf package version create  --target-dev-hub prod --definition-file config/project-scratch-def.json --package $(jq -r '.packageDirectories[0].package' sfdx-project.json) --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --wait 90 --code-coverage --json | tee output
           # ! manually cancel the process if the package failed to be created
           if [ $(cat output |jq '.status') == "1" ]; then
             exit 125
@@ -53,7 +53,7 @@ jobs:
           packageId=$(cat output | jq -r '.result.SubscriberPackageVersionId')
           echo "packageId=$(echo $packageId)" >> $GITHUB_OUTPUT
           echo "betaVersionNumber=$(cat sfdx-project.json | jq -r '.packageAliases | keys_unsorted[-1]' | sed 's/.*-//')" >> $GITHUB_OUTPUT
-          echo "codeCoverage=$( sfdx force:package:version:report -p $(echo $packageId) --json | jq -r '.result.CodeCoverage.apexCodeCoveragePercentage' )" >> $GITHUB_OUTPUT
+          echo "codeCoverage=$( sf package version report --package $(echo $packageId) --json | jq -r '.result.CodeCoverage.apexCodeCoveragePercentage' )" >> $GITHUB_OUTPUT
           echo
           echo Package ID: $packageId
 
