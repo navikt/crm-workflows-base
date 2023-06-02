@@ -2,7 +2,7 @@ name: "Create Package"
 on:
   workflow_call:
     inputs:
-       SFDX_ENV:
+      SFDX_ENV:
         description: "Environent variables to be set for sfdx commands"
         required: false
         type: string
@@ -45,12 +45,12 @@ jobs:
       - name: Create package version
         id: package-version-create
         run: |
-          sf package version create  --target-dev-hub prod --definition-file config/project-scratch-def.json --package $(jq -r '.packageDirectories[0].package' sfdx-project.json) --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --wait 90 --code-coverage --json | tee output
+          sf package version create  --target-dev-hub prod --definition-file config/project-scratch-def.json --package $(jq -r '.packageDirectories[0].package' sfdx-project.json) --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --wait 90 --code-coverage --json | tee output.json
           # ! manually cancel the process if the package failed to be created
-          if [ $(cat output |jq '.status') == "1" ]; then
+          if [ $(cat output.json |jq '.status') == "1" ]; then
             exit 125
           fi
-          packageId=$(cat output | jq -r '.result.SubscriberPackageVersionId')
+          packageId=$(cat output.json | jq -r '.result.SubscriberPackageVersionId')
           echo "packageId=$(echo $packageId)" >> $GITHUB_OUTPUT
           echo "betaVersionNumber=$(cat sfdx-project.json | jq -r '.packageAliases | keys_unsorted[-1]' | sed 's/.*-//')" >> $GITHUB_OUTPUT
           echo "codeCoverage=$( sf package version report --package $(echo $packageId) --json | jq -r '.result.CodeCoverage.apexCodeCoveragePercentage' )" >> $GITHUB_OUTPUT
