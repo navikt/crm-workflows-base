@@ -57,11 +57,11 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
 
       # Authorize SFDX
       - name: Authorize SFDX
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
         with:
           auth-url: ${{ env.target }}
           alias: targetOrg

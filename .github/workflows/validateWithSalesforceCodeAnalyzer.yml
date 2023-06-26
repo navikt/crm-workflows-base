@@ -17,11 +17,11 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
 
       # Install Salesforce Code Analyzer
       - name: Install Salesforce Code Analyzer
-        uses: navikt/crm-workflows-base/.github/actions/installSalesforceCodeAnalyzer@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/installSalesforceCodeAnalyzer@master
 
       - name: Run copy pasta detection
         run: |

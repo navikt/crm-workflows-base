@@ -51,11 +51,11 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
       
       # Authenticate dev hub
       - name: Authenticate Dev Hub
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: prod
@@ -261,11 +261,11 @@ jobs:
       
       # Install SFDX
       - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
       
       # Authenticate dev hub
       - name: Authenticate Dev Hub
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: prod

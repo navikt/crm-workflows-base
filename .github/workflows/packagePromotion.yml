@@ -23,7 +23,7 @@ jobs:
 
   install-package-preprod:
     name: Validate install in PREPROD
-    uses: navikt/crm-workflows-base/.github/workflows/deployPackage.yml@convertFromSfdxToSf
+    uses: navikt/crm-workflows-base/.github/workflows/deployPackage.yml@master
     with:
       packageId: ${{ github.event.inputs.packageId  }}
       org: preprod
@@ -44,11 +44,11 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
 
       # Authenticate prod
       - name: Authorize PROD
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: prod
@@ -75,7 +75,7 @@ jobs:
       # Update version number
       - name: Update version number
         id: packaging-updater
-        uses: navikt/crm-workflows-base/.github/actions/packageMinorVersionUpdater@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/packageMinorVersionUpdater@master
 
       # Create commit message by extracting the latest version number from sfdx-project.json
       - name: Build commit message
@@ -117,11 +117,11 @@ jobs:
 
       # Install SFDX
       - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
 
       # Authenticate prod
       - name: Authorize PROD
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@convertFromSfdxToSf
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: prod
