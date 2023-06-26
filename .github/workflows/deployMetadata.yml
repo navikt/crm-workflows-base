@@ -77,9 +77,9 @@ jobs:
         id: deployMetadata
         run: |
           if[inputs.validateOnly == true]; then
-            sfdx force:source:deploy --sourcepath ${{inputs.path}} --testlevel --checkonly RunLocalTests --json | tee output.json
+            sf project deploy start  --source-dir ${{inputs.path}} --test-level RunLocalTests --dry-run --json | tee output.json
           else
-            sfdx force:source:deploy --sourcepath ${{inputs.path}} --testlevel RunLocalTests --json | tee output.json
+            sf project deploy start  --source-dir ${{inputs.path}} --test-level RunLocalTests --json | tee output.json
           fi
 
           echo "deployOutput=$(jq -r '.message' output.json)" >> $GITHUB_OUTPUT

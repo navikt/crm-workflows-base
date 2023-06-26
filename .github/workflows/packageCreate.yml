@@ -2,7 +2,7 @@ name: "Create Package"
 on:
   workflow_call:
     inputs:
-       SFDX_ENV:
+      SFDX_ENV:
         description: "Environent variables to be set for sfdx commands"
         required: false
         type: string
@@ -18,6 +18,11 @@ jobs:
       betaVersionNumber: ${{ steps.package-version-create.outputs.betaVersionNumber }}
       codeCoverage: ${{ steps.package-version-create.outputs.codeCoverage }}
     steps:
+      - name: NODE INSTALL OVERWRITE FOR ISSUE https://github.com/forcedotcom/cli/issues/2125
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.14.2'
+          
       # Checkout source code
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -45,15 +50,15 @@ jobs:
       - name: Create package version
         id: package-version-create
         run: |
-          sfdx force:package:version:create --targetdevhubusername prod --definitionfile config/project-scratch-def.json --package $(jq -r '.packageDirectories[0].package' sfdx-project.json) --installationkey ${{ secrets.CRM_PACKAGE_KEY }} --wait 90 --codecoverage --json | tee output
+          sf package version create  --target-dev-hub prod --definition-file config/project-scratch-def.json --package $(jq -r '.packageDirectories[0].package' sfdx-project.json) --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --wait 90 --code-coverage --json | tee output.json
           # ! manually cancel the process if the package failed to be created
-          if [ $(cat output |jq '.status') == "1" ]; then
+          if [ $(cat output.json |jq '.status') == "1" ]; then
             exit 125
           fi
-          packageId=$(cat output | jq -r '.result.SubscriberPackageVersionId')
+          packageId=$(cat output.json | jq -r '.result.SubscriberPackageVersionId')
           echo "packageId=$(echo $packageId)" >> $GITHUB_OUTPUT
           echo "betaVersionNumber=$(cat sfdx-project.json | jq -r '.packageAliases | keys_unsorted[-1]' | sed 's/.*-//')" >> $GITHUB_OUTPUT
-          echo "codeCoverage=$( sfdx force:package:version:report -p $(echo $packageId) --json | jq -r '.result.CodeCoverage.apexCodeCoveragePercentage' )" >> $GITHUB_OUTPUT
+          echo "codeCoverage=$( sf package version report --package $(echo $packageId) --json | jq -r '.result.CodeCoverage.apexCodeCoveragePercentage' )" >> $GITHUB_OUTPUT
           echo
           echo Package ID: $packageId
 
@@ -98,7 +103,7 @@ jobs:
         id: changelog
         uses: metcalfc/changelog-generator@v4.1.0
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
+          mytoken: ${{ secrets.GITHUB_TOKEN }}
 
       # create github release
       - name: Create Release

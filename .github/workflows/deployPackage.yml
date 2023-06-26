@@ -80,7 +80,7 @@ jobs:
       - name: Install package in target org
         id: installPackage
         run: |
-          sfdx force:package:install --package ${{ inputs.packageId }} --installationkey ${{ secrets.CRM_PACKAGE_KEY }} --wait 10 --publishwait 10 --noprompt --json | tee output.json
+          sf package install --package ${{ inputs.packageId }} --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --wait 10 --publish-wait 10 --no-prompt --json | tee output.json
           echo "installOutput=$(jq '.message' output.json)" >> $GITHUB_OUTPUT
           if [[ $(jq '.status' output.json) == 0 ]]; then
             echo "successfullyInstalled=true" >> $GITHUB_OUTPUT
@@ -102,7 +102,7 @@ jobs:
           if [ -d "${{ inputs.unpackagable }}" ]; then
             echo "Starting deployment of ${{ inputs.unpackagable }}"
             echo "deployMetadata=true" >> $GITHUB_OUTPUT
-            ${{ inputs.SFDX_ENV }} sfdx force:source:deploy --sourcepath ${{ inputs.unpackagable }} --testlevel RunLocalTests --json | tee output.json
+            ${{ inputs.SFDX_ENV }} sf project deploy start  --source-dir ${{inputs.unpackagable}} --test-level RunLocalTests --json | tee output.json
             echo "deployOutput=$(jq -r '.message' output.json)" >> $GITHUB_OUTPUT
             if [ $(jq -r '.status' output.json) == "0" ]; then
               echo "successfullyDeployedMetadata=true" >> $GITHUB_OUTPUT
