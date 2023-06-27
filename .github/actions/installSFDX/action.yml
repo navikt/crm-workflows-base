@@ -3,11 +3,11 @@ description: "Install SFDX cli with npm"
 inputs:
   version:
     description: "Version for the SFDX CLI version"
-    default: "7.202.7"
+    default: "7.206.6"
     required: false
   sfVersion:
     description: "Version for the SF CLI version"
-    default: "1.80.6"
+    default: "1.83.4"
     required: false
 runs:
   using: "composite"
