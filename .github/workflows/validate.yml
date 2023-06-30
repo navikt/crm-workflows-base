@@ -189,7 +189,7 @@ jobs:
         if: ${{ needs.run-tests.outputs.hasTestClasses }}
         run: |
           classes=()
-          cd force-app
+          cd ./force-app
           for p in $( grep -r -l -i --include="*.cls" "" . | sed 's@.*/@@' ); do
             class=$(echo $p | cut -f 1 -d '.')
             classes[${#classes[@]}]=$class
@@ -200,7 +200,7 @@ jobs:
           totalLines=0
 
           # ! calculate code coverage for this repo only
-          for row in $(jq -c -r '.[]' <<< "$(cat tests/apex/test-result-codecoverage.json)"); do
+          for row in $(jq -c -r '.[]' <<< "$(cat ./tests/apex/test-result-codecoverage.json)"); do
             name=$(jq -r '.name' <<< $row)
             if [[ " ${classes[@]} " =~ " ${name} " ]]; then
             
