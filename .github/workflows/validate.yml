@@ -9,6 +9,9 @@ jobs:
     name: Setup
     runs-on: ubuntu-latest
     steps:
+      # Check required permissions
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      
       # Checkout source code
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -68,6 +71,9 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     steps:
+      # Check required permissions
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      
       # Checkout source code
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -107,6 +113,9 @@ jobs:
     outputs:
       hasTestClasses: ${{ steps.test-classes-in-repo.outputs.classes }}
     steps:
+      # Check required permissions
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      
       # Checkout source code
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -164,6 +173,9 @@ jobs:
     needs: run-tests
     runs-on: ubuntu-latest
     steps:
+      # Check required permissions
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      
       # Checkout source code
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -241,6 +253,9 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
+      # Check required permissions
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      
       # Checkout source code
       - name: Checkout source code
         uses: actions/checkout@v3
