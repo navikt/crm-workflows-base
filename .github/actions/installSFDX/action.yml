@@ -7,7 +7,7 @@ inputs:
     required: false
   sfVersion:
     description: "Version for the SF CLI version"
-    default: "2.5.7"
+    default: "1.83.4"
     required: false
 runs:
   using: "composite"
