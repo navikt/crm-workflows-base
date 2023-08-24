@@ -17,7 +17,6 @@ runs:
       run: |
         npm install --global sfdx-cli@${{ inputs.version }}
         npm install --global @salesforce/cli@${{ inputs.sfVersion }}
-        sf update nightly
         echo SFDX version: $(sfdx --version)
         echo sf version: $(sf --version)
         SFDX_DISABLE_DNS_CHECK=true
