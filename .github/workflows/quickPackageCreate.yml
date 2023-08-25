@@ -13,6 +13,9 @@ jobs:
       packageId: ${{ steps.package-version-create.outputs.packageId }}
       alphaVersionNumber: ${{ steps.package-version-create.outputs.alphaVersionNumber }}
     steps:
+      # Check required permissions
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+
       # Checkout source code
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -63,6 +66,9 @@ jobs:
     needs: [create-package]
     runs-on: ubuntu-latest
     steps:
+      # Check required permissions
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+      
       # Checkout source code
       - name: Checkout source code
         uses: actions/checkout@v3

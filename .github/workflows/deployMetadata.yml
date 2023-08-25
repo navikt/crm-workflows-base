@@ -25,6 +25,9 @@ jobs:
       successfullyDeployedMetadata: ${{ steps.deployMetadata.outputs.successfullyDeployedMetadata }}
       deployOutput: ${{ steps.deployMetadata.outputs.deployOutput }}
     steps:
+      # Check required permissions
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
+
       # Set SF Auth URL
       - name: Set SF Auth URL
         id: auth-url
@@ -97,8 +100,10 @@ jobs:
     needs: [deploy-metadata]
     runs-on: ubuntu-latest
     steps:
-      # Report Status
+      # Check required permissions
+      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
+      # Report Status
       - name: Report Metadata Install Status
         run: |
           if [ ${{ needs.deploy-metadata.outputs.successfullyDeployedMetadata }} == "true" ]; then
