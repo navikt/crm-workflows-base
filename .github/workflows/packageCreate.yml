@@ -13,6 +13,8 @@ jobs:
   create-package:
     name: Create Package
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       packageId: ${{ steps.package-version-create.outputs.packageId }}
       betaVersionNumber: ${{ steps.package-version-create.outputs.betaVersionNumber }}
@@ -74,6 +76,8 @@ jobs:
     name: Create release
     needs: [create-package, validate-in-sit]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
       
