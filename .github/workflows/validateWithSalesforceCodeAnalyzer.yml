@@ -15,9 +15,9 @@ jobs:
         run: |
           rm -rf ./force-app/scratch-org
 
-      # Install SFDX
-      - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+      # Install SF
+      - name: Install SF
+        uses: navikt/crm-workflows-base/.github/actions/installSF@master
 
       # Install Salesforce Code Analyzer
       - name: Install Salesforce Code Analyzer

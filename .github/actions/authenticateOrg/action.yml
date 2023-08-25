@@ -2,7 +2,7 @@ name: "Authenticate org"
 description: "Authenticate a Salesforce org"
 inputs:
   auth-url:
-    description: "The auth URL for use with sfdx auth:sfdxurl:store"
+    description: "The auth URL for use with sf org login"
     required: true
   alias:
     description: "Alias for the authenticated org"

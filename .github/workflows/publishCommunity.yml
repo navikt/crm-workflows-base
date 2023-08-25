@@ -15,8 +15,8 @@ jobs:
     name: Publish community
     runs-on: ubuntu-latest
     steps:
-      # Set SFDX Auth URL
-      - name: Set SFDX Auth URL
+      # Set SF Auth URL
+      - name: Set SF Auth URL
         id: auth-url
         run: |
           if [ ${{ inputs.org }} == "prod" ];then
@@ -42,12 +42,12 @@ jobs:
             echo "input org was set to input"
           fi
 
-      # Install SFDX
-      - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+      # Install SF
+      - name: Install SF
+        uses: navikt/crm-workflows-base/.github/actions/installSF@master
 
-      # Authorize SFDX
-      - name: Authorize SFDX
+      # Authorize SF
+      - name: Authorize SF
         uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
         with:
           auth-url: ${{ env.target }}

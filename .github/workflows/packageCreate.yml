@@ -3,7 +3,7 @@ on:
   workflow_call:
     inputs:
       SFDX_ENV:
-        description: "Environent variables to be set for sfdx commands"
+        description: "Environent variables to be set for sf commands"
         required: false
         type: string
     outputs:
@@ -29,9 +29,9 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
-      # Install SFDX
-      - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+      # Install SF
+      - name: Install SF
+        uses: navikt/crm-workflows-base/.github/actions/installSF@master
 
       # Authorize Prod
       - name: Authorize PROD
@@ -52,7 +52,7 @@ jobs:
       - name: Create package version
         id: package-version-create
         run: |
-          sfdx force:package:version:create --targetdevhubusername prod --definitionfile config/project-scratch-def.json --package $(jq -r '.packageDirectories[0].package' sfdx-project.json) --installationkey ${{ secrets.CRM_PACKAGE_KEY }} --wait 90 --codecoverage --json | tee output.json
+          sf package version create --target-dev-hub prod --definition-file config/project-scratch-def.json --package $(jq -r '.packageDirectories[0].package' sfdx-project.json) --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --wait 90 --code-coverage --json | tee output.json
           # ! manually cancel the process if the package failed to be created
           if [ $(cat output.json |jq '.status') == "1" ]; then
             exit 125

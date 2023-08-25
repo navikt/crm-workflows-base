@@ -46,9 +46,9 @@ jobs:
           persist-credentials: false
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-      # Install SFDX
-      - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+      # Install SF
+      - name: Install SF
+        uses: navikt/crm-workflows-base/.github/actions/installSF@master
 
       # Authenticate prod
       - name: Authorize PROD
@@ -123,9 +123,9 @@ jobs:
           persist-credentials: true # ! set to true to be able to checkout correctly
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-      # Install SFDX
-      - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSFDX@master
+      # Install SF
+      - name: Install SF
+        uses: navikt/crm-workflows-base/.github/actions/installSF@master
 
       # Authenticate prod
       - name: Authorize PROD
