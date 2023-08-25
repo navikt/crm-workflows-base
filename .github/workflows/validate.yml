@@ -72,6 +72,7 @@ jobs:
               echo $subscriberPackageVersionId
           
               if [ $subscriberPackageVersionId == NO_RESULT ]
+              then
                   echo
                   echo ERROR: Could not install package $packageAlias
               else
