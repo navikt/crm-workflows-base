@@ -19,11 +19,6 @@ jobs:
       codeCoverage: ${{ steps.package-version-create.outputs.codeCoverage }}
     steps:
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
-    
-      - name: NODE INSTALL OVERWRITE FOR ISSUE https://github.com/forcedotcom/cli/issues/2125
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.14.2'
           
       # Checkout source code
       - name: Checkout source code
