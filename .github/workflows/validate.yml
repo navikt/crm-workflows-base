@@ -71,7 +71,7 @@ jobs:
               echo $packageId
               echo $packageVersionNumber
           
-              sf package version list -p $packageId --concise --order-by CreatedDate --json | jq | tee subscriberPackageVersionList.json >/dev/null
+              sf package version list -p $packageId --concise --order-by "MajorVersion DESC, MinorVersion DESC, PatchVersion DESC, BuildNumber DESC" --json | jq | tee subscriberPackageVersionList.json >/dev/null
           
               subscriberPackageVersionId=$(jq --arg version ${packageVersionNumber} -r 'if (.result | length) == 0 then "NO_RESULT" else [.result[] | select(.Version==$version or (.Version|startswith($version | [splits("LATEST")] | .[0])))] | .[0].SubscriberPackageVersionId end' subscriberPackageVersionList.json)
           
