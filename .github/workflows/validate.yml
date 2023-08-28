@@ -52,7 +52,7 @@ jobs:
       # Install dependent packages
       - name: Install packages
         run: |
-          packageAliases=$(jq -r '.packageDirectories[0].dependencies[].package' sfdx-project.json)
+          packageAliases=$(jq -r '[.packageDirectories[0].dependencies[]?.package]' sfdx-project.json)
 
           echo $packageAliases
           
