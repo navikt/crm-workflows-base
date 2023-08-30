@@ -8,6 +8,8 @@ jobs:
   create-package:
     name: Create Package
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       packageId: ${{ steps.package-version-create.outputs.packageId }}
       betaVersionNumber: ${{ steps.package-version-create.outputs.betaVersionNumber }}
@@ -71,6 +73,8 @@ jobs:
     name: Create release
     needs: [create-package, validate-in-sit]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       # Check required permissions
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
@@ -100,7 +104,7 @@ jobs:
         id: changelog
         uses: metcalfc/changelog-generator@v4.1.0
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
+          mytoken: ${{ secrets.GITHUB_TOKEN }}
 
       # create github release
       - name: Create Release
