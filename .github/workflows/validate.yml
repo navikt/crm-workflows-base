@@ -44,7 +44,7 @@ jobs:
 
       # Upload SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Upload SF AuthUrl
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: sfdx-auth-url
           path: SCRATCH_ORG_SFDX_AUTH_URL.txt
@@ -109,7 +109,7 @@ jobs:
 
         # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: sfdx-auth-url
 
@@ -153,7 +153,7 @@ jobs:
 
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: sfdx-auth-url
 
@@ -187,7 +187,7 @@ jobs:
       # Upload Apex test results
       - name: Upload Apex test results
         if: steps.test-classes-in-repo.outputs.classes && success() || steps.test-classes-in-repo.outputs.classes && failure() # uploads tests results even if tests fail
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: apex-tests
           path: ./tests/apex
@@ -212,7 +212,7 @@ jobs:
       # Download tests
       - name: Download tests
         if: ${{ needs.run-tests.outputs.hasTestClasses }}
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: apex-tests
           path: ./tests/apex
@@ -306,7 +306,7 @@ jobs:
 
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: sfdx-auth-url
 
