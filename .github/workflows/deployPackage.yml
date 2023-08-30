@@ -29,6 +29,8 @@ jobs:
   deploy-package:
     name: Deploy Package
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       successfullyInstalledPackage: ${{ steps.installPackage.outputs.successfullyInstalled }}
       installPackageOutput: ${{ steps.installPackage.outputs.installOutput }}
