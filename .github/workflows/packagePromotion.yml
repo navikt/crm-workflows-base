@@ -36,6 +36,8 @@ jobs:
     name: Promote Package
     needs: [install-package-preprod]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
       
@@ -67,6 +69,9 @@ jobs:
   push-new-version-number-to-master:
     name: Push new version number to master
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     needs: promote-package
     steps:
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
@@ -112,6 +117,8 @@ jobs:
   create-release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: promote-package
     steps:
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
@@ -150,7 +157,7 @@ jobs:
         id: changelog
         uses: metcalfc/changelog-generator@v4.1.0
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
+          mytoken: ${{ secrets.GITHUB_TOKEN }}
 
       # create github release
       - name: Create GitHub Release
