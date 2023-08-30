@@ -21,6 +21,8 @@ jobs:
   deploy-metadata:
     name: Deploy metadata
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       successfullyDeployedMetadata: ${{ steps.deployMetadata.outputs.successfullyDeployedMetadata }}
       deployOutput: ${{ steps.deployMetadata.outputs.deployOutput }}
