@@ -14,6 +14,8 @@ jobs:
   deploy-package:
     name: Publish community
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       # Set SF Auth URL
       - name: Set SF Auth URL
