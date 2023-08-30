@@ -9,6 +9,8 @@ jobs:
   create-package:
     name: Create Package
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       packageId: ${{ steps.package-version-create.outputs.packageId }}
       alphaVersionNumber: ${{ steps.package-version-create.outputs.alphaVersionNumber }}
@@ -65,6 +67,8 @@ jobs:
     name: Create alpha release
     needs: [create-package]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       # Check required permissions
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
