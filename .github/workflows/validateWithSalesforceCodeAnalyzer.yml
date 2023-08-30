@@ -5,6 +5,8 @@ jobs:
   validate:
     name: Validate
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       # Check required permissions
       - uses: GitHubSecurityLab/actions-permissions/monitor@v1
@@ -28,7 +30,7 @@ jobs:
 
       - name: Run copy pasta detection
         run: |
-          sfdx scanner run -t ./force-app --engine cpd --normalize-severity --verbose --json | tee output
+          sf scanner run --target ./force-app --engine cpd --normalize-severity --verbose --json | tee output
           echo "$(jq --raw-output --arg pwd "$PWD" '.result[] | "\(.fileName | split($pwd)[1]) has \( .violations | length ) violation(s)"' <<< "$output")"
           echo
           echo "WARNINGS"
@@ -36,7 +38,7 @@ jobs:
 
       - name: Run Code Analyzer
         run: |
-          sf scanner run -t ./force-app --normalize-severity --format json --outfile scannerResult.json | tee output
+          sf scanner run --target ./force-app --normalize-severity --format json --outfile scannerResult.json | tee output
           echo "$(jq --raw-output --arg pwd "$PWD" '.result[] | "\(.fileName | split($pwd)[1]) has \( .violations | length ) violation(s)"' <<< "$output")"
           echo
           echo "WARNINGS"
