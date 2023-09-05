@@ -316,7 +316,7 @@ jobs:
 
       # Delete SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Delete SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: geekyeggo/delete-artifact@v1
+        uses: geekyeggo/delete-artifact@v2
         with:
           name: sfdx-auth-url
 
