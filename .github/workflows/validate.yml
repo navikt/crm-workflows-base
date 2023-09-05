@@ -80,7 +80,7 @@ jobs:
                   echo
                   echo ERROR: Could not install package $packageAlias
               else
-                  sf package install --target-org scratch-org --package $subscriberPackageVersionId --no-prompt --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --wait 10 --publish-wait 10
+                  sf package install --target-org scratch-org --package $subscriberPackageVersionId --no-prompt --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --wait 15 --publish-wait 10
               fi
             done
           fi
