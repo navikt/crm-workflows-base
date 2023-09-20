@@ -33,11 +33,11 @@ jobs:
     secrets: inherit
 
   install-package-uat:
-    name: Validate install in UAT
+    name: Install package in UAT
     uses: navikt/crm-workflows-base/.github/workflows/deployPackage.yml@master
     with:
       packageId: ${{ github.event.inputs.packageId  }}
-      org: uat
+      org: crm-uat
       unpackagable: ./force-app/unpackagable-with-auto-deploy
     secrets: inherit
 
