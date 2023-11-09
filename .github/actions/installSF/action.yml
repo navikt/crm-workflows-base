@@ -11,7 +11,7 @@ runs:
     # Install SF CLI
     - name: Install SF CLI|
       run: |
-        npm install --global @salesforce/cli@${{ inputs.sfVersion }}
+        npm install --global @salesforce/cli@${{ inputs.version }}
         echo sf version: $(sf --version)
         SFDX_DISABLE_DNS_CHECK=true
       shell: bash
