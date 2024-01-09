@@ -97,7 +97,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/dxatscale/sfpowerscripts
     permissions:
-      contents: read
+      contents: write
       packages: write
     needs: deploy
     concurrency: build 
