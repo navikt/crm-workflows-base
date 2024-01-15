@@ -120,6 +120,11 @@ jobs:
       # Set package version installation key
       - uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKey@dxAtScale
 
+      - name: 'Promote package'
+          id: sfpowerscripts-promote
+          run: |
+            spf orchestrator:promote -v devhub
+
       # Publish artifacts
       - uses: actions/upload-artifact@v4
         with:
