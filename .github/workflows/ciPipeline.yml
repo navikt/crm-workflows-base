@@ -51,7 +51,7 @@ jobs:
         id: sfpowerscripts-build
         run: |
           sfp orchestrator:quickbuild -v devhub --diffcheck --buildnumber ${GITHUB_RUN_ID} --branch ${GITHUB_REF#refs/heads/}
-
+            
       # Publish artifacts
       - uses: actions/upload-artifact@v4
         with:
@@ -133,3 +133,7 @@ jobs:
           sfp orchestrator:publish -d artifacts --npm --scope @${{ github.repository_owner }}  --gittag --pushgittag
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Set package version installation key
+      - uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKey@dxAtScale
+

@@ -1,0 +1,18 @@
+name: "Set Package Version Installation Key"
+description: "Set Installation key on package versions that are missing installation key"
+runs:
+  using: "composite"
+  steps:
+    - name: Set package version installation key
+      run: |
+        sf package version list --created-last-days 1 --json  | jq | tee packageVerionList.json >/dev/null
+
+        jq --compact-output --raw-output ' .result[] | select(.IsPasswordProtected == true) ' packageVerionList.json | while read package; do
+            echo $(jq '"\(.SubscriberPackageVersionId) \(.Package2Name) \(.Version)" ' <<< "$package")
+            packageId=$(jq ' .SubscriberPackageVersionId ' <<< "$package")
+
+            sf package version update --package $packageId --installation-key ${{ secrets.CRM_PACKAGE_KEY }}
+        done
+
+        rm packageVerionList.json
+      shell: bash
