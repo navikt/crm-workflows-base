@@ -92,7 +92,7 @@ jobs:
           sfp dependency:install -u dev -v devhub
           sfp orchestrator:deploy -u dev  --skipifalreadyinstalled -g "::group::,::endgroup::" 
 
-  buildAndPublish:
+  buildPromotePublish:
     name: 'Build and Publish'
     runs-on: ubuntu-latest
     container: ghcr.io/dxatscale/sfpowerscripts
@@ -116,6 +116,9 @@ jobs:
         id: sfpowerscripts-build
         run: |
           sfp orchestrator:build -v devhub --diffcheck --branch ${GITHUB_REF#refs/heads/} --buildnumber ${GITHUB_RUN_ID}
+          
+      # Set package version installation key
+      - uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKey@dxAtScale
 
       # Publish artifacts
       - uses: actions/upload-artifact@v4
@@ -133,7 +136,3 @@ jobs:
           sfp orchestrator:publish -d artifacts --npm --scope @${{ github.repository_owner }}  --gittag --pushgittag
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Set package version installation key
-      - uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKey@dxAtScale
-
