@@ -125,7 +125,7 @@ jobs:
       - name: 'Promote package'
         id: sfpowerscripts-promote
         run: |
-          spf orchestrator:promote -v devhub
+          spf orchestrator:promote --targetdevhubusername devhub --artifactdir artifacts
 
       # Publish artifacts
       - uses: actions/upload-artifact@v4
