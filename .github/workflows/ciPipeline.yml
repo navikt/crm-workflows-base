@@ -89,7 +89,7 @@ jobs:
 
       - name: 'Deploy to DEV'
         run: |
-          sfp dependency:install --targetorg dev --targetdevhubusername devhub
+          sfp dependency:install --targetusername dev --targetdevhubusername devhub
           sfp orchestrator:deploy --targetorg dev  --skipifalreadyinstalled --logsgroupsymbol "::group::,::endgroup::" 
 
   buildPromotePublish:
