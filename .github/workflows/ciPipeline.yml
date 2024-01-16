@@ -118,9 +118,9 @@ jobs:
           sfp orchestrator:build -v devhub --diffcheck --branch ${GITHUB_REF#refs/heads/} --buildnumber ${GITHUB_RUN_ID}
           
       # Set package version installation key
-      - uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKey@dxAtScale
-        with:
-          installationKey: ${{ secrets.CRM_PACKAGE_KEY }}
+      # - uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKey@dxAtScale
+      #   with:
+      #     installationKey: ${{ secrets.CRM_PACKAGE_KEY }}
 
       - name: 'Promote package'
         id: sfpowerscripts-promote
