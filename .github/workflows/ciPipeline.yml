@@ -119,6 +119,8 @@ jobs:
           
       # Set package version installation key
       - uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKey@dxAtScale
+        with:
+          installationKey: ${{ secrets.CRM_PACKAGE_KEY }}
 
       - name: 'Promote package'
         id: sfpowerscripts-promote
