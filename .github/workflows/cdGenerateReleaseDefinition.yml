@@ -1,7 +1,7 @@
 name: 'CD - Generate Release Definition File'
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       gitRef:
         description: "Utilize the tags on the source branch to generate release definiton"
