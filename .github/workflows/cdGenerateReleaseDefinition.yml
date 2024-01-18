@@ -1,0 +1,32 @@
+name: 'CD - Generate Release Definition File'
+
+on:
+  workflow_dispatch:
+    inputs:
+      gitRef:
+        description: "Utilize the tags on the source branch to generate release definiton"
+        required: true
+      pathToConfigFile:
+        description: "Path to release config file"
+        required: true
+      releaseName:
+        description: "Name of the release"
+        required: true
+        type: string
+      directory:
+        description: "Relative path to directory to which the release defintion file should be generated"
+        required: false
+        default: "./release-definitions"
+    
+jobs:
+  generateReleaseDefinition:
+    runs-on: ubuntu-latest
+    container: ghcr.io/dxatscale/sfpowerscripts
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      # Generate release definition file
+      - name: Generate release definition file
+        run: |
+          sfp releasedefinition:generate --gitref ${{ inputs.gitRef }} --configfile ${{ inputs.pathToConfigFile }} --releasename ${{ inputs.releaseName }} --directory
