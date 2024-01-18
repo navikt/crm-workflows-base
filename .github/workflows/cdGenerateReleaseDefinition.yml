@@ -6,9 +6,11 @@ on:
       gitRef:
         description: "Utilize the tags on the source branch to generate release definiton"
         required: true
+        type: string
       pathToConfigFile:
         description: "Path to release config file"
         required: true
+        type: string
       releaseName:
         description: "Name of the release"
         required: true
@@ -17,6 +19,7 @@ on:
         description: "Relative path to directory to which the release defintion file should be generated"
         required: false
         default: "./release-definitions"
+        type: string
     
 jobs:
   generateReleaseDefinition:
