@@ -1,0 +1,38 @@
+name: "Get Salesforce DX authorization URL"
+description: "Get an orgs Salesforce Salesforce DX authorization URL based on org input"
+inputs:
+  org:
+    description: "Org (prod, preprod, dev, uat, sit) or an auth url"
+    required: true
+outputs:
+  authUrl:
+    description: "the correct Auth Url"
+    value: ${{ env.orgUrl }}
+runs:
+  using: "composite"
+  steps:
+    - name: Set package version installation key
+      run: |
+        if [ ${{ inputs.org }} == "prod" ];then
+            echo "orgUrl=$(echo ${{ secrets.CRM_PROD_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'prod' was set"
+          elif [ ${{ inputs.org }} == "preprod" ];then
+            echo "orgUrl=$(echo ${{ secrets.CRM_PREPROD_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'preprod' was set"
+          elif [ ${{ inputs.org }} == "dev" ];then
+            echo "orgUrl=$(echo ${{ secrets.DEV_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'dev' was set"
+          elif [ ${{ inputs.org }} == "crm-uat" ];then
+            echo "orgUrl=$(echo ${{ secrets.CRM_UAT_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'crm-uat' was set"  
+          elif [ ${{ inputs.org }} == "uat" ];then
+            echo "orgUrl=$(echo ${{ secrets.UAT_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'uat' was set"
+          elif [ ${{ inputs.org }} == "sit" ];then
+            echo "orgUrl=$(echo ${{ secrets.CRM_SIT_SFDX_URL }})" >> $GITHUB_ENV
+            echo "'sit' was set"
+          else
+            echo "orgUrl=$(echo ${{ inputs.org }})" >> $GITHUB_ENV
+            echo "input org was set to input"
+          fi
+      shell: bash
