@@ -28,7 +28,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -38,4 +38,10 @@ jobs:
           sfp releasedefinition:generate --gitref ${{ inputs.gitRef }} --configfile ${{ inputs.pathToConfigFile }} --releasename ${{ inputs.releaseName }} --directory ${{ inputs.directory }}
 
       # Commit all changed files back to the repository
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      # - uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Commit and push release definition file
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "username@users.noreply.github.com"
+          git commit -a -m "Add release definition file"
+          git push
