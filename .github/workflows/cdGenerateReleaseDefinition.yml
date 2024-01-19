@@ -35,7 +35,7 @@ jobs:
       # Generate release definition file
       - name: Generate release definition file
         run: |
-          sfp releasedefinition:generate --gitref ${{ inputs.gitRef }} --configfile ${{ inputs.pathToConfigFile }} --releasename ${{ inputs.releaseName }} --directory
+          sfp releasedefinition:generate --gitref ${{ inputs.gitRef }} --configfile ${{ inputs.pathToConfigFile }} --releasename ${{ inputs.releaseName }} --directory ${{ inputs.directory }}
 
       # Commit all changed files back to the repository
       - uses: stefanzweifel/git-auto-commit-action@v5
