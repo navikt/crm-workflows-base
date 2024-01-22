@@ -41,12 +41,3 @@ jobs:
       - name: Generate release definition file
         run: |
           sfp releasedefinition:generate --gitref ${{ inputs.gitRef }} --configfile ${{ inputs.pathToConfigFile }} --releasename ${{ inputs.releaseName }} --directory ${{ inputs.directory }} --branchname ${{ inputs.branchToCommitTo }}
-
-      # Commit all changed files back to the repository
-      # - uses: stefanzweifel/git-auto-commit-action@v5
-      # - name: Commit and push release definition file
-      #   run: |
-      #     git config user.name "GitHub Actions Bot"
-      #     git config user.email "<>"
-      #     git commit -a -m "Add release definition file"
-      #     git push
