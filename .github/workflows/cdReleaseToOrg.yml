@@ -1,0 +1,46 @@
+name: 'CD - Release to org'
+
+on:
+  workflow_call:
+    inputs:
+      pathToReleaseDef:
+        description: "Path to release definition file"
+        required: true
+        type: string
+      org:
+        description: "Org (prod, preprod, dev, uat, sit)"
+        required: true
+        type: string
+
+jobs:
+  releaseToOrg:
+    runs-on: ubuntu-latest
+    container: ghcr.io/dxatscale/sfpowerscripts
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: orgAuthURL
+        uses: navikt/crm-workflows-base/.github/actions/getSfAuthUrl@dxAtScale
+        with:
+          org: ${{ inputs.org }}
+
+      - name: Authenticate to target org
+        run: |
+          echo "${{ steps.orgAuthURL.outputs.authUrl }}" > ./authfile
+          sf org login sfdx-url --sfdx-url-file ./authfile --alias org
+
+      # Authenticate to npm
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://npm.pkg.github.com'
+
+      # Release to environment
+      - name: 'Release to org'
+        run: 'sfp orchestrator:release --targetorg org --releasedefinition ${{ github.event.inputs.pathToReleaseDef }} --npm --scope ${{ github.repository_owner }} --generatechangelog --branchname changelog --logsgroupsymbol "::group::,::endgroup::"'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
