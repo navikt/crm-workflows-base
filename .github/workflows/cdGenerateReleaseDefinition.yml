@@ -3,6 +3,11 @@ name: 'CD - Generate Release Definition File'
 on:
   workflow_call:
     inputs:
+      branchToCommitTo:
+        description: "Repository branch in which the release definition files are to be written"
+        required: false
+        default: "master"
+        type: string
       gitRef:
         description: "Utilize the tags on the source branch to generate release definiton"
         required: true
@@ -28,20 +33,20 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      # - uses: actions/checkout@v4
+      #   with:
+      #     fetch-depth: 0
 
       # Generate release definition file
       - name: Generate release definition file
         run: |
-          sfp releasedefinition:generate --gitref ${{ inputs.gitRef }} --configfile ${{ inputs.pathToConfigFile }} --releasename ${{ inputs.releaseName }} --directory ${{ inputs.directory }}
+          sfp releasedefinition:generate --gitref ${{ inputs.gitRef }} --configfile ${{ inputs.pathToConfigFile }} --releasename ${{ inputs.releaseName }} --directory ${{ inputs.directory }} --branchname ${{ inputs.branchToCommitTo }}
 
       # Commit all changed files back to the repository
       # - uses: stefanzweifel/git-auto-commit-action@v5
-      - name: Commit and push release definition file
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
-          git commit -a -m "Add release definition file"
-          git push
+      # - name: Commit and push release definition file
+      #   run: |
+      #     git config user.name "GitHub Actions Bot"
+      #     git config user.email "<>"
+      #     git commit -a -m "Add release definition file"
+      #     git push
