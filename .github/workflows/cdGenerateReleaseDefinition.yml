@@ -33,9 +33,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      # - uses: actions/checkout@v4
-      #   with:
-      #     fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # Generate release definition file
       - name: Generate release definition file
