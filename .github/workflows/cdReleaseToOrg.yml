@@ -14,12 +14,14 @@ on:
 
 jobs:
   getAuthUrl:
+    name: Get Auth Url
     uses: navikt/crm-workflows-base/.github/workflows/cdGetOrgAuthUrl.yml@dxAtScale
     with:
       org: ${{ inputs.org }}
     secrets: inherit
 
   releaseToOrg:
+    name: Release to org
     runs-on: ubuntu-latest
     container: ghcr.io/dxatscale/sfpowerscripts
     needs:

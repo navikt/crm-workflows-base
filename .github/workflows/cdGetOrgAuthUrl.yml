@@ -12,36 +12,36 @@ on:
         value: ${{ jobs.get_org.outputs.authUrl }}
 jobs:
   get_org:
-    name: Get org auth url
+    name: Get org auth url from input
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
     container: ghcr.io/dxatscale/sfpowerscripts
     outputs:
-      authUrl: ${{ steps.getAuthUrl.outputs.orgUrl }}
+      authUrl: ${{ steps.getAuthUrl.outputs.authUrl }}
     steps:
       - id: getAuthUrl
         run: |
+          echo "get auth url for ${{ inputs.org }}""
           if [ ${{ inputs.org }} == "prod" ];then
-              echo "orgUrl=$(echo ${{ secrets.CRM_PROD_SFDX_URL }})" >> $GITHUB_OUTPUT
+              echo "authUrl=$(echo ${{ secrets.CRM_PROD_SFDX_URL }})" >> $GITHUB_OUTPUT
               echo "'prod' was set"
           elif [ ${{ inputs.org }} == "preprod" ];then
-              echo "orgUrl=$(echo ${{ secrets.CRM_PREPROD_SFDX_URL }})" >> $GITHUB_OUTPUT
+              echo "authUrl=$(echo ${{ secrets.CRM_PREPROD_SFDX_URL }})" >> $GITHUB_OUTPUT
               echo "'preprod' was set"
           elif [ ${{ inputs.org }} == "dev" ];then
-              echo "orgUrl=$(echo ${{ secrets.DEV_SFDX_URL }})" >> $GITHUB_OUTPUT
+              echo "authUrl=$(echo ${{ secrets.DEV_SFDX_URL }})" >> $GITHUB_OUTPUT
               echo "'dev' was set"
           elif [ ${{ inputs.org }} == "crm-uat" ];then
-              echo "orgUrl=$(echo ${{ secrets.CRM_UAT_SFDX_URL }})" >> $GITHUB_OUTPUT
+              echo "authUrl=$(echo ${{ secrets.CRM_UAT_SFDX_URL }})" >> $GITHUB_OUTPUT
               echo "'crm-uat' was set"  
           elif [ ${{ inputs.org }} == "uat" ];then
-              echo "orgUrl=$(echo ${{ secrets.UAT_SFDX_URL }})" >> $GITHUB_OUTPUT
+              echo "authUrl=$(echo ${{ secrets.UAT_SFDX_URL }})" >> $GITHUB_OUTPUT
               echo "'uat' was set"
           elif [ ${{ inputs.org }} == "sit" ];then
-              echo "orgUrl=$(echo ${{ secrets.CRM_SIT_SFDX_URL }})" >> $GITHUB_OUTPUT
+              echo "authUrl=$(echo ${{ secrets.CRM_SIT_SFDX_URL }})" >> $GITHUB_OUTPUT
               echo "'sit' was set"
           else
-              echo "orgUrl=$(echo ${{ inputs.org }})" >> $GITHUB_OUTPUT
-              echo "input org was set to input"
+              echo "Could not find any authUrl for org ${{ inputs.org }}"
           fi
