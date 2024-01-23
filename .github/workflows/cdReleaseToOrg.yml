@@ -13,9 +13,17 @@ on:
         type: string
 
 jobs:
+  getAuthUrl:
+    uses: navikt/crm-workflows-base/.github/workflows/cdGetOrgAuthUrl.yml@dxAtScale
+    with:
+      org: ${{ inputs.org }}
+    secrets: inherit
+
   releaseToOrg:
     runs-on: ubuntu-latest
     container: ghcr.io/dxatscale/sfpowerscripts
+    needs:
+      getAuthUrl
     permissions:
       contents: read
       packages: read
@@ -23,15 +31,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - id: orgAuthURL
-        uses: navikt/crm-workflows-base/.github/actions/getSfAuthUrl@dxAtScale
-        with:
-          org: ${{ inputs.org }}
-
+        
       - name: Authenticate to target org
         run: |
-          echo "${{ steps.orgAuthURL.outputs.authUrl }}" > ./authfile
+          echo "${{ needs.getAuthUrl.outputs.authUrl }}" > ./authfile
           sf org login sfdx-url --sfdx-url-file ./authfile --alias org
 
       # Authenticate to npm
