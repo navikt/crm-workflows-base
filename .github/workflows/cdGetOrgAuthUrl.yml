@@ -23,7 +23,7 @@ jobs:
     steps:
       - id: getAuthUrl
         run: |
-          echo "get auth url for ${{ inputs.org }}""
+          echo "get auth url for ${{ inputs.org }}"
           if [ ${{ inputs.org }} == "prod" ];then
               echo "authUrl=$(echo ${{ secrets.CRM_PROD_SFDX_URL }})" >> $GITHUB_OUTPUT
               echo "'prod' was set"
