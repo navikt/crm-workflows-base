@@ -13,19 +13,10 @@ on:
         type: string
 
 jobs:
-  getAuthUrl:
-    name: Get Auth Url
-    uses: navikt/crm-workflows-base/.github/workflows/cdGetOrgAuthUrl.yml@dxAtScale
-    with:
-      org: ${{ inputs.org }}
-    secrets: inherit
-
   releaseToOrg:
     name: Release to org
     runs-on: ubuntu-latest
     container: ghcr.io/dxatscale/sfpowerscripts
-    needs:
-      getAuthUrl
     permissions:
       contents: read
       packages: read
@@ -36,7 +27,29 @@ jobs:
         
       - name: Authenticate to target org
         run: |
-          echo "${{ needs.getAuthUrl.outputs.authUrl }}" > ./authfile
+          echo "get auth url for ${{ inputs.org }}"
+            if [ ${{ inputs.org }} == "prod" ];then
+                echo "${{ secrets.CRM_PROD_SFDX_URL }}" > ./authfile
+                echo "'prod' was set"
+            elif [ ${{ inputs.org }} == "preprod" ];then
+                echo "${{ secrets.CRM_PREPROD_SFDX_URL }}" > ./authfile
+                echo "'preprod' was set"
+            elif [ ${{ inputs.org }} == "dev" ];then
+                echo "${{ secrets.DEV_SFDX_URL }}" > ./authfile
+                echo "'dev' was set"
+            elif [ ${{ inputs.org }} == "crm-uat" ];then
+                echo "${{ secrets.CRM_UAT_SFDX_URL }}" > ./authfile
+                echo "'crm-uat' was set"  
+            elif [ ${{ inputs.org }} == "uat" ];then
+                echo "${{ secrets.UAT_SFDX_URL }}" > ./authfile
+                echo "'uat' was set"
+            elif [ ${{ inputs.org }} == "sit" ];then
+                echo "${{ secrets.CRM_SIT_SFDX_URL }}" > ./authfile
+                echo "'sit' was set"
+            else
+                echo "Could not find any authUrl for org ${{ inputs.org }}"
+            fi
+          
           sf org login sfdx-url --sfdx-url-file ./authfile --alias org
 
       # Authenticate to npm
