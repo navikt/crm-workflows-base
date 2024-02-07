@@ -1,0 +1,35 @@
+name: 'CD - Quick build packages'
+
+on:
+  workflow_call:
+
+jobs:
+  quickbuild:
+    name: 'Quickbuild packages'
+    runs-on: ubuntu-latest
+    container: ghcr.io/dxatscale/sfpowerscripts
+    permissions:
+      contents: read
+      packages: write
+    if: github.ref == 'refs/heads/master' 
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: devhub
+        
+
+      - name: 'Create packages'
+        id: sfpowerscripts-build
+        run: |
+          sfp orchestrator:quickbuild --devhubalias devhub --diffcheck --buildnumber ${GITHUB_RUN_ID} --branch ${GITHUB_REF#refs/heads/}
+            
+      # Publish artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: quickbuild-artifacts
+          path: artifacts
