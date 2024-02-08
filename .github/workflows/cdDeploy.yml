@@ -1,0 +1,45 @@
+name: 'CD - Deploy'
+
+on:
+  workflow_call:
+    inputs:
+      authUrl:
+        description: "The auth URL for use with sandbox login"
+        type: string
+        required: true
+    secrets:
+      CRM_PROD_SFDX_URL:
+        required: true
+
+jobs:
+  deploy:
+    name: 'Deploy'
+    runs-on: ubuntu-latest
+    container: ghcr.io/dxatscale/sfpowerscripts
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: quickbuild-artifacts
+          path: artifacts 
+
+      - name:  'Authenticate Dev Hub'
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: devhub
+  
+      - name:  'Authenticate Sandbox'
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+        with:
+          auth-url: ${{ inputs.authUrl }}
+          alias: dev
+
+      - name: 'Deploy to DEV'
+        run: |
+          sfp dependency:install --targetusername dev --targetdevhubusername devhub
+          sfp orchestrator:deploy --targetorg dev  --skipifalreadyinstalled --logsgroupsymbol "::group::,::endgroup::" 
