@@ -37,7 +37,7 @@ runs:
 
         command+=" --json > loginResult.json"
 
-        eval command
+        eval $command
         
         if [ $(jq .status loginResult.json) == 1 ];
         then
