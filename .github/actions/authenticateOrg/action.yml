@@ -44,7 +44,6 @@ runs:
           echo "::error title=Failed to authenticate::$(jq .message authResult.json)"
           rm -f ./SFDX_URL.txt
           rm -f ./loginResult.json
-          exit 1
         fi
 
         rm -f ./SFDX_URL.txt
