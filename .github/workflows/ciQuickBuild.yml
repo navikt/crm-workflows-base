@@ -13,8 +13,7 @@ jobs:
     container: ghcr.io/dxatscale/sfpowerscripts
     permissions:
       contents: read
-      packages: write
-    if: github.ref == 'refs/heads/master' 
+      packages: write 
     steps:
       - uses: actions/checkout@v4
 
