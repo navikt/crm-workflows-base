@@ -34,6 +34,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+    secrets: inherit
     if: github.ref == 'refs/heads/master'
 
   deploy:
