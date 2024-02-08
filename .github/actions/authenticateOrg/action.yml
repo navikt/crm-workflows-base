@@ -23,7 +23,7 @@ runs:
       run: |
         echo ${{ inputs.auth-URL }} > ./SFDX_URL.txt
 
-        command="sf org login sfdx-url --sfdx-url-file ./SFDX_URL.txt --alias \${{ inputs.alias }}"
+        command="sf org login sfdx-url --sfdx-url-file ./SFDX_URL.txt --alias ${{ inputs.alias }}"
 
         if [ ${{ inputs.setDefaultUsername }} ];
         then
