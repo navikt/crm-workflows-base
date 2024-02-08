@@ -2,6 +2,9 @@ name: 'CD - Quick build packages'
 
 on:
   workflow_call:
+    secrets:
+      CRM_PROD_SFDX_URL:
+        required: true
 
 jobs:
   quickbuild:
