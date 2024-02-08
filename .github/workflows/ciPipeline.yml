@@ -30,33 +30,11 @@ on:
 
 jobs:
   quickbuild:
-    name: 'Quickbuild packages'
-    runs-on: ubuntu-latest
-    container: ghcr.io/dxatscale/sfpowerscripts
+    uses: navikt/crm-workflows-base/.github/workflows/ciQuickBuild.yml@dxAtScale
     permissions:
       contents: read
       packages: write
-    if: github.ref == 'refs/heads/master' 
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: 'Authenticate Dev Hub'
-        run: |
-          echo "${{ secrets.CRM_PROD_SFDX_URL }}" > ./authfile
-          sf org login sfdx-url --sfdx-url-file authfile --alias devhub
-
-      - name: 'Create packages'
-        id: sfpowerscripts-build
-        run: |
-          sfp orchestrator:quickbuild --devhubalias devhub --diffcheck --buildnumber ${GITHUB_RUN_ID} --branch ${GITHUB_REF#refs/heads/}
-            
-      # Publish artifacts
-      - uses: actions/upload-artifact@v4
-        with:
-          name: quickbuild-artifacts
-          path: artifacts
+    if: github.ref == 'refs/heads/master'
 
   deploy:
     name: 'Deploy to Dev'
