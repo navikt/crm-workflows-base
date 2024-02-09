@@ -14,6 +14,11 @@ name: 'CI Pipeline - Auto Triggered'
 
 on:
   workflow_call:
+    secrets:
+      CRM_PROD_SFDX_URL:
+        required: true
+      CRM_SIT_SFDX_URL:
+        required: true
   workflow_dispatch:
 
 
@@ -27,7 +32,6 @@ on:
   #SFPOWERSCRIPTS_DATADOG_API_KEY: '${{ secrets.DATADOG_API_KEY }}'
 
 
-
 jobs:
   quickbuild:
     uses: navikt/crm-workflows-base/.github/workflows/ciQuickBuild.yml@dxAtScale
@@ -38,13 +42,14 @@ jobs:
     if: github.ref == 'refs/heads/master'
 
   deploy:
-    uses: navikt/crm-workflows-base/.github/workflows/ciQuickBuild.yml@dxAtScale
+    uses: navikt/crm-workflows-base/.github/workflows/cdDeploy.yml@dxAtScale
     needs: quickbuild
     permissions:
       contents: read
       packages: read
-    secrets: inherit
-    if: github.ref == 'refs/heads/master'
+    secrets:
+      CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL }}
+      AUTH_URL: ${{ secrets.CRM_SIT_SFDX_URL }}
 
 
   buildPromotePublish:
