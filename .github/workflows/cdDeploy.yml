@@ -2,14 +2,12 @@ name: 'CD - Deploy'
 
 on:
   workflow_call:
-    inputs:
-      authUrl:
-        description: "The auth URL for use with sandbox login"
-        type: string
-        required: true
     secrets:
       CRM_PROD_SFDX_URL:
         required: true
+      AUTH_URL:
+        required: true
+
 
 jobs:
   deploy:
@@ -32,11 +30,11 @@ jobs:
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: devhub
-  
+          
       - name:  'Authenticate Sandbox'
         uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
         with:
-          auth-url: ${{ inputs.authUrl }}
+          auth-url: ${{ secrets.AUTH_URL }}
           alias: dev
 
       - name: 'Deploy to DEV'
