@@ -1,0 +1,64 @@
+{
+    "orgName": "crm-workflows-dev",
+    "edition": "Enterprise",
+    "release": "Current",
+    "adminEmail": "fakeemail@nav.no.scratchorg",
+    "features": [
+        "Sites",
+        "ForceComPlatform",
+        "Communities",
+        "CustomerCommunity",
+        "CustomerCommunityPlus",
+        "ContactsToMultipleAccounts",
+        "PersonAccounts",
+        "LiveAgent",
+        "LightningServiceConsole",
+        "ServiceCloud",
+        "ServiceUser",
+        "Knowledge",
+        "ProcessBuilder",
+        "API",
+        "FieldService:1"
+    ],
+    "country": "NO",
+    "language": "en_US",
+    "settings": {
+        "lightningExperienceSettings": {
+            "enableS1DesktopEnabled": true
+        },
+        "languageSettings": {
+            "enableTranslationWorkbench": true
+        },
+        "accountSettings": {
+            "enableAccountTeams": true
+        },
+        "omniChannelSettings": {
+            "enableOmniChannel": true
+        },
+        "knowledgeSettings": {
+            "enableKnowledge": true,
+            "enableLightningKnowledge": true
+        },
+        "liveAgentSettings": {
+            "enableLiveAgent": true
+        },
+        "emailAdministrationSettings": {
+            "enableEnhancedEmailEnabled": true
+        },
+        "nameSettings": {
+            "enableMiddleName": true
+        },
+        "pathAssistantSettings": {
+            "pathAssistantEnabled": true
+        },
+        "fieldServiceSettings": {
+            "fieldServiceOrgPref": true,
+            "doesShareSaParentWoWithAr": false,
+            "doesShareSaWithAr": false,
+            "enableWorkOrders": true,
+            "isGeoCodeSyncEnabled": false,
+            "isLocationHistoryEnabled": false,
+            "fieldServiceNotificationsOrgPref": true
+        }
+    }
+}
