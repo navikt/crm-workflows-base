@@ -4,7 +4,7 @@
   "maxAllocation": 1,
   "expiry": 1,
   "batchSize": 5,
-  "configFilePath": "config/project-scratch-def.json",
+  "configFilePath": "./config/project-scratch-def.json",
   "relaxAllIPRanges": true,
   "enableSourceTracking": true,
   "retryOnFailure": true,
