@@ -35,7 +35,7 @@ jobs:
 
       - name: 'Prepare a pool of scratch orgs'
         run: |
-          export SFPOWERSCRIPTS_ARTIFACT_PACKAGE=04t7U000000Y2XzQAK
+          export SFPOWERSCRIPTS_ARTIFACT_PACKAGE=04t7U000000Y3S3QAK
           sfp orchestrator:prepare --poolconfig config/project-dev-pool-def.json --targetdevhubusername devhub
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
