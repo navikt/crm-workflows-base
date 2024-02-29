@@ -1,4 +1,4 @@
 releasedefinitionProperties:
     skipIfAlreadyInstalled: true
 includeOnlyArtifacts:
-    - crm-workflows-dev_sfpowerscripts_artifact
+    - crm-workflows-dev
