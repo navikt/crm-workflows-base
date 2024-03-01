@@ -5,7 +5,6 @@
   "expiry": 1,
   "batchSize": 5,
   "configFilePath": "config/project-scratch-def.json",
-  "releaseConfigFile": "config/releaseConfig.yml",
   "relaxAllIPRanges": true,
   "enableSourceTracking": true,
   "retryOnFailure": true,
