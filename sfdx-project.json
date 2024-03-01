@@ -33,8 +33,7 @@
           "package": "crm-platform-integration",
           "versionNumber": "0.109.0.LATEST"
         }
-      ],
-      
+      ]
     }
   ],
   "packageAliases": {
