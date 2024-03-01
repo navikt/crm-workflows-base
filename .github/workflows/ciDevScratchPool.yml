@@ -36,6 +36,11 @@ jobs:
       - name: 'Prepare a pool of scratch orgs'
         run: |
           # export SFPOWERSCRIPTS_ARTIFACT_PACKAGE=04t7U000000Y3S3QAK
-          sfp orchestrator:prepare --poolconfig config/project-dev-pool-def.json --targetdevhubusername devhub
+          packageNames=$(jq --raw-output '.packageAliases | keys | join(" ")' sfdx-project.json)
+          keys=""
+          for p in $packageNames; do
+              keys+=$p":${{secrets.CRM_PACKAGE_KEY}} "
+          done
+          sfp orchestrator:prepare --poolconfig config/project-dev-pool-def.json --targetdevhubusername devhub --keys $keys
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
