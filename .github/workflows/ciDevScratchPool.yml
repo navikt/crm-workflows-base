@@ -41,6 +41,6 @@ jobs:
           for p in $packageNames; do
             keys+="$p:${{secrets.CRM_PACKAGE_KEY}} "
           done
-          sfp orchestrator:prepare --poolconfig config/project-dev-pool-def.json --targetdevhubusername devhub --keys $keys
+          sfp orchestrator:prepare --poolconfig config/project-dev-pool-def.json --targetdevhubusername devhub --keys "$keys"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
