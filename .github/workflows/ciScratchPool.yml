@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         poolConfigPath: ["config/project-dev-pool-def.json", "config/project-ci-pool-def.json"]
-    uses: navikt/crm-workflows-base/.github/workflows/ciScratchPool.yml@dxAtScale
+    uses: navikt/crm-workflows-base/.github/workflows/ciCreateScratchPool.yml@dxAtScale
     with:
       gitRef: ${{ inputs.gitRef }}
       poolConfigPath: ${{ matrix.poolConfigPath }}
