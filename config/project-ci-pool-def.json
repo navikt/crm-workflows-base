@@ -1,13 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/dxatscale/sfpowerscripts/main/packages/sfpowerscripts-cli/resources/schemas/pooldefinition.schema.json",
-  "tag": "dev",
+  "tag": "ci",
   "maxAllocation": 5,
-  "expiry": 7,
+  "expiry": 1,
   "batchSize": 5,
   "configFilePath": "config/project-scratch-def.json",
-  "relaxAllIPRanges": true,
-  "enableSourceTracking": true,
-  "retryOnFailure": true,
-  "succeedOnDeploymentErrors": true,
+  "enableSourceTracking": false,
   "installAll": true
 }
