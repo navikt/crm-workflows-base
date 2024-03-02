@@ -1,0 +1,49 @@
+name: 'Create Scratch Pool'
+
+on:
+  workflow_call:
+    inputs:
+      gitRef:
+        description: "Commit Id from where the pools should be created"
+        required: false
+        type: string
+      poolConfigPath:
+        description: "Path to the pool config file"
+        required: true
+        type: string
+
+jobs:
+  pool:
+    name: 'Replenish Pool'
+    runs-on: ubuntu-latest
+    container: ghcr.io/dxatscale/sfpowerscripts
+    timeout-minutes: 720 #Set to Maximum Time out
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.gitRef }}
+          fetch-depth: 1
+
+      - name:  'Authenticate Dev Hub'
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: devhub
+
+      # Authenticate to npm
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: 'Prepare a pool of scratch orgs'
+        run: |
+          # export SFPOWERSCRIPTS_ARTIFACT_PACKAGE=04t7U000000Y3S3QAK
+          packageNames=$(jq --raw-output '.packageAliases | keys | join(" ")' sfdx-project.json)
+          keys=""
+          for p in $packageNames; do
+            keys+="$p:${{secrets.CRM_PACKAGE_KEY}} "
+          done
+
+          sfp orchestrator:prepare --poolconfig ${{ inputs.poolConfigPath }} --targetdevhubusername devhub --keys "$keys"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
