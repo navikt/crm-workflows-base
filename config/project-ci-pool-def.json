@@ -6,5 +6,10 @@
   "batchSize": 5,
   "configFilePath": "config/project-scratch-def.json",
   "enableSourceTracking": false,
-  "installAll": true
+  "installAll": true,
+  "fetchArtifacts": {
+    "npm": {
+      "scope": "navikt"
+    }
+  }
 }

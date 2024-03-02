@@ -9,5 +9,10 @@
   "enableSourceTracking": true,
   "retryOnFailure": true,
   "succeedOnDeploymentErrors": true,
-  "installAll": true
+  "installAll": true,
+  "fetchArtifacts": {
+    "npm": {
+      "scope": "navikt"
+    }
+  }
 }
