@@ -1,0 +1,25 @@
+name: 'Replenish Pools - Auto Triggered'
+
+on:
+  workflow_dispatch:
+    inputs:
+      gitRef:
+        description: "Commit Id from where the pools should be created"
+        required: false
+        default: "dxAtScale"
+  # schedule:
+  #   - cron: '0 14 * * *'
+
+jobs:
+  pool:
+    strategy:
+      matrix:
+        poolConfigPath: ["config/project-dev-pool-def.json", "config/project-ci-pool-def.json"]
+    uses: navikt/crm-workflows-base/.github/workflows/ciScratchPool.yml@dxAtScale
+    with:
+      gitRef: ${{ inputs.gitRef }}
+      poolConfigPath: ${{ matrix.poolConfigPath }}
+    permissions:
+      contents: read
+      packages: read
+    secrets: inherit
