@@ -16,7 +16,7 @@ jobs:
   pool:
     name: 'Replenish Pool'
     runs-on: ubuntu-latest
-    container: ghcr.io/dxatscale/sfpowerscripts
+    container: ghcr.io/flxbl-io/sfops
     timeout-minutes: 720 #Set to Maximum Time out
     steps:
       - uses: actions/checkout@v4
@@ -44,6 +44,6 @@ jobs:
             keys+="$p:${{secrets.CRM_PACKAGE_KEY}} "
           done
 
-          sfp orchestrator:prepare --poolconfig ${{ inputs.poolConfigPath }} --targetdevhubusername devhub --keys "$keys"
+          sfp pool prepare --poolconfig ${{ inputs.poolConfigPath }} --targetdevhubusername devhub --keys "$keys"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
