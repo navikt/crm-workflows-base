@@ -16,7 +16,7 @@ jobs:
   releaseToOrg:
     name: Release to org
     runs-on: ubuntu-latest
-    container: ghcr.io/dxatscale/sfpowerscripts
+    container: ghcr.io/flxbl-io/sfops
     permissions:
       contents: read
       packages: read
@@ -59,6 +59,6 @@ jobs:
 
       # Release to environment
       - name: 'Release to org'
-        run: 'sfp orchestrator:release --targetorg org --releasedefinition ${{ inputs.pathToReleaseDef }} --npm --scope ${{ github.repository_owner }} --generatechangelog --branchname changelog --logsgroupsymbol "::group::,::endgroup::"'
+        run: 'sfp release --targetorg org --releasedefinition ${{ inputs.pathToReleaseDef }} --npm --scope ${{ github.repository_owner }} --generatechangelog --branchname changelog --logsgroupsymbol "::group::,::endgroup::"'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

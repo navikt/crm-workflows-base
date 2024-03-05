@@ -29,7 +29,7 @@ on:
 jobs:
   generateReleaseDefinition:
     runs-on: ubuntu-latest
-    container: ghcr.io/dxatscale/sfpowerscripts
+    container: ghcr.io/flxbl-io/sfops
     permissions:
       contents: write
     steps:
@@ -40,4 +40,4 @@ jobs:
       # Generate release definition file
       - name: Generate release definition file
         run: |
-          sfp releasedefinition:generate --gitref ${{ inputs.gitRef }} --configfile ${{ inputs.pathToConfigFile }} --releasename ${{ inputs.releaseName }} --directory ${{ inputs.directory }} --branchname ${{ inputs.branchToCommitTo }}
+          sfp releasedefinition generate --gitref ${{ inputs.gitRef }} --configfile ${{ inputs.pathToConfigFile }} --releasename ${{ inputs.releaseName }} --directory ${{ inputs.directory }} --branchname ${{ inputs.branchToCommitTo }}

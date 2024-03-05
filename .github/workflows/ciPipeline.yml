@@ -55,7 +55,7 @@ jobs:
   buildPromotePublish:
     name: 'Build and Publish'
     runs-on: ubuntu-latest
-    container: ghcr.io/dxatscale/sfpowerscripts
+    container: ghcr.io/flxbl-io/sfops
     permissions:
       contents: write
       packages: write
@@ -75,7 +75,7 @@ jobs:
       - name: 'Create packages'
         id: sfpowerscripts-build
         run: |
-          sfp orchestrator:build --devhubalias devhub --diffcheck --branch ${GITHUB_REF#refs/heads/} --buildnumber ${GITHUB_RUN_ID}
+          sfp build --devhubalias devhub --diffcheck --branch ${GITHUB_REF#refs/heads/} --buildnumber ${GITHUB_RUN_ID}
           
       # Set package version installation key
       # - uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKey@dxAtScale
@@ -85,7 +85,7 @@ jobs:
       - name: 'Promote package'
         id: sfpowerscripts-promote
         run: |
-          sfp orchestrator:promote --targetdevhubusername devhub --artifactdir artifacts
+          sfp artifacts promote --targetdevhubusername devhub --artifactdir artifacts
 
       # Publish artifacts
       - uses: actions/upload-artifact@v4
@@ -100,6 +100,6 @@ jobs:
 
       - name: Publish
         run: |
-          sfp orchestrator:publish --artifactdir artifacts --npm --scope @${{ github.repository_owner }}  --gittag --pushgittag
+          sfp publish --artifactdir artifacts --npm --scope @${{ github.repository_owner }}  --gittag --pushgittag
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

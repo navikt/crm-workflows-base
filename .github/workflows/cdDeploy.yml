@@ -13,7 +13,7 @@ jobs:
   deploy:
     name: 'Deploy'
     runs-on: ubuntu-latest
-    container: ghcr.io/dxatscale/sfpowerscripts
+    container: ghcr.io/flxbl-io/sfops
     permissions:
       contents: read
       packages: read
@@ -39,5 +39,5 @@ jobs:
 
       - name: 'Deploy to DEV'
         run: |
-          sfp dependency:install --targetusername dev --targetdevhubusername devhub
-          sfp orchestrator:deploy --targetorg dev  --skipifalreadyinstalled --logsgroupsymbol "::group::,::endgroup::" 
+          sfp dependency install --targetusername dev --targetdevhubusername devhub
+          sfp install --targetorg dev  --skipifalreadyinstalled --logsgroupsymbol "::group::,::endgroup::" 
