@@ -33,6 +33,15 @@ on:
 
 
 jobs:
+
+  validate:
+    uses: navikt/crm-workflows-base/.github/workflows/ciValidate.yml@dxAtScale
+    permissions:
+      contents: read
+      packages: write
+    secrets: inherit
+    if: github.ref == 'refs/heads/master'
+
   quickbuild:
     uses: navikt/crm-workflows-base/.github/workflows/ciQuickBuild.yml@dxAtScale
     permissions:
