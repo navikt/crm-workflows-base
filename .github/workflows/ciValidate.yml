@@ -1,0 +1,44 @@
+name: 'Validate Pool'
+
+on:
+  workflow_dispatch:
+    inputs:
+      pools:
+        required: false
+        type: string
+        description: 'Fetch scratch-org validation environment from one of listed pools, sequentially'
+        default: 'ci'
+      coveragepercent:
+        required: false
+        type: number
+        description:  'Minimum required percentage coverage for validating code coverage of packages with Apex classes'
+        default: 85
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    container: ghcr.io/flxbl-io/sfops
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.gitRef }}
+          fetch-depth: 0
+
+      - name:  'Authenticate Dev Hub'
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: devhub
+
+      # Authenticate to npm
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: 'Validate'
+        run: |
+          packageNames=$(jq --raw-output '.packageAliases | keys | join(" ")' sfdx-project.json)
+          keys=""
+          for p in $packageNames; do
+            keys+="$p:${{secrets.CRM_PACKAGE_KEY}} "
+          done
+          sfp validate pool --pools ${{ inputs.pools }} --targetdevhubusername devhub --deletescratchorg --coveragepercent ${{ inputs.coveragepercent }} --keys "$keys"
