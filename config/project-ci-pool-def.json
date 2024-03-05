@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/dxatscale/sfpowerscripts/main/packages/sfpowerscripts-cli/resources/schemas/pooldefinition.schema.json",
+  "$schema": "https://raw.githubusercontent.com/flxbl-io/json-schemas/main/scratchorg-pool-definition.schema.json",
   "tag": "ci",
   "maxAllocation": 5,
   "expiry": 1,
