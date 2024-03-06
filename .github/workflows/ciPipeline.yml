@@ -33,7 +33,6 @@ on:
 
 
 jobs:
-
   validate:
     uses: navikt/crm-workflows-base/.github/workflows/ciValidate.yml@dxAtScale
     permissions:
@@ -73,42 +72,39 @@ jobs:
     concurrency: build 
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v3
+      - name:  'Checkout'
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: 'Authenticate Dev Hub'
-        run: |
-          echo "${{ secrets.CRM_PROD_SFDX_URL }}" > ./authfile
-          sf org login sfdx-url --sfdx-url-file authfile --alias devhub
+      - name:  'Authenticate Dev Hub'
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: devhub
 
       - name: 'Create packages'
         id: sfpowerscripts-build
         run: |
           sfp build --devhubalias devhub --diffcheck --branch ${GITHUB_REF#refs/heads/} --buildnumber ${GITHUB_RUN_ID}
-          
-      # Set package version installation key
-      # - uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKey@dxAtScale
-      #   with:
-      #     installationKey: ${{ secrets.CRM_PACKAGE_KEY }}
 
       - name: 'Promote package'
         id: sfpowerscripts-promote
         run: |
           sfp artifacts promote --targetdevhubusername devhub --artifactdir artifacts
 
-      # Publish artifacts
-      - uses: actions/upload-artifact@v4
+      - name: 'Publish artifacts'
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: artifacts
 
-      # Authenticate to npm
-      - uses: actions/setup-node@v4
+      - name: 'Authenticate to npm'
+        uses: actions/setup-node@v4
         with:
           registry-url: 'https://npm.pkg.github.com'
 
-      - name: Publish
+      - name: 'Publish'
         run: |
           sfp publish --artifactdir artifacts --npm --scope @${{ github.repository_owner }}  --gittag --pushgittag
         env:
