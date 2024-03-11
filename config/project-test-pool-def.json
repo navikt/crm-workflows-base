@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/flxbl-io/json-schemas/main/scratchorg-pool-definition.schema.json",
+  "tag": "test",
+  "maxAllocation": 2,
+  "expiry": 7,
+  "batchSize": 5,
+  "configFilePath": "config/project-scratch-def.json",
+  "relaxAllIPRanges": true,
+  "enableSourceTracking": true,
+  "retryOnFailure": true,
+  "succeedOnDeploymentErrors": true,
+  "installAll": true,
+  "fetchArtifacts": {
+    "npm": {
+      "scope": "navikt"
+    }
+  }
+}
