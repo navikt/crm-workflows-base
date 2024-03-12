@@ -8,8 +8,6 @@ jobs:
     permissions:
       contents: read
     steps:
-      # Check required permissions
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
       # Checkout source code
       - name: Checkout source code

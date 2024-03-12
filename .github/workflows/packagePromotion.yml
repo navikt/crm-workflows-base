@@ -15,7 +15,6 @@ jobs:
     name: Debug Information
     runs-on: ubuntu-latest
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
       - name: Print input values
         run: |
@@ -48,7 +47,6 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
       # Checkout source code
       - name: Checkout source code from master
@@ -82,7 +80,6 @@ jobs:
       pull-requests: write
     needs: promote-package
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
       # Checkout source code
       - name: Checkout source code from master
@@ -129,7 +126,6 @@ jobs:
       contents: write
     needs: promote-package
     steps:
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
       # Checkout source code
       - name: Checkout source code from master

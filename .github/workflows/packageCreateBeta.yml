@@ -15,8 +15,6 @@ jobs:
       betaVersionNumber: ${{ steps.package-version-create.outputs.betaVersionNumber }}
       codeCoverage: ${{ steps.package-version-create.outputs.codeCoverage }}
     steps:
-      # Check required permissions
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
 
       # Checkout source code
       - name: Checkout source code
@@ -76,8 +74,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      # Check required permissions
-      - uses: GitHubSecurityLab/actions-permissions/monitor@v1
       
       # Checkout source code
       - name: Checkout source code
