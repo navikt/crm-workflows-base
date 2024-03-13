@@ -1,0 +1,19 @@
+name: "Set Package Version Installation Key"
+description: "Set Installation key on package"
+inputs:
+  installationKey:
+    description: "Installation key for the package versions"
+    required: true
+  buildResultPath:
+    description: "Full path to buildResult.json"
+    required: false
+    default: "./buildResult.json"
+runs:
+  using: "composite"
+  steps:
+    - name: Set package version installation key
+      run: |
+        jq --raw-output '.packages[].versionId' ${{ inputs.buildResultPath }} | while read packageVersionId; do
+          sf package version update --package $packageVersionId --installation-key DydrNCvH
+        done
+      shell: bash

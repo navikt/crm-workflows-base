@@ -3,6 +3,8 @@ on:
     secrets:
       CRM_PROD_SFDX_URL:
         required: true
+      CRM_PACKAGE_KEY:
+        required: true
 
 jobs:
   quickbuild:
@@ -25,6 +27,11 @@ jobs:
         id: sfpowerscripts-build
         run: |
           sfp quickbuild --devhubalias devhub --diffcheck --buildnumber ${GITHUB_RUN_ID} --branch ${GITHUB_REF#refs/heads/}
+
+      - name: 'Set package key'
+        uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKeyFromBuildResult@dxAtScale
+        with:
+          installationKey: ${{secrets.CRM_PACKAGE_KEY}}
 
       - name: 'Publish artifacts'
         uses: actions/upload-artifact@v4
