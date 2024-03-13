@@ -28,10 +28,11 @@ jobs:
         run: |
           sfp quickbuild --devhubalias devhub --diffcheck --buildnumber ${GITHUB_RUN_ID} --branch ${GITHUB_REF#refs/heads/}
 
-      - name: 'Set package key'
-        uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKeyFromBuildResult@dxAtScale
-        with:
-          installationKey: ${{secrets.CRM_PACKAGE_KEY}}
+      # Removed due to issues with the rest of the pipelines
+      # - name: 'Set package key'
+      #   uses: navikt/crm-workflows-base/.github/actions/setPackageVersionInstallationKeyFromBuildResult@dxAtScale
+      #   with:
+      #     installationKey: ${{secrets.CRM_PACKAGE_KEY}}
 
       - name: 'Publish artifacts'
         uses: actions/upload-artifact@v4
