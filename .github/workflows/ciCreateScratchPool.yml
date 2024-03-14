@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/flxbl-io/sfops
     timeout-minutes: 720 #Set to Maximum Time out
+    permissions:
+      contents: read
+      packages: read
     steps:
       - uses: actions/checkout@v4
         with:
