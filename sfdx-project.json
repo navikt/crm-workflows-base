@@ -39,7 +39,7 @@
       "path": "force-app",
       "default": false,
       "package": "crm-workflows-dev",
-      "versionNumber": "0.1.0.NEXT"
+      "versionNumber": "0.17.0.NEXT"
     }
   ],
   "packageAliases": {
