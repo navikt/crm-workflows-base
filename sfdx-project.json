@@ -109,10 +109,6 @@
           "versionNumber": "0.4.0.1"
         },
         {
-          "package": "Salesforce.com CRM Dashboards",
-          "versionNumber": "1.0.0.1"
-        },
-        {
           "package": "crm-nks-innholdsbibliotek",
           "versionNumber": "0.19.0.1"
         },
