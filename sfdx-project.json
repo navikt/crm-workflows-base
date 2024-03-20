@@ -1,5 +1,4 @@
 {
-  "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "60.0",
   "packageDirectories": [
@@ -11,163 +10,159 @@
       "dependencies": [
         {
           "package": "crm-nks-base",
-          "version": "0.335.0.12"
+          "versionNumber": "0.335.0.12"
         },
         {
           "package": "crm-platform-email-scheduling",
-          "version": "1.7.0.2"
+          "versionNumber": "1.7.0.2"
         },
         {
           "package": "crm-arbeidsforhold",
-          "version": "0.292.0.1"
+          "versionNumber": "0.292.0.1"
         },
         {
           "package": "crm-nks-integration",
-          "version": "0.62.0.1"
+          "versionNumber": "0.62.0.1"
         },
         {
           "package": "crm-shared-timeline",
-          "version": "1.22.0.2"
+          "versionNumber": "1.22.0.2"
         },
         {
           "package": "crm-shared-base",
-          "version": "1.1.0.1"
+          "versionNumber": "1.1.0.1"
         },
         {
           "package": "crm-ips",
-          "version": "0.441.0.3"
+          "versionNumber": "0.441.0.3"
         },
         {
           "package": "crm-henvendelse",
-          "version": "0.119.0.3"
+          "versionNumber": "0.120.0.5"
         },
         {
           "package": "crm-journal-utilities",
-          "version": "0.26.0.14"
+          "versionNumber": "0.26.0.14"
         },
         {
           "package": "crm-sto",
-          "version": "1.130.0.1"
+          "versionNumber": "1.131.0.6"
         },
         {
           "package": "henvendelse-migrator",
-          "version": "0.22.0.3"
+          "versionNumber": "0.22.0.3"
         },
         {
           "package": "crm-platform-oppgave",
-          "version": "0.50.0.3"
+          "versionNumber": "0.51.0.2"
         },
         {
           "package": "crm-shared-user-notification",
-          "version": "0.23.0.1"
+          "versionNumber": "0.23.0.1"
         },
         {
           "package": "crm-avvikssytem",
-          "version": "0.7.0.14"
+          "versionNumber": "0.7.0.14"
         },
         {
           "package": "crm-shared-flowComponents",
-          "version": "0.4.0.3"
+          "versionNumber": "0.4.0.3"
         },
         {
           "package": "crm-hot-kurs",
-          "version": "1.61.0.1"
+          "versionNumber": "1.61.0.1"
         },
         {
           "package": "crm-arbeidsgiver-base",
-          "version": "1.404.0.1"
+          "versionNumber": "1.404.0.1"
         },
         {
           "package": "crm-platform-access-control",
-          "version": "0.125.0.2"
+          "versionNumber": "0.125.0.2"
         },
         {
           "package": "crm-platform-base",
-          "version": "0.218.0.5"
+          "versionNumber": "0.218.0.5"
         },
         {
           "package": "crm-platform-integration",
-          "version": "0.109.0.4"
+          "versionNumber": "0.109.0.4"
         },
         {
           "package": "crm-hot-tolk",
-          "version": "1.274.0.5"
+          "versionNumber": "1.274.0.5"
         },
         {
           "package": "crm-platform-reporting",
-          "version": "0.37.0.2"
+          "versionNumber": "0.37.0.2"
         },
         {
           "package": "crm-arbeidsgiver-integration",
-          "version": "1.101.0.2"
+          "versionNumber": "1.101.0.2"
         },
         {
           "package": "crm-community-base",
-          "version": "0.101.0.1"
+          "versionNumber": "0.102.0.3"
         },
         {
           "package": "crm-platform-admin",
-          "version": "0.4.0.1"
+          "versionNumber": "0.4.0.1"
         },
         {
           "package": "Salesforce.com CRM Dashboards",
-          "version": "1.0.0.1"
+          "versionNumber": "1.0.0.1"
         },
         {
           "package": "crm-nks-innholdsbibliotek",
-          "version": "0.19.0.1"
+          "versionNumber": "0.19.0.1"
         },
         {
           "package": "crm-arbeidsgiver-kontakt-oss",
-          "version": "1.10.0.1"
-        },
-        {
-          "package": "sfpower-scratchorg-pool",
-          "version": "2.0.0.1"
+          "versionNumber": "1.10.0.1"
         },
         {
           "package": "sfpowerscripts-artifact",
-          "version": "1.0.0.2"
+          "versionNumber": "1.0.0.2"
         },
         {
           "package": "crm-arbeidsgiver-innsyn",
-          "version": "0.13.0.1"
+          "versionNumber": "0.13.0.1"
         },
         {
           "package": "crm-sf-saf",
-          "version": "0.23.0.2"
+          "versionNumber": "0.23.0.2"
         },
         {
           "package": "crm-knowledge",
-          "version": "0.26.0.1"
+          "versionNumber": "0.26.0.1"
         },
         {
           "package": "crm-nks-chat",
-          "version": "0.23.0.2"
+          "versionNumber": "0.23.0.2"
         },
         {
           "package": "crm-nks-base-components",
-          "version": "0.45.0.3"
+          "versionNumber": "0.45.0.3"
         },
         {
           "package": "crm-arbiedsgiver-dialog",
-          "version": "0.41.0.1"
+          "versionNumber": "0.41.0.1"
         },
         {
           "package": "crm-henvendelse-base",
-          "version": "0.18.0.1"
+          "versionNumber": "0.18.0.1"
         },
         {
           "package": "crm-nav-dialog-kontor",
-          "version": "0.9.0.1"
+          "versionNumber": "0.9.0.1"
         },
         {
           "package": "crm-thread-view",
-          "version": "0.2.0.2"
+          "versionNumber": "0.2.0.2"
         },
         {
           "package": "crm-nks-survey",
-          "version": "0.10.0.2"
+          "versionNumber": "0.10.0.2"
         }
       ]
     }
@@ -200,7 +195,6 @@
     "crm-platform-admin": "0Ho2o0000008OT4CAM",
     "crm-nks-innholdsbibliotek": "0Ho7U000000blJJSAY",
     "crm-arbeidsgiver-kontakt-oss": "0Ho7U0000004CAkSAM",
-    "sfpower-scratchorg-pool": "0Ho7U0000004CAuSAM",
     "sfpowerscripts-artifact": "0Ho7U0000004CAzSAM",
     "crm-arbeidsgiver-innsyn": "0Ho7U0000004CB4SAM",
     "crm-sf-saf": "0Ho7U0000000001SAA",
