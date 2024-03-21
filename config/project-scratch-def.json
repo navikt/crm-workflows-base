@@ -18,11 +18,18 @@
         "Knowledge",
         "ProcessBuilder",
         "API",
-        "FieldService:1"
+        "FieldService:1",
+        "SurveyAdvancedFeatures"
     ],
     "country": "NO",
     "language": "en_US",
     "settings": {
+        "experienceBundleSettings": {
+            "enableExperienceBundleMetadata": true
+        },
+        "communitiesSettings": {
+            "enableNetworksEnabled": true
+        },
         "lightningExperienceSettings": {
             "enableS1DesktopEnabled": true
         },
@@ -30,7 +37,8 @@
             "enableTranslationWorkbench": true
         },
         "accountSettings": {
-            "enableAccountTeams": true
+            "enableAccountTeams": true,
+            "enableRelateContactToMultipleAccounts": true
         },
         "omniChannelSettings": {
             "enableOmniChannel": true
@@ -59,6 +67,10 @@
             "isGeoCodeSyncEnabled": false,
             "isLocationHistoryEnabled": false,
             "fieldServiceNotificationsOrgPref": true
+        },
+        "surveySettings": {
+            "enableSurvey": true,
+            "enableSurveyOwnerCanManageResponse": true
         }
     }
 }
