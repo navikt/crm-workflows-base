@@ -9,123 +9,131 @@
       "versionNumber": "0.1.0.NEXT",
       "dependencies": [
         {
-          "package": "crm-nks-base",
-          "versionNumber": "0.335.0.12"
-        },
-        {
           "package": "crm-platform-email-scheduling",
           "versionNumber": "1.7.0.2"
-        },
-        {
-          "package": "crm-arbeidsforhold",
-          "versionNumber": "0.292.0.1"
-        },
-        {
-          "package": "crm-nks-integration",
-          "versionNumber": "0.62.0.1"
-        },
-        {
-          "package": "crm-shared-timeline",
-          "versionNumber": "1.22.0.2"
-        },
-        {
-          "package": "crm-shared-base",
-          "versionNumber": "1.1.0.1"
-        },
-        {
-          "package": "crm-ips",
-          "versionNumber": "0.441.0.3"
-        },
-        {
-          "package": "crm-henvendelse",
-          "versionNumber": "0.120.0.5"
-        },
-        {
-          "package": "crm-journal-utilities",
-          "versionNumber": "0.26.0.14"
-        },
-        {
-          "package": "crm-sto",
-          "versionNumber": "1.131.0.6"
-        },
-        {
-          "package": "henvendelse-migrator",
-          "versionNumber": "0.22.0.3"
-        },
-        {
-          "package": "crm-platform-oppgave",
-          "versionNumber": "0.51.0.2"
-        },
-        {
-          "package": "crm-shared-user-notification",
-          "versionNumber": "0.23.0.1"
-        },
-        {
-          "package": "crm-avvikssytem",
-          "versionNumber": "0.7.0.14"
-        },
-        {
-          "package": "crm-shared-flowComponents",
-          "versionNumber": "0.4.0.3"
-        },
-        {
-          "package": "crm-hot-kurs",
-          "versionNumber": "1.61.0.1"
-        },
-        {
-          "package": "crm-arbeidsgiver-base",
-          "versionNumber": "1.404.0.1"
-        },
-        {
-          "package": "crm-platform-access-control",
-          "versionNumber": "0.125.0.2"
         },
         {
           "package": "crm-platform-base",
           "versionNumber": "0.218.0.5"
         },
         {
-          "package": "crm-platform-integration",
-          "versionNumber": "0.109.0.4"
+          "package": "crm-platform-admin",
+          "versionNumber": "0.4.0.1"
         },
         {
-          "package": "crm-hot-tolk",
-          "versionNumber": "1.274.0.5"
+          "package": "crm-platform-access-control",
+          "versionNumber": "0.125.0.2"
         },
         {
           "package": "crm-platform-reporting",
           "versionNumber": "0.37.0.2"
         },
         {
-          "package": "crm-arbeidsgiver-integration",
-          "versionNumber": "1.101.0.2"
+          "package": "crm-henvendelse-base",
+          "versionNumber": "0.18.0.1"
+        },
+        {
+          "package": "crm-platform-integration",
+          "versionNumber": "0.109.0.4"
         },
         {
           "package": "crm-community-base",
           "versionNumber": "0.102.0.3"
         },
         {
-          "package": "crm-platform-admin",
-          "versionNumber": "0.4.0.1"
+          "package": "crm-shared-base",
+          "versionNumber": "1.1.0.1"
         },
         {
-          "package": "crm-nks-innholdsbibliotek",
-          "versionNumber": "0.19.0.1"
+          "package": "crm-shared-flowComponents",
+          "versionNumber": "0.4.0.3"
+        },
+        {
+          "package": "crm-shared-user-notification",
+          "versionNumber": "0.23.0.1"
+        },
+        {
+          "package": "crm-thread-view",
+          "versionNumber": "0.2.0.2"
+        },
+        {
+          "package": "crm-shared-timeline",
+          "versionNumber": "1.22.0.2"
+        },
+        {
+          "package": "crm-journal-utilities",
+          "versionNumber": "0.26.0.14"
+        },
+        {
+          "package": "crm-platform-oppgave",
+          "versionNumber": "0.51.0.2"
+        },
+        {
+          "package": "crm-sf-saf",
+          "versionNumber": "0.23.0.2"
+        },
+        {
+          "package": "crm-henvendelse",
+          "versionNumber": "0.120.0.5"
+        },
+        {
+          "package": "henvendelse-migrator",
+          "versionNumber": "0.22.0.3"
+        },
+        {
+          "package": "crm-arbeidsgiver-base",
+          "versionNumber": "1.404.0.1"
+        },
+        {
+          "package": "crm-arbeidsgiver-integration",
+          "versionNumber": "1.101.0.2"
         },
         {
           "package": "crm-arbeidsgiver-kontakt-oss",
           "versionNumber": "1.10.0.1"
         },
         {
-          "package": "sfpowerscripts-artifact",
-          "versionNumber": "1.0.0.2"
-        },
-        {
           "package": "crm-arbeidsgiver-innsyn",
           "versionNumber": "0.13.0.1"
         },
         {
-          "package": "crm-sf-saf",
+          "package": "crm-arbiedsgiver-dialog",
+          "versionNumber": "0.41.0.1"
+        },
+        {
+          "package": "crm-arbeidsforhold",
+          "versionNumber": "0.292.0.1"
+        },
+        {
+          "package": "crm-hot-kurs",
+          "versionNumber": "1.61.0.1"
+        },
+        {
+          "package": "crm-hot-tolk",
+          "versionNumber": "1.274.0.5"
+        },
+        {
+          "package": "crm-nks-survey",
+          "versionNumber": "0.10.0.2"
+        },
+        {
+          "package": "crm-nks-innholdsbibliotek",
+          "versionNumber": "0.19.0.1"
+        },
+        {
+          "package": "crm-nks-base-components",
+          "versionNumber": "0.45.0.3"
+        },
+        {
+          "package": "crm-nks-integration",
+          "versionNumber": "0.62.0.1"
+        },
+        {
+          "package": "crm-nks-base",
+          "versionNumber": "0.335.0.12"
+        },
+        {
+          "package": "crm-nks-chat",
           "versionNumber": "0.23.0.2"
         },
         {
@@ -133,32 +141,20 @@
           "versionNumber": "0.26.0.1"
         },
         {
-          "package": "crm-nks-chat",
-          "versionNumber": "0.23.0.2"
-        },
-        {
-          "package": "crm-nks-base-components",
-          "versionNumber": "0.45.0.3"
-        },
-        {
-          "package": "crm-arbiedsgiver-dialog",
-          "versionNumber": "0.41.0.1"
-        },
-        {
-          "package": "crm-henvendelse-base",
-          "versionNumber": "0.18.0.1"
+          "package": "crm-sto",
+          "versionNumber": "1.131.0.6"
         },
         {
           "package": "crm-nav-dialog-kontor",
           "versionNumber": "0.9.0.1"
         },
         {
-          "package": "crm-thread-view",
-          "versionNumber": "0.2.0.2"
+          "package": "crm-avvikssytem",
+          "versionNumber": "0.7.0.14"
         },
         {
-          "package": "crm-nks-survey",
-          "versionNumber": "0.10.0.2"
+          "package": "crm-ips",
+          "versionNumber": "0.441.0.3"
         }
       ]
     }
