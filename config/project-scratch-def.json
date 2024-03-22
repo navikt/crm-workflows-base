@@ -1,63 +1,45 @@
 {
     "orgName": "crm-workflows-base",
     "edition": "Enterprise",
-    "release": "Current",
     "adminEmail": "fakeemail@nav.no.scratchorg",
     "features": [
-        "Sites",
-        "ForceComPlatform",
+        "AddCustomApps:30",
+        "API",
         "Communities",
-        "CustomerCommunity",
-        "CustomerCommunityPlus",
         "ContactsToMultipleAccounts",
-        "PersonAccounts",
-        "LiveAgent",
+        "FieldService:1",
+        "ForceComPlatform",
+        "Knowledge",
         "LightningServiceConsole",
+        "LiveAgent",
+        "PersonAccounts",
+        "PlatformCache",
+        "ProcessBuilder",
         "ServiceCloud",
         "ServiceUser",
-        "Knowledge",
-        "ProcessBuilder",
-        "API",
-        "FieldService:1",
+        "Sites",
         "SurveyAdvancedFeatures"
     ],
     "country": "NO",
     "language": "en_US",
     "settings": {
-        "experienceBundleSettings": {
-            "enableExperienceBundleMetadata": true
-        },
-        "communitiesSettings": {
-            "enableNetworksEnabled": true
-        },
-        "lightningExperienceSettings": {
-            "enableS1DesktopEnabled": true
-        },
-        "languageSettings": {
-            "enableTranslationWorkbench": true
-        },
         "accountSettings": {
             "enableAccountTeams": true,
             "enableRelateContactToMultipleAccounts": true
         },
-        "omniChannelSettings": {
-            "enableOmniChannel": true
+        "chatterSettings": {
+            "enableChatter": true,
+            "enableChatterEmoticons": true,
+            "enableFeedsRichText": true
         },
-        "knowledgeSettings": {
-            "enableKnowledge": true,
-            "enableLightningKnowledge": true
-        },
-        "liveAgentSettings": {
-            "enableLiveAgent": true
+        "communitiesSettings": {
+            "enableNetworksEnabled": true
         },
         "emailAdministrationSettings": {
             "enableEnhancedEmailEnabled": true
         },
-        "nameSettings": {
-            "enableMiddleName": true
-        },
-        "pathAssistantSettings": {
-            "pathAssistantEnabled": true
+        "experienceBundleSettings": {
+            "enableExperienceBundleMetadata": true
         },
         "fieldServiceSettings": {
             "fieldServiceOrgPref": true,
@@ -68,9 +50,49 @@
             "isLocationHistoryEnabled": false,
             "fieldServiceNotificationsOrgPref": true
         },
+        "knowledgeSettings": {
+            "enableKnowledge": true,
+            "enableLightningKnowledge": true
+        },
+        "languageSettings": {
+            "enableTranslationWorkbench": true
+        },
+        "lightningExperienceSettings": {
+            "enableS1DesktopEnabled": true
+        },
+        "liveAgentSettings": {
+            "enableLiveAgent": true
+        },
+        "nameSettings": {
+            "enableMiddleName": true
+        },
+        "omniChannelSettings": {
+            "enableOmniChannel": true
+        },
+        "pathAssistantSettings": {
+            "pathAssistantEnabled": true
+        },
+        "securitySettings": {
+            "sessionSettings": {
+                "forceRelogin": false
+            },
+            "enableAdminLoginAsAnyUser": true
+        },
         "surveySettings": {
             "enableSurvey": true,
-            "enableSurveyOwnerCanManageResponse": true
+            "enableSurveyOwnerCanManageResponse": false
+        },
+        "userManagementSettings": {
+            "enableEnhancedConcealPersonalInfo": true,
+            "enableEnhancedPermsetMgmt": true,
+            "enableEnhancedProfileMgmt": true,
+            "enableNewProfileUI": true,
+            "enableProfileFiltering": true,
+            "enableScrambleUserData": false,
+            "enableUserSelfDeactivate": false,
+            "permsetsInFieldCreation": true,
+            "psaExpirationUIEnabled": true,
+            "restrictedProfileCloning": false
         }
     }
 }
