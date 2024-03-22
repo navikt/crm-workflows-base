@@ -7,15 +7,14 @@ on:
         description: "Commit Id from where the pools should be created"
         required: false
         default: "dxAtScale"
-  # schedule:
-  #   - cron: '0 14 * * *'
+  schedule:
+    - cron: '0 21 * * *'
 
 jobs:
   pool:
     strategy:
       matrix:
-        # poolConfigPath: ["config/project-dev-pool-def.json", "config/project-ci-pool-def.json", "config/project-test-pool-def.json"]
-        poolConfigPath: ["config/project-test-pool-def.json"]
+        poolConfigPath: ["config/project-dev-pool-def.json", "config/project-ci-pool-def.json"]
     uses: navikt/crm-workflows-base/.github/workflows/ciCreateScratchPool.yml@dxAtScale
     with:
       gitRef: ${{ inputs.gitRef }}
