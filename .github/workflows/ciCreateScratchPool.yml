@@ -41,12 +41,23 @@ jobs:
       - name: 'Prepare a pool of scratch orgs'
         run: |
           # export SFPOWERSCRIPTS_ARTIFACT_PACKAGE=04t7U000000Y3S3QAK
+
+          #Create key list
           packageNames=$(jq --raw-output '.packageAliases | keys | join(" ")' sfdx-project.json)
           keys=""
           for p in $packageNames; do
             keys+="$p:${{secrets.CRM_PACKAGE_KEY}} "
           done
 
+          #Prepare Pool
           sfp pool prepare --poolconfig ${{ inputs.poolConfigPath }} --targetdevhubusername devhub --keys "$keys"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+       # Upload Flxbl logs
+      - name: 'Publish logs'
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: .sfpowerscripts
+          retention-days: 1
