@@ -7,7 +7,10 @@
         "API",
         "Communities",
         "ContactsToMultipleAccounts",
-        "FieldService:1",
+        "FieldService:5",
+        "FieldServiceDispatcherUser:5",
+        "FieldServiceMobileUser:5",
+        "FieldServiceSchedulingUser:5",
         "ForceComPlatform",
         "Knowledge",
         "LightningServiceConsole",
@@ -33,10 +36,15 @@
             "enableFeedsRichText": true
         },
         "communitiesSettings": {
-            "enableNetworksEnabled": true
+            "enableNetworksEnabled": true,
+            "enableOotbProfExtUserOpsEnable": true
         },
         "emailAdministrationSettings": {
             "enableEnhancedEmailEnabled": true
+        },
+        "entitlementSettings": {
+            "enableEntitlements": true,
+            "enableEntitlementVersioning": true
         },
         "experienceBundleSettings": {
             "enableExperienceBundleMetadata": true
@@ -48,7 +56,10 @@
             "enableWorkOrders": true,
             "isGeoCodeSyncEnabled": false,
             "isLocationHistoryEnabled": false,
-            "fieldServiceNotificationsOrgPref": true
+            "fieldServiceNotificationsOrgPref": true,
+            "serviceAppointmentsDueDateOffsetOrgValue": 7,
+            "workOrderLineItemSearchFields": "Subject",
+            "workOrderSearchFields": "Subject"
         },
         "knowledgeSettings": {
             "enableKnowledge": true,
@@ -67,14 +78,17 @@
             "enableMiddleName": true
         },
         "omniChannelSettings": {
-            "enableOmniChannel": true
+            "enableOmniChannel": true,
+            "enableOmniSkillsRouting": true,
+            "enableOmniSecondaryRoutingPriority": true
         },
         "pathAssistantSettings": {
             "pathAssistantEnabled": true
         },
         "securitySettings": {
             "sessionSettings": {
-                "forceRelogin": false
+                "forceRelogin": false,
+                "lockerServiceNext": true
             },
             "enableAdminLoginAsAnyUser": true
         },
