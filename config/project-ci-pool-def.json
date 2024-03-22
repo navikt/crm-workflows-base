@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/flxbl-io/json-schemas/main/scratchorg-pool-definition.schema.json",
   "tag": "ci",
-  "maxAllocation": 2,
+  "maxAllocation": 10,
   "expiry": 1,
   "batchSize": 5,
   "configFilePath": "config/project-scratch-def.json",
