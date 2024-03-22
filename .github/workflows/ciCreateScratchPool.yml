@@ -1,4 +1,4 @@
-name: 'Replenish DEV Pools - Auto Triggered'
+name: 'Create Scratch Pool'
 
 on:
   workflow_dispatch:
