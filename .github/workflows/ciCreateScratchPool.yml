@@ -65,4 +65,5 @@ jobs:
         with:
           name: "logs_${{ env.poolTag }}"
           path: .sfpowerscripts
+          if-no-files-found: ignore
           retention-days: 1
