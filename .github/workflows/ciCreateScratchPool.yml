@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/flxbl-io/sfops
     timeout-minutes: 720 #Set to Maximum Time out
+    env:
+      poolTag: ""
     permissions:
       contents: read
       packages: read
@@ -43,6 +45,8 @@ jobs:
         run: |
           # export SFPOWERSCRIPTS_ARTIFACT_PACKAGE=04t7U000000Y3S3QAK
 
+          echo "poolTag=$(jq --raw-output '.tag' ${{inputs.poolConfigPath}})" >> $GITHUB_ENV
+
           #Create key list
           packageNames=$(jq --raw-output '.packageAliases | keys | join(" ")' sfdx-project.json)
           keys=""
@@ -59,6 +63,6 @@ jobs:
       - name: 'Publish logs'
         uses: actions/upload-artifact@v4
         with:
-          name: logs
+          name: "logs_${{ env.poolTag }}"
           path: .sfpowerscripts
           retention-days: 1
