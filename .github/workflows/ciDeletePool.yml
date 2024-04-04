@@ -1,0 +1,90 @@
+name: 'Delete Pool - Auto Triggered'
+
+on:
+  workflow_call:
+    inputs:
+      poolTag:
+        description: "Taggen til poolet som skal slettes"
+        type: string
+      deleteJobType:
+        description: "Gyldige verdier: allscratchorgs, inprogressonly, orphans, unassigned"
+        type: string
+    secrets:
+      CRM_PROD_SFDX_URL:
+        required: true
+      
+  workflow_dispatch:
+    inputs:
+      poolTag:
+        description: "Taggen til poolet som skal slettes"
+        required: true
+        type: string
+      deleteJobType:
+        description: "Hva slags slettejobb som skal gjøres"
+        type: choice
+        options:
+          - allscratchorgs
+          - inprogressonly
+          - orphans
+          - unassigned
+        required: true
+
+jobs:
+  delete:
+    name: 'Replenish Pool'
+    runs-on: ubuntu-latest
+    container: ghcr.io/flxbl-io/sfops
+    timeout-minutes: 720 #Set to Maximum Time out
+    steps:
+      - name:  'Authenticate Dev Hub'
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: devhub
+
+      - name: 'Prepare a pool of scratch orgs'
+        continue-on-error: true
+        run: |
+          command="sfp pool delete --targetdevhubusername devhub --tag ${{ inputs.poolTag }}"
+          message="Trying to delete "
+
+          case ${{ inputs.deleteJobType }} in
+            'allscratchorgs')
+              if [ ${{ inputs.poolTag }} == "dev" ]; then;
+                echo "::error title="Cannot delete all dev scratch orgs::Cannot delete all scratch orgs in dev pool through action. This must be done manually"
+                exit 1
+              fi
+              message+="all scratch orgs."
+              command+=" --allscratchorgs"
+              ;;
+
+            'inprogressonly')
+              message+="in progress scratch orgs."
+              command+=" --inprogressonly"
+              ;;
+
+            'orphans')
+              message+="orphaned scratch orgs."
+              command+=" --orphans"
+              ;;
+
+            'unassigned')
+              echo "unnassigned scratch orgs."
+              ;;
+
+            *)
+              echo "::error title=Missing input::deleteJobType did not match any of the legal input values. deleteJobType => ${{ inputs.deleteJobType }}"
+              exit 1
+          esac
+
+          eval $command
+
+      # Upload Flxbl logs
+      - name: 'Publish logs'
+        uses: actions/upload-artifact@v4
+        with:
+          name: "logs"
+          path: .sfpowerscripts
+          if-no-files-found: ignore
+          retention-days: 1
+          
