@@ -17,7 +17,7 @@ jobs:
         poolConfigPath: ["config/project-dev-pool-def.json", "config/project-ci-pool-def.json"]
     uses: navikt/crm-workflows-base/.github/workflows/ciCreateScratchPool.yml@dxAtScale
     with:
-      gitRef: ${{ inputs.gitRef }}
+      gitRef: ${{ inputs.gitRef || 'dxAtScale' }}
       poolConfigPath: ${{ matrix.poolConfigPath }}
     permissions:
       contents: read
