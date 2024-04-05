@@ -31,7 +31,7 @@ on:
 
 jobs:
   delete:
-    name: 'Replenish Pool'
+    name: 'Delete Pool'
     runs-on: ubuntu-latest
     container: ghcr.io/flxbl-io/sfops
     timeout-minutes: 720 #Set to Maximum Time out
