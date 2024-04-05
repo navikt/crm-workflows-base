@@ -45,22 +45,25 @@ jobs:
       - name: 'Prepare a pool of scratch orgs'
         continue-on-error: true
         run: |
+          poolTag="${{ inputs.poolTag }}"
+          deleteJobType="${{ inputs.deleteJobType }}"
           command="sfp pool delete --targetdevhubusername devhub"
           message="Trying to delete "
 
-          if [ -z "${{ inputs.poolTag }}" ]; then;
+          if [ -z "$poolTag" ]; then
             echo "No tag provided"
           else
-            echo "Run delete jobs on the pool ${{ inputs.poolTag }}"
-            command+=" --tag ${{ inputs.poolTag }}"
+            echo "Run delete jobs on the pool $poolTag"
+            command+=" --tag $poolTag"
           fi
 
-          case ${{ inputs.deleteJobType }} in
+          case "$deleteJobType" in
             'allscratchorgs')
-              if [ ${{ inputs.poolTag }} == "dev" ]; then;
-                echo "::error title="Cannot delete all dev scratch orgs::Cannot delete all scratch orgs in dev pool through action. This must be done manually"
+              if [[ -z "$poolTag" || "$poolTag" == "dev" ]]; then
+                echo "::error title=Cannot delete all scratch orgs::Cannot delete all scratch orgs in dev pool through action. This must be done manually"
                 exit 1
               fi
+
               message+="all scratch orgs."
               command+=" --allscratchorgs"
               ;;
@@ -80,10 +83,10 @@ jobs:
               ;;
 
             *)
-              echo "::error title=Missing input::deleteJobType did not match any of the legal input values. deleteJobType => ${{ inputs.deleteJobType }}"
+              echo "::error title=Missing input::deleteJobType did not match any of the legal input values. deleteJobType => $deleteJobType"
               exit 1
           esac
-
+          echo $command
           eval $command
 
       # Upload Flxbl logs
