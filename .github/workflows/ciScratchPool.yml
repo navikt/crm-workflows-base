@@ -36,6 +36,7 @@ jobs:
       CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
 
   createPool:
+    if: ${{ always() }}
     needs: [clearCiPool, cleanupDevPool]
     strategy:
       matrix:
@@ -50,6 +51,7 @@ jobs:
     secrets: inherit
 
   deleteOrphans:
+    if: ${{ always() }}
     needs: createPool
     uses: navikt/crm-workflows-base/.github/workflows/ciDeletePool.yml@master
     with:
