@@ -17,7 +17,27 @@ on:
     - cron: '15 2 * * *' # At 02:15.
 
 jobs:
-  pool:
+  clearCiPool:
+    if: github.event.schedule == '15 2 * * *'
+    uses: navikt/crm-workflows-base/.github/workflows/ciDeletePool.yml@master
+    with:
+      poolTag: 'ci'
+      deleteJobType: 'allscratchorgs'
+    secrets:
+      CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
+
+  cleanupDevPool:
+    if: github.event.schedule == '15 2 * * *'
+    uses: navikt/crm-workflows-base/.github/workflows/ciDeletePool.yml@master
+    with:
+      poolTag: 'dev'
+      deleteJobType: 'unassigned'
+    secrets:
+      CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
+
+  createPool:
+    if: ${{ always() }}
+    needs: [clearCiPool, cleanupDevPool]
     strategy:
       matrix:
         poolConfigPath: ["config/project-dev-pool-def.json", "config/project-ci-pool-def.json"]
@@ -29,3 +49,12 @@ jobs:
       contents: read
       packages: read
     secrets: inherit
+
+  deleteOrphans:
+    if: ${{ always() }}
+    needs: createPool
+    uses: navikt/crm-workflows-base/.github/workflows/ciDeletePool.yml@master
+    with:
+      deleteJobType: 'orphans'
+    secrets:
+      CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
