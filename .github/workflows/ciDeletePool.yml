@@ -1,4 +1,4 @@
-name: 'Delete Pool - Auto Triggered'
+name: 'Delete Pool'
 
 on:
   workflow_call:
