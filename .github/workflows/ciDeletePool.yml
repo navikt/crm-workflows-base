@@ -17,7 +17,7 @@ on:
     inputs:
       poolTag:
         description: "Taggen til poolet som skal slettes"
-        required: true
+        required: false
         type: string
       deleteJobType:
         description: "Hva slags slettejobb som skal gjøres"
@@ -45,8 +45,15 @@ jobs:
       - name: 'Prepare a pool of scratch orgs'
         continue-on-error: true
         run: |
-          command="sfp pool delete --targetdevhubusername devhub --tag ${{ inputs.poolTag }}"
+          command="sfp pool delete --targetdevhubusername devhub"
           message="Trying to delete "
+
+          if [ -z "${{ inputs.poolTag }}" ]; then;
+            echo "No tag provided"
+          else
+            echo "Run delete jobs on the pool ${{ inputs.poolTag }}"
+            command+=" --tag ${{ inputs.poolTag }}"
+          fi
 
           case ${{ inputs.deleteJobType }} in
             'allscratchorgs')
@@ -83,7 +90,7 @@ jobs:
       - name: 'Publish logs'
         uses: actions/upload-artifact@v4
         with:
-          name: "logs"
+          name: "deleteLog_${{ inputs.deleteJobType }}_${{ inputs.poolTag }}"
           path: .sfpowerscripts
           if-no-files-found: ignore
           retention-days: 1
