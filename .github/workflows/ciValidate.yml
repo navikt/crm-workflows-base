@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.gitRef }}
-          fetch-depth: 0
+          fetch-depth: '0'
       - run: echo $(ls -a)
           
 
@@ -48,6 +48,7 @@ jobs:
       - name: 'Verify prettier'
         run: |
           echo $(ls -a)
+          git --version
           #Find diff
           DIFFED_FILES_TO_LINT=$(git diff --name-only HEAD~ -- *.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml})
           npx prettier $DIFFED_FILES_TO_LINT --check
