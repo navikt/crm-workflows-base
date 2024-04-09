@@ -16,12 +16,17 @@ jobs:
     name: Validate Pool
     runs-on: ubuntu-latest
     container: ghcr.io/flxbl-io/sfops
+    defaults:
+      run:
+        shell: 'bash'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.gitRef }}
           fetch-depth: 0
+      - run: echo $(ls)
+          
 
       - name:  'Authenticate Dev Hub'
         uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
@@ -37,10 +42,12 @@ jobs:
 
       - name: 'Install dev dependencies'
         run: |
+          echo $(ls)
           npm install -D
 
       - name: 'Verify prettier'
         run: |
+          echo $(ls)
           #Find diff
           DIFFED_FILES_TO_LINT=$(git diff --name-only HEAD~ -- *.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml})
           npx prettier $DIFFED_FILES_TO_LINT --check
