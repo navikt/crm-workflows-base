@@ -31,6 +31,7 @@ jobs:
           git config --global user.email "<>"
           git config --global user.name "GitHub Action"
           echo $GITHUB_WORKSPACE
+          echo $GIT_DIR
           echo $(pwd)
 
       - name:  'Authenticate Dev Hub'
@@ -54,9 +55,11 @@ jobs:
         run: |
           echo $(ls -a)
           git --version
-          echo $(pwd)
           echo $GITHUB_WORKSPACE
+          echo $GIT_DIR
+          echo $(pwd)
           echo $(ls .git/refs/heads)
+          echo $(git status)
           #Find diff
           DIFFED_FILES_TO_LINT=$(git diff --name-only origin/HEAD~ -- *.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml})
           npx prettier $DIFFED_FILES_TO_LINT --check
