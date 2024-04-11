@@ -30,7 +30,8 @@ jobs:
         run: |
           git config --global user.email "<>"
           git config --global user.name "GitHub Action"
-          echo pwd
+          echo $GITHUB_WORKSPACE
+          echo $(pwd)
 
       - name:  'Authenticate Dev Hub'
         uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
@@ -53,7 +54,8 @@ jobs:
         run: |
           echo $(ls -a)
           git --version
-          echo pwd
+          echo $(pwd)
+          echo $GITHUB_WORKSPACE
           echo $(ls .git/refs/heads)
           #Find diff
           DIFFED_FILES_TO_LINT=$(git diff --name-only origin/HEAD~ -- *.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml})
