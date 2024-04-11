@@ -31,9 +31,6 @@ jobs:
           git config --global user.email "<>"
           git config --global user.name "GitHub Action"
           git config --system --add safe.directory $GITHUB_WORKSPACE
-          echo "GITHUB_WORKSPACE $GITHUB_WORKSPACE"
-          echo "GIT_DIR $GIT_DIR"
-          echo "pwd $(pwd)"
 
       - name:  'Authenticate Dev Hub'
         uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
@@ -54,15 +51,8 @@ jobs:
 
       - name: 'Verify prettier'
         run: |
-          echo $(ls -a)
-          git --version
-          echo $GITHUB_WORKSPACE
-          echo $GIT_DIR
-          echo $(pwd)
-          echo $(ls .git/refs/heads)
-          echo "status $(git status)"
           #Find diff
-          DIFFED_FILES_TO_LINT=$(git diff --name-only origin/HEAD~ -- *.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml})
+          DIFFED_FILES_TO_LINT=$(git diff --name-only HEAD~ -- *.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml})
           npx prettier $DIFFED_FILES_TO_LINT --check
 
           # Start the language server for improved parsing performance,
