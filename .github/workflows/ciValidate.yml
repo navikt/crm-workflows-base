@@ -30,6 +30,7 @@ jobs:
         run: |
           git config --global user.email "<>"
           git config --global user.name "GitHub Action"
+          git config --system --add safe.directory $GITHUB_WORKSPACE
           echo "GITHUB_WORKSPACE $GITHUB_WORKSPACE"
           echo "GIT_DIR $GIT_DIR"
           echo "pwd $(pwd)"
