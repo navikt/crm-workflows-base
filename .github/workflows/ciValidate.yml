@@ -25,7 +25,6 @@ jobs:
         with:
           ref: ${{ github.event.inputs.gitRef }}
           fetch-depth: '0'
-      - run: echo $(ls -a)
       - name: 'Set Git Config'
         run: |
           git config --global user.email "<>"
@@ -44,10 +43,8 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           cache: "npm"
 
-      # - name: 'Install dev dependencies'
-      #   run: |
-      #     echo $(ls -a)
-      #     npm install -D
+      - name: 'Install dev dependencies'
+        run: npm install -D
 
       - name: 'Verify prettier'
         run: |
