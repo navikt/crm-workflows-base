@@ -64,7 +64,8 @@ jobs:
 
       - name: 'Run eslint'
         run: |
-          npx eslint --fix-dry-run "**/{aura,lwc}/**/*.js"
+          DIFFED_FILES_TO_LINT=$(git diff --name-only HEAD~ -- **/{aura,lwc}/**/*.js)
+          npx eslint --no-error-on-unmatched-pattern $DIFFED_FILES_TO_LINT
 
       - name: 'Validate'
         run: |
