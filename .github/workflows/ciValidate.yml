@@ -46,11 +46,6 @@ jobs:
       - name: 'Install dev dependencies'
         run: npm install -D
 
-      - name: 'Get diff sf file names'
-        id: getDiff
-        run: |
-          echo "diffedSfFiles=$(git diff --name-only HEAD~ -- **/*.{cls,cmp,component,css,html,js,json,page,trigger,xml})" >> $GITHUB_OUTPUT
-
       - name: 'Verify prettier'
         run: |
           #Find diff
@@ -72,11 +67,15 @@ jobs:
           DIFFED_FILES_TO_LINT=$(git diff --name-only HEAD~ -- **/{aura,lwc}/**/*.js)
           npx eslint --no-error-on-unmatched-pattern $DIFFED_FILES_TO_LINT
 
-      
+      - name: 'Get diff sf file names'
+        id: getDiff
+        run: |
+          echo "diffedSfFiles=$(git diff --name-only HEAD~ -- **/*.{cls,cmp,component,css,html,js,json,page,trigger,xml})" >> $GITHUB_OUTPUT
 
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
         uses: forcedotcom/run-code-analyzer@v1
+        if: steps.getDiff.outputs.diffedSfFiles != ''
         with:
           run-command: run
           run-arguments: --normalize-severity --target ${{ steps.getDiff.outputs.diffedSfFiles }} --outfile results.html
