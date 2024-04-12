@@ -62,6 +62,10 @@ jobs:
           # # Clean up the language server
           # stop-apex-server
 
+      - name: 'Run eslint'
+        run: |
+          npx eslint --fix-dry-run "**/{aura,lwc}/**/*.js"
+
       - name: 'Validate'
         run: |
           # Create package key string for use in validate
