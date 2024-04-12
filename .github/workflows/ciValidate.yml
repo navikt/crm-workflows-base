@@ -67,6 +67,21 @@ jobs:
           DIFFED_FILES_TO_LINT=$(git diff --name-only HEAD~ -- **/{aura,lwc}/**/*.js)
           npx eslint --no-error-on-unmatched-pattern $DIFFED_FILES_TO_LINT
 
+      - name: Run Salesforce Code Analyzer
+        id: run-code-analyzer
+        uses: forcedotcom/run-code-analyzer@v1
+        with:
+          run-command: run
+          run-arguments: --normalize-severity --target . --outfile results.html
+          results-artifact-name: salesforce-code-analyzer-results
+
+      - name: Check the Salesforce Code Analyzer outputs to determine whether to fail
+        if: |
+          steps.run-code-analyzer.outputs.exit-code > 0 ||
+          steps.run-code-analyzer.outputs.num-sev1-violations > 0 ||
+          steps.run-code-analyzer.outputs.num-violations > 10
+        run: exit 1
+
       - name: 'Validate'
         run: |
           # Create package key string for use in validate
