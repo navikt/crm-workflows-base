@@ -1,3 +1,6 @@
-.DS_Store
+# Salesforce cli caches
 .sf
 .sfdx
+
+# Dependency directories
+node_modules

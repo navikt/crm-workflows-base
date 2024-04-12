@@ -1,0 +1,7 @@
+# List files or directories below to ignore them when running prettier
+# More information: https://prettier.io/docs/en/ignore.html
+# By default prettier ignores files in version control systems directories (".git", ".sl", ".svn" and ".hg") and node_modules (unless the --with-node-modules CLI option is specified).
+# Prettier will also follow rules specified in the ".gitignore" file if it exists in the same directory from which it is run.
+
+.husky
+package-lock.json

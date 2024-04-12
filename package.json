@@ -1,0 +1,12 @@
+{
+  "name": "crm-workflows-base",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "prettier:write": "prettier --write \"**/*.{css,html,js,json,md,xml,yaml,yml}\"",
+    "prettier:check": "prettier --check \"**/*.{css,html,js,json,md,xml,yaml,yml}\""
+  },
+  "devDependencies": {
+    "prettier": "3.1.0"
+  }
+}
