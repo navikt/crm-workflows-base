@@ -41,7 +41,6 @@ jobs:
         env:
           eslintConfigLocker: '0.21.4'
           eslintPluginLwcVersion: '1.1.2'
-          pluginXmlVersion: '3.2.2'
           eslintConfigLwcVersion: '3.2.3'
           eslintPluginAuraVersion: '2.0.0'
           eslintPluginLightningVersion: '1.0.0'
@@ -52,9 +51,10 @@ jobs:
           eslintPluginJestVersion: '27.6.0'
           prettierVersion: '3.1.0'
           prettierPluginApexVersion: '2.0.1'
+          pluginXmlVersion: '3.2.2'
 
         run: |
-          npm install --save-dev --save-exact @locker/eslint-config-locker@${{env.eslintConfigLocker}} @lwc/eslint-plugin-lwc@${{env.eslintConfigLwcVersion}} @salesforce/eslint-config-lwc@${{env.eslintConfigLwcVersion}} @salesforce/eslint-plugin-aura@${{env.eslintPluginAuraVersion}} @salesforce/eslint-plugin-lightning@${{env.eslintPluginLightningVersion}} @salesforce/sfdx-lwc-jest@${{env.sfdxLwcJestVersion}} eslint@${{env.eslintVersion}} eslint-config-prettier@${{env.eslintConfigPrettierVersion}} eslint-plugin-import@${{env.eslintPluginImportVersion}} eslint-plugin-jest@${{env.eslintPluginJestVersion}} prettier@${{env.prettierVersion}} prettier-plugin-apex@${{env.prettierPluginApexVersion}} @prettier/plugin-xml@${{env.pluginXmlVersion}}
+          npm install --save-dev --save-exact @locker/eslint-config-locker@${{env.eslintConfigLocker}} @lwc/eslint-plugin-lwc@${{env.eslintPluginLwcVersion}} @salesforce/eslint-config-lwc@${{env.eslintConfigLwcVersion}} @salesforce/eslint-plugin-aura@${{env.eslintPluginAuraVersion}} @salesforce/eslint-plugin-lightning@${{env.eslintPluginLightningVersion}} @salesforce/sfdx-lwc-jest@${{env.sfdxLwcJestVersion}} eslint@${{env.eslintVersion}} eslint-config-prettier@${{env.eslintConfigPrettierVersion}} eslint-plugin-import@${{env.eslintPluginImportVersion}} eslint-plugin-jest@${{env.eslintPluginJestVersion}} prettier@${{env.prettierVersion}} prettier-plugin-apex@${{env.prettierPluginApexVersion}} @prettier/plugin-xml@${{env.pluginXmlVersion}}
 
       - name: 'Verify prettier'
         run: |
