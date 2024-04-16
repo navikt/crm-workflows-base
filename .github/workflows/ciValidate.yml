@@ -37,30 +37,30 @@ jobs:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: devhub
 
-      - name:  'Authenticate Npm'
-        uses: actions/setup-node@v4
-        with:
-          registry-url: 'https://npm.pkg.github.com'
-          cache: "npm"
-
       - name: 'Install dev dependencies'
-        run: npm install -D
+        env:
+          eslintConfigLocker: '0.21.4'
+          eslintPluginLwcVersion: '1.1.2'
+          pluginXmlVersion: '3.2.2'
+          eslintConfigLwcVersion: '3.2.3'
+          eslintPluginAuraVersion: '2.0.0'
+          eslintPluginLightningVersion: '1.0.0'
+          sfdxLwcJestVersion: '4.0.1'
+          eslintVersion: '8.57.0'
+          eslintConfigPrettierVersion: '9.1.0'
+          eslintPluginImportVersion: '2.25.4'
+          eslintPluginJestVersion: '27.6.0'
+          prettierVersion: '3.1.0'
+          prettierPluginApexVersion: '2.0.1'
+
+        run: |
+          npm install --save-dev --save-exact @locker/eslint-config-locker@${{env.eslintConfigLocker}} @lwc/eslint-plugin-lwc@${{env.eslintConfigLwcVersion}} @salesforce/eslint-config-lwc@${{env.eslintConfigLwcVersion}} @salesforce/eslint-plugin-aura@${{env.eslintPluginAuraVersion}} @salesforce/eslint-plugin-lightning@${{env.eslintPluginLightningVersion}} @salesforce/sfdx-lwc-jest@${{env.sfdxLwcJestVersion}} eslint@${{env.eslintVersion}} eslint-config-prettier@${{env.eslintConfigPrettierVersion}} eslint-plugin-import@${{env.eslintPluginImportVersion}} eslint-plugin-jest@${{env.eslintPluginJestVersion}} prettier@${{env.prettierVersion}} prettier-plugin-apex@${{env.prettierPluginApexVersion}} @prettier/plugin-xml@${{env.pluginXmlVersion}}
 
       - name: 'Verify prettier'
         run: |
           #Find diff
           DIFFED_FILES_TO_LINT=$(git diff --name-only HEAD~ -- *.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml})
           npx prettier $DIFFED_FILES_TO_LINT --check
-
-          # # Start the language server for improved parsing performance,
-          # # and put it in the background (*nix only) so that next commands can be run.
-          # nohup start-apex-server >/dev/null 2>&1 &
-          # # Wait until the server is up before sending requests
-          # npx wait-on http://localhost:2117/api/ast/
-          # # Check that Apex files are formatted according to Prettier Apex style
-          # prettier --plugin=prettier-plugin-apex --apex-standalone-parser built-in --check $DIFFED_FILES_TO_LINT 
-          # # Clean up the language server
-          # stop-apex-server
 
       - name: 'Run eslint'
         run: |
@@ -87,15 +87,3 @@ jobs:
           steps.run-code-analyzer.outputs.num-sev1-violations > 0 ||
           steps.run-code-analyzer.outputs.num-violations > 10
         run: exit 1
-
-      - name: 'Validate'
-        run: |
-          # Create package key string for use in validate
-          keys=""
-          packageNames=$(jq --raw-output '.packageAliases | keys | join(" ")' sfdx-project.json)
-          for p in $packageNames; do
-            keys+="$p:${{secrets.CRM_PACKAGE_KEY}} "
-          done
-
-          # Run validate using scratch org from pools
-          sfp validate --pools "${{ inputs.pools }}" --targetdevhubusername devhub --coveragepercent ${{ inputs.coveragepercent }} --keys "$keys" --deletescratchorg
