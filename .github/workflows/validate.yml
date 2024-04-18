@@ -14,7 +14,7 @@ jobs:
       
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install SF
       - name: Install SF
@@ -97,7 +97,7 @@ jobs:
       
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install SF
       - name: Install SF
@@ -139,7 +139,7 @@ jobs:
       
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install SF
       - name: Install SF
@@ -199,7 +199,7 @@ jobs:
       
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Download tests
       - name: Download tests
@@ -278,7 +278,7 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install SF
       - name: Install SF
