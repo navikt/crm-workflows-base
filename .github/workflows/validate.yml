@@ -42,7 +42,7 @@ jobs:
 
       # Upload SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Upload SF AuthUrl
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sfdx-auth-url
           path: SCRATCH_ORG_SFDX_AUTH_URL.txt
@@ -181,7 +181,7 @@ jobs:
       # Upload Apex test results
       - name: Upload Apex test results
         if: steps.test-classes-in-repo.outputs.classes && success() || steps.test-classes-in-repo.outputs.classes && failure() # uploads tests results even if tests fail
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: apex-tests
           path: ./tests/apex
