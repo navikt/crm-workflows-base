@@ -1,0 +1,74 @@
+on:
+  workflow_call:
+    inputs:
+      pools:
+        required: false
+        type: string
+        description: 'Fetch scratch-org validation environment from one of listed pools, sequentially'
+        default: 'ci'
+      coveragepercent:
+        required: false
+        type: number
+        description:  'Minimum required percentage coverage for validating code coverage of packages with Apex classes'
+        default: 85
+jobs:
+  validate:
+    name: Validate Build
+    runs-on: ubuntu-latest
+    container: ghcr.io/flxbl-io/sfops
+    defaults:
+      run:
+        shell: 'bash'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.gitRef }}
+          fetch-depth: '0'
+      - name: 'Set Git Config'
+        run: |
+          git config --global user.email "<>"
+          git config --global user.name "GitHub Action"
+          git config --system --add safe.directory $GITHUB_WORKSPACE
+
+      - name:  'Authenticate Dev Hub'
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: devhub
+
+      - name: 'Install dev dependencies'
+        run: |
+          npm install
+
+      - name: 'Verify prettier'
+        run: |
+          #Find diff
+          DIFFED_FILES_TO_LINT=$(git diff --name-only HEAD~ -- *.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml})
+          npx prettier $DIFFED_FILES_TO_LINT --check
+
+      - name: 'Run eslint'
+        run: |
+          DIFFED_FILES_TO_LINT=$(git diff --name-only HEAD~ -- **/{aura,lwc}/**/*.js)
+          npx eslint --no-error-on-unmatched-pattern $DIFFED_FILES_TO_LINT
+
+      - name: 'Get diff sf file names'
+        id: getDiff
+        run: |
+          echo "diffedSfFiles=$(git diff --name-only HEAD~ -- **/*.{cls,cmp,component,css,html,js,json,page,trigger,xml})" >> $GITHUB_OUTPUT
+
+      - name: Run Salesforce Code Analyzer
+        id: run-code-analyzer
+        uses: forcedotcom/run-code-analyzer@v1
+        if: steps.getDiff.outputs.diffedSfFiles != ''
+        with:
+          run-command: run
+          run-arguments: --normalize-severity --target ${{ steps.getDiff.outputs.diffedSfFiles }} --outfile results.html
+          results-artifact-name: salesforce-code-analyzer-results
+
+      - name: Check the Salesforce Code Analyzer outputs to determine whether to fail
+        if: |
+          steps.run-code-analyzer.outputs.exit-code > 0 ||
+          steps.run-code-analyzer.outputs.num-sev1-violations > 0 ||
+          steps.run-code-analyzer.outputs.num-violations > 10
+        run: exit 1
