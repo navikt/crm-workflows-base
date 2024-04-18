@@ -105,7 +105,7 @@ jobs:
 
         # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: sfdx-auth-url
 
@@ -147,7 +147,7 @@ jobs:
 
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: sfdx-auth-url
 
@@ -204,7 +204,7 @@ jobs:
       # Download tests
       - name: Download tests
         if: ${{ needs.run-tests.outputs.hasTestClasses }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: apex-tests
           path: ./tests/apex
@@ -295,7 +295,7 @@ jobs:
 
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: sfdx-auth-url
 
