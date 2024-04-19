@@ -1,40 +1,35 @@
-All workflows used for all SFDX projects in NAV.
+# Workflows Base
 
-# Installing
+This repo contains reusable workflows for Salesforce development in NAV and is maintained by Team Platforce.
 
-Copy the workflows folder to .github/workflows in your repo.
+## Short Guide
 
-# Secrets
+It is highly recommended to check out the GitHub docs on [reusing workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows) before starting to reuse these workflows.
+If your repository is not a part of [navikt](https://github.com/navikt) you also need to create the org secrets listed under secrets as repository secrets in your repository.
 
-## Deployment to dev sandboxes
+1. Create a workflow in your repository
+2. Reference the workflows used here
 
-SFDX Auth Url for dev sandboxes, which can be manually or automatically deployed when creating new packages. These sandboxes should be unique for each team or repo. See how to create [SFDX Auth URL](#SFDX-Auth-URL) below.
+## Workflow secrets
 
-- DEV_SFDX_URL `[OPTIONAL]`
-- DEPLOY_TO_DEV_AFTER_PACKAGE_CREATION `[OPTIONAL, VALID VALUES ARE 1 OR 0]`
-- DEPLOY_TO_UAT_AFTER_PACKAGE_CREATION `[OPTIONAL, VALID VALUES ARE 1 OR 0]`
+Org secrets are maintained by Team Platforce
 
-```java
-1 // auto-deploy to the respective sandbox
-0 // will NOT auto-deploy
-null // will NOT auto-deploy if the secret is not set
-```
+**List of org secrets:**\
+CRM_PROD_SFDX_URL\
+CRM_PREPROD_SFDX_URL\
+CRM_UAT_SFDX_URL\
+CRM_SIT_SFDX_URL\
+CRM_DEPLOYMENT_PAT\
+CRM_PACKAGE_KEY
 
-# SFDX Auth URL
+### Running workflows toward dev sandboxes
 
-Use the following command to get a SFDX Auth URL (see value for `Sfdx Auth Url`):
+Dev sandboxes are owned and maintained by the individual teams. For use with the Platforce maintained workflows create a Repository Secret with the name DEV_SFDX_URL and the auth url belonging to a sandbox user with enough permissions for deploying.
 
-```bash
-sfdx force:org:display -u [ORG_ALIAS] --verbose
-```
+## Requests
 
-Source: [Create your own SFDX Auth Url](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_view_info.htm)
+Questions related to the code or project can be made as an issue.
 
-# Update other repos with updated workflows
+### For NAV-employees
 
-Use the script (copyWorkflows.command) in the bin folder to update the workflows in all other repoes in the same folder. Currently it only works on Mac.
-
-## Short guide
-1. Clone all relevant repos to a local folder on your computer
-2. Run the script from this repos folder: ``.../crm-workflows-base/bin/copyWorkflows.command``
-3. It will then move up to levels and loop over all folders replace the content in all the .github folders with the content of this repos .github folder and it pushes the change to master branch.
+Internal requests can be made via Slack in #Platforce.
