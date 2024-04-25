@@ -44,18 +44,18 @@ jobs:
       - name: "Verify prettier"
         run: |
           #Find diff
-          DIFFED_FILES_TO_LINT=$(git diff --name-only HEAD~ -- *.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml} **/{aura,lwc}/**/*.js)
+          DIFFED_FILES_TO_LINT=$(git diff --name-only --diff-filter=d HEAD~ -- *.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml} **/{aura,lwc}/**/*.js | tr '\n' ' ')
           npx prettier $DIFFED_FILES_TO_LINT --check
 
       - name: "Run eslint"
         run: |
-          DIFFED_FILES_TO_LINT=$(git diff --name-only HEAD~ -- **/{aura,lwc}/**/*.js)
+          DIFFED_FILES_TO_LINT=$(git diff --diff-filter=d --name-only HEAD~ -- **/{aura,lwc}/**/*.js | tr '\n' ' ')
           npx eslint --no-error-on-unmatched-pattern $DIFFED_FILES_TO_LINT
 
       - name: "Get diff sf file names"
         id: getDiff
         run: |
-          echo "diffedSfFiles=$(git diff --name-only HEAD~ -- **/*.{cls,cmp,component,css,html,js,json,page,trigger,xml} **/{aura,lwc}/**/*.js)" >> $GITHUB_OUTPUT
+          echo "diffedSfFiles=$(git diff --name-only --diff-filter=d HEAD~ -- **/*.{cls,cmp,component,css,html,js,json,page,trigger,xml} **/{aura,lwc}/**/*.js | tr '\n' ' ')" >> $GITHUB_OUTPUT
 
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
