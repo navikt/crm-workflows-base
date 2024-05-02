@@ -4,9 +4,19 @@
   "version": "1.0.0",
   "scripts": {
     "prettier:write": "prettier --write \"**/*.{css,html,js,json,md,xml,yaml,yml}\"",
-    "prettier:check": "prettier --check \"**/*.{css,html,js,json,md,xml,yaml,yml}\""
+    "prettier:check": "prettier --check \"**/*.{css,html,js,json,md,xml,yaml,yml}\"",
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
   },
   "devDependencies": {
-    "prettier": "3.1.0"
+    "husky": "^9.0.11",
+    "lint-staged": "^15.1.0",
+    "prettier": "3.2.5",
+    "@prettier/plugin-xml": "^3.4.1"
+  },
+  "lint-staged": {
+    "**/*.{css,html,js,json,md,xml,yaml,yml}": [
+      "prettier --write"
+    ]
   }
 }

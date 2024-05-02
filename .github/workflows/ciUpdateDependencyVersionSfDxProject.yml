@@ -1,0 +1,15 @@
+name: "CI - Update Dependency Version sfdx-project"
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      CRM_PROD_SFDX_URL:
+        required: true
+
+jobs:
+  update:
+    name: "Deploy"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4

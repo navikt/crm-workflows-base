@@ -2,5 +2,8 @@
 .sf
 .sfdx
 
+# folder for logs etc generated for sfp
+.sfpowerscripts/
+
 # Dependency directories
 node_modules

@@ -2,6 +2,10 @@ name: "Validate"
 on:
   workflow_call:
 jobs:
+  testValidate:
+    uses: navikt/crm-workflows-base/.github/workflows/ciValidate.yml@master
+    secrets: inherit
+
   # ################################################################# #
   # ########################### COMPILE ############################# #
   # ################################################################# #
@@ -11,10 +15,9 @@ jobs:
     permissions:
       contents: read
     steps:
-      
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install SF
       - name: Install SF
@@ -42,7 +45,7 @@ jobs:
 
       # Upload SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Upload SF AuthUrl
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sfdx-auth-url
           path: SCRATCH_ORG_SFDX_AUTH_URL.txt
@@ -52,7 +55,7 @@ jobs:
         run: |
           packageAliases=$(jq -r '.packageDirectories[0].dependencies[]?.package' sfdx-project.json)
 
-          
+
           if [ -z "$packageAliases" ]
           then
             echo "No packages to install"
@@ -62,19 +65,19 @@ jobs:
 
             for packageAlias in ${packageAliases[@]}; do
               echo $packageAlias
-          
+
               packageId=$(jq --arg alias ${packageAlias} -r '.packageAliases | to_entries[] | select( .key == $alias ).value' sfdx-project.json)
               packageVersionNumber=$(jq --arg alias ${packageAlias} -r '.packageDirectories[0].dependencies[] | select(.package == $alias).versionNumber' sfdx-project.json)
-          
+
               echo $packageId
               echo $packageVersionNumber
-          
+
               sf package version list -p $packageId --concise --order-by "MajorVersion DESC, MinorVersion DESC, PatchVersion DESC, BuildNumber DESC" --json | jq | tee subscriberPackageVersionList.json >/dev/null
-          
+
               subscriberPackageVersionId=$(jq --arg version ${packageVersionNumber} -r 'if (.result | length) == 0 then "NO_RESULT" else [.result[] | select(.Version==$version or (.Version|startswith($version | [splits("LATEST")] | .[0])))] | .[0].SubscriberPackageVersionId end' subscriberPackageVersionList.json)
-          
+
               echo $subscriberPackageVersionId
-          
+
               if [ $subscriberPackageVersionId == NO_RESULT ]
               then
                   echo
@@ -84,9 +87,9 @@ jobs:
               fi
             done
           fi
-          
+
         shell: bash
-      
+
   compile:
     name: Compile Metadata
     needs: setup
@@ -94,10 +97,9 @@ jobs:
     permissions:
       contents: read
     steps:
-      
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install SF
       - name: Install SF
@@ -105,7 +107,7 @@ jobs:
 
         # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: sfdx-auth-url
 
@@ -136,10 +138,9 @@ jobs:
     outputs:
       hasTestClasses: ${{ steps.test-classes-in-repo.outputs.classes }}
     steps:
-      
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install SF
       - name: Install SF
@@ -147,7 +148,7 @@ jobs:
 
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: sfdx-auth-url
 
@@ -181,7 +182,7 @@ jobs:
       # Upload Apex test results
       - name: Upload Apex test results
         if: steps.test-classes-in-repo.outputs.classes && success() || steps.test-classes-in-repo.outputs.classes && failure() # uploads tests results even if tests fail
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: apex-tests
           path: ./tests/apex
@@ -196,15 +197,14 @@ jobs:
     permissions:
       contents: read
     steps:
-      
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Download tests
       - name: Download tests
         if: ${{ needs.run-tests.outputs.hasTestClasses }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: apex-tests
           path: ./tests/apex
@@ -278,7 +278,7 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install SF
       - name: Install SF
@@ -295,7 +295,7 @@ jobs:
 
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: sfdx-auth-url
 
@@ -305,7 +305,7 @@ jobs:
 
       # Delete SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Delete SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: geekyeggo/delete-artifact@v2
+        uses: geekyeggo/delete-artifact@v5
         with:
           name: sfdx-auth-url
 
