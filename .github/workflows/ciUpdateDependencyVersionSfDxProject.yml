@@ -11,5 +11,29 @@ jobs:
   update:
     name: "Deploy"
     runs-on: ubuntu-latest
+    container: ghcr.io/flxbl-io/sfops
     steps:
       - uses: actions/checkout@v4
+
+      - uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: devhub
+
+      - name: "Set Git Config"
+        run: |
+          git config --global user.email "<>"
+          git config --global user.name "GitHub Action"
+          git config --system --add safe.directory $GITHUB_WORKSPACE
+
+      - run: |
+          tmpfile=$(mktemp)
+          cp sfdx-project.json "$tmpfile"
+          sf package installed list --target-org PROD --json | jq '[.result[] | select(.SubscriberPackageNamespace == null) | { package: .SubscriberPackageName, versionNumber: .SubscriberPackageVersionNumber}]'  > tmp.json
+          packages=$(jq -r --argfile source tmp.json '[JOIN(INDEX($source[]; .package); .packageDirectories[].dependencies[]; .package; add)]' sfdx-project.json)
+          jq --argjson p "${packages}" '.packageDirectories[].dependencies |= $p' "$tmpfile" > sfdx-project.json
+          rm -f "$tmpfile" tmp.json
+
+          git add sfdx-project.json
+          git commit -m "Update dependency version"
+          git push
