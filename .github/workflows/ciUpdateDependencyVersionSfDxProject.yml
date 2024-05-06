@@ -29,7 +29,7 @@ jobs:
       - run: |
           tmpfile=$(mktemp)
           cp sfdx-project.json "$tmpfile"
-          sf package installed list --target-org PROD --json | jq '[.result[] | select(.SubscriberPackageNamespace == null) | { package: .SubscriberPackageName, versionNumber: .SubscriberPackageVersionNumber}]'  > tmp.json
+          sf package installed list --target-org devhub --json | jq '[.result[] | select(.SubscriberPackageNamespace == null) | { package: .SubscriberPackageName, versionNumber: .SubscriberPackageVersionNumber}]'  > tmp.json
           packages=$(jq -r --argfile source tmp.json '[JOIN(INDEX($source[]; .package); .packageDirectories[].dependencies[]; .package; add)]' sfdx-project.json)
           jq --argjson p "${packages}" '.packageDirectories[].dependencies |= $p' "$tmpfile" > sfdx-project.json
           rm -f "$tmpfile" tmp.json
