@@ -21,6 +21,8 @@ jobs:
     uses: navikt/crm-workflows-base/.github/workflows/ciUpdateDependencyVersionSfDxProject.yml@dxAtScale
     secrets:
       CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
+    permissions:
+      contents: write
 
   clearCiPool:
     if: github.event.schedule == '15 2 * * *'
