@@ -36,7 +36,7 @@ jobs:
           jq --argjson p "${packages}" '.packageDirectories[].dependencies |= $p' "$tmpfile" > sfdx-project.json
           rm -f "$tmpfile" tmp.json
 
-          isChanged=$(git status -s | grep -c "M sfdx-project.json")
+          isChanged=$(git status -s | grep -c "M sfdx-project.json") || true
 
           if [ $isChanged -gt 0 ]
           then
