@@ -36,6 +36,11 @@ jobs:
           jq --argjson p "${packages}" '.packageDirectories[].dependencies |= $p' "$tmpfile" > sfdx-project.json
           rm -f "$tmpfile" tmp.json
 
-          git add sfdx-project.json
-          git commit -m "Update dependency version"
-          git push
+          isChanged=$(git status -s | grep -c "M sfdx-project.json")
+
+          if [ $isChanged -gt 0 ]
+          then
+            git add sfdx-project.json
+            git commit -m "Update dependency version"
+            git push
+          fi
