@@ -16,6 +16,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.gitRef }}
 
       - uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
         with:
