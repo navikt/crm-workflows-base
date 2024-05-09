@@ -2,7 +2,15 @@ name: "CI - Update Dependency Version sfdx-project"
 
 on:
   workflow_dispatch:
+    inputs:
+      gitRef:
+        required: false
+        type: string
   workflow_call:
+    inputs:
+      gitRef:
+        required: false
+        type: string
     secrets:
       CRM_PROD_SFDX_URL:
         required: true
@@ -17,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.gitRef }}
+          ref: ${{ inputs.gitRef }}
 
       - uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
         with:
