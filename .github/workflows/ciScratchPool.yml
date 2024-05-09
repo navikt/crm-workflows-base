@@ -19,6 +19,8 @@ on:
 jobs:
   updatePackageDependencies:
     uses: navikt/crm-workflows-base/.github/workflows/ciUpdateDependencyVersionSfDxProject.yml@dxAtScale
+    with:
+      gitRef: ${{ inputs.gitRef || 'dxAtScale' }}
     secrets:
       CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
     permissions:
