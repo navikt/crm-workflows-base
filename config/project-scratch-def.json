@@ -1,74 +1,53 @@
 {
-    "orgName": "crm-workflows-dev",
+    "orgName": "crm-workflows-base",
     "edition": "Enterprise",
-    "release": "Current",
     "adminEmail": "fakeemail@nav.no.scratchorg",
     "features": [
-        "Sites",
-        "ForceComPlatform",
-        "Communities",
-        "CustomerCommunity",
-        "CustomerCommunityLogin",
-        "CustomerCommunityPlusLogin",
-        "CustomerCommunityPlus",
-        "ContactsToMultipleAccounts",
-        "PersonAccounts",
-        "LiveAgent",
-        "LightningServiceConsole",
-        "ServiceCloud",
-        "ServiceUser",
-        "Knowledge",
-        "ProcessBuilder",
+        "AddCustomApps:30",
         "API",
-        "FieldService:1",
+        "Communities",
         "ContactsToMultipleAccounts",
         "FieldService:5",
         "FieldServiceDispatcherUser:5",
         "FieldServiceMobileUser:5",
-        "FieldServiceSchedulingUser:5"
+        "FieldServiceSchedulingUser:5",
+        "ForceComPlatform",
+        "Knowledge",
+        "LightningServiceConsole",
+        "LiveAgent",
+        "PersonAccounts",
+        "PlatformCache",
+        "ProcessBuilder",
+        "ServiceCloud",
+        "ServiceUser",
+        "Sites",
+        "SurveyAdvancedFeatures"
     ],
     "country": "NO",
     "language": "en_US",
     "settings": {
-        "experienceBundleSettings": {
-            "enableExperienceBundleMetadata": true
+        "accountSettings": {
+            "enableAccountTeams": true,
+            "enableRelateContactToMultipleAccounts": true
+        },
+        "chatterSettings": {
+            "enableChatter": true,
+            "enableChatterEmoticons": true,
+            "enableFeedsRichText": true
         },
         "communitiesSettings": {
-            "enableNetworksEnabled": true
-        },
-        "lightningExperienceSettings": {
-            "enableS1DesktopEnabled": true
-        },
-        "languageSettings": {
-            "enableTranslationWorkbench": true
-        },
-        "accountSettings": {
-            "enableAccountTeams": true
-        },
-        "omniChannelSettings": {
-            "enableOmniChannel": true,
-            "enableOmniSkillsRouting": true,
-            "enableOmniSecondaryRoutingPriority": true
-        },
-        "knowledgeSettings": {
-            "enableKnowledge": true,
-            "enableLightningKnowledge": true
-        },
-        "liveAgentSettings": {
-            "enableLiveAgent": true
+            "enableNetworksEnabled": true,
+            "enableOotbProfExtUserOpsEnable": true
         },
         "emailAdministrationSettings": {
             "enableEnhancedEmailEnabled": true
         },
-        "nameSettings": {
-            "enableMiddleName": true
-        },
-        "pathAssistantSettings": {
-            "pathAssistantEnabled": true
-        },
         "entitlementSettings": {
             "enableEntitlements": true,
             "enableEntitlementVersioning": true
+        },
+        "experienceBundleSettings": {
+            "enableExperienceBundleMetadata": true
         },
         "fieldServiceSettings": {
             "fieldServiceOrgPref": true,
@@ -82,8 +61,52 @@
             "workOrderLineItemSearchFields": "Subject",
             "workOrderSearchFields": "Subject"
         },
+        "knowledgeSettings": {
+            "enableKnowledge": true,
+            "enableLightningKnowledge": true
+        },
+        "languageSettings": {
+            "enableTranslationWorkbench": true
+        },
+        "lightningExperienceSettings": {
+            "enableS1DesktopEnabled": true
+        },
+        "liveAgentSettings": {
+            "enableLiveAgent": true
+        },
+        "nameSettings": {
+            "enableMiddleName": true
+        },
+        "omniChannelSettings": {
+            "enableOmniChannel": true,
+            "enableOmniSkillsRouting": true,
+            "enableOmniSecondaryRoutingPriority": true
+        },
+        "pathAssistantSettings": {
+            "pathAssistantEnabled": true
+        },
+        "securitySettings": {
+            "sessionSettings": {
+                "forceRelogin": false,
+                "lockerServiceNext": true
+            },
+            "enableAdminLoginAsAnyUser": true
+        },
         "surveySettings": {
-            "enableSurvey": true
+            "enableSurvey": true,
+            "enableSurveyOwnerCanManageResponse": false
+        },
+        "userManagementSettings": {
+            "enableEnhancedConcealPersonalInfo": true,
+            "enableEnhancedPermsetMgmt": true,
+            "enableEnhancedProfileMgmt": true,
+            "enableNewProfileUI": true,
+            "enableProfileFiltering": true,
+            "enableScrambleUserData": false,
+            "enableUserSelfDeactivate": false,
+            "permsetsInFieldCreation": true,
+            "psaExpirationUIEnabled": true,
+            "restrictedProfileCloning": false
         }
     }
 }
