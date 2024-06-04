@@ -13,6 +13,10 @@
           "versionNumber": "1.7.0.2"
         },
         {
+          "package": "crm-shared-flowComponents",
+          "versionNumber": "0.4.0.3"
+        },
+        {
           "package": "crm-platform-base",
           "versionNumber": "0.219.0.6"
         },
@@ -43,10 +47,6 @@
         {
           "package": "crm-shared-base",
           "versionNumber": "1.1.0.1"
-        },
-        {
-          "package": "crm-shared-flowComponents",
-          "versionNumber": "0.4.0.3"
         },
         {
           "package": "crm-shared-user-notification",
