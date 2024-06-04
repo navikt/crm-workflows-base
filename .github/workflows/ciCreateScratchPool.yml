@@ -1,4 +1,4 @@
-name: 'Create Scratch Pool'
+name: "Create Scratch Pool"
 
 on:
   workflow_call:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   pool:
-    name: 'Replenish Pool'
+    name: "Replenish Pool"
     runs-on: ubuntu-latest
     container: ghcr.io/flxbl-io/sfops
     timeout-minutes: 720 #Set to Maximum Time out
@@ -29,18 +29,42 @@ jobs:
           ref: ${{ inputs.gitRef }}
           fetch-depth: 1
 
-      - name:  'Authenticate Dev Hub'
+      - name: "Authenticate Dev Hub"
         uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: devhub
 
+      - name: "Check Scratch Limits"
+        run: |
+
+          sf org list limits --target-org devhub --json >> limits.json
+
+          remainingDailyScratchOrgs=$(jq '.result[] | select(.name=="DailyScratchOrgs").remaining' limits.json)
+          remainingActiveScratchOrgs=$(jq '.result[] | select(.name=="ActiveScratchOrgs").remaining' limits.json)
+
+          rm limits.json
+
+          # If to few remaining daily scratch orgs, exit
+          if [ $remainingDailyScratchOrgs -lt 50 ]
+          then
+              echo "::error title=Close to remaining Daily Scratch Org Limit::Remaining DailyScratchOrgs: $remainingDailyScratchOrgs"
+              exit 1
+          fi
+
+          # If to few remaining active scratch orgs, exit
+          if [ $remainingActiveScratchOrgs -lt 25 ]
+          then
+              echo "::error title=Close to remaining Active Scratch Orgs::Remaining ActiveScratchOrgs: $remainingActiveScratchOrgs"
+              exit 1
+          fi
+
       # Authenticate to npm
       - uses: actions/setup-node@v4
         with:
-          registry-url: 'https://npm.pkg.github.com'
+          registry-url: "https://npm.pkg.github.com"
 
-      - name: 'Prepare a pool of scratch orgs'
+      - name: "Prepare a pool of scratch orgs"
         continue-on-error: true
         run: |
           # export SFPOWERSCRIPTS_ARTIFACT_PACKAGE=04t7U000000Y3S3QAK
@@ -59,8 +83,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-       # Upload Flxbl logs
-      - name: 'Publish logs'
+        # Upload Flxbl logs
+      - name: "Publish logs"
         uses: actions/upload-artifact@v4
         with:
           name: "logs_${{ env.poolTag }}"
