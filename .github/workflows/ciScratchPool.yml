@@ -11,14 +11,16 @@ on:
   # Det er ikke behov for å kjøre denne jobber 24/7 og det er derfor satt opp noen skeduleringer (husk at tid er UTC)
   # Det kjøres en jobb hver time 08:00-17:00 mandag til fredag, dette er fordelt på to jobber fordelt på vinter/sommertid
   # Hver natt opprettes det scratcher sånn at man ikke risikerer å være tom dagen etter. Denne kjører alle dager sånn at man ikke er tom i helger dersom noe kritisk skulle oppstå
-  schedule:
-    - cron: "15 06-15 * 4-10 1-5" #Sommertid:  At minute 15 past every hour from 6 through 15 on every day-of-week from Monday through Friday in every month from April through October.
-    - cron: "15 07-16 * 1-3,11,12 1-5" #Vintertid: At minute 15 past every hour from 7 through 16 on every day-of-week from Monday through Friday in every month from January through March, November, and December.
-    - cron: "15 2 * * *" # At 02:15.
+  #schedule:
+  #  - cron: "15 06-15 * 4-10 1-5" #Sommertid:  At minute 15 past every hour from 6 through 15 on every day-of-week from Monday through Friday in every month from April through October.
+  #  - cron: "15 07-16 * 1-3,11,12 1-5" #Vintertid: At minute 15 past every hour from 7 through 16 on every day-of-week from Monday through Friday in every month from January through March, November, and December.
+  #  - cron: "15 2 * * *" # At 02:15.
 
 jobs:
   updatePackageDependencies:
     uses: navikt/crm-workflows-base/.github/workflows/ciUpdateDependencyVersionSfDxProject.yml@dxAtScale
+    with:
+      gitRef: ${{ inputs.gitRef || 'dxAtScale' }}
     secrets:
       CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
     permissions:

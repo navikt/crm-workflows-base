@@ -15,7 +15,6 @@ jobs:
     name: Debug Information
     runs-on: ubuntu-latest
     steps:
-
       - name: Print input values
         run: |
           echo "Package ID: ${{ github.event.inputs.packageId }}"
@@ -47,10 +46,9 @@ jobs:
     permissions:
       contents: read
     steps:
-
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
@@ -80,10 +78,9 @@ jobs:
       pull-requests: write
     needs: promote-package
     steps:
-
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
@@ -126,10 +123,9 @@ jobs:
       contents: write
     needs: promote-package
     steps:
-
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           persist-credentials: true # ! set to true to be able to checkout correctly
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
