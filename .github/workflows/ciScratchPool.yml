@@ -66,12 +66,8 @@ jobs:
   deleteOrphans:
     if: ${{ always() }}
     needs: createPool
-    strategy:
-      matrix:
-        poolTag: ["dev", "ci"]
     uses: navikt/crm-workflows-base/.github/workflows/ciDeletePool.yml@master
     with:
-      poolTag: ${{ matrix.poolTag }}
       deleteJobType: "orphans"
     secrets:
       CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}

@@ -6,7 +6,6 @@ on:
       poolTag:
         description: "Taggen til poolet som skal slettes"
         type: string
-        required: true
       deleteJobType:
         description: "Gyldige verdier: allscratchorgs, inprogressonly, orphans, unassigned"
         type: string
@@ -19,7 +18,6 @@ on:
     inputs:
       poolTag:
         description: "Taggen til poolet som skal slettes"
-        required: true
         type: string
       deleteJobType:
         description: "Hva slags slettejobb som skal gjøres"
