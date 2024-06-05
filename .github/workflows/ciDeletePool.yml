@@ -1,4 +1,4 @@
-name: 'Delete Pool'
+name: "Delete Pool"
 
 on:
   workflow_call:
@@ -6,43 +6,45 @@ on:
       poolTag:
         description: "Taggen til poolet som skal slettes"
         type: string
+        required: true
       deleteJobType:
         description: "Gyldige verdier: allscratchorgs, inprogressonly, orphans, unassigned"
         type: string
+        required: true
     secrets:
       CRM_PROD_SFDX_URL:
         required: true
-      
+
   workflow_dispatch:
     inputs:
       poolTag:
         description: "Taggen til poolet som skal slettes"
-        required: false
+        required: true
         type: string
       deleteJobType:
         description: "Hva slags slettejobb som skal gjøres"
         type: choice
+        required: true
         options:
           - allscratchorgs
           - inprogressonly
           - orphans
           - unassigned
-        required: true
 
 jobs:
   delete:
-    name: 'Delete Pool'
+    name: "Delete Pool"
     runs-on: ubuntu-latest
     container: ghcr.io/flxbl-io/sfops
     timeout-minutes: 720 #Set to Maximum Time out
     steps:
-      - name:  'Authenticate Dev Hub'
+      - name: "Authenticate Dev Hub"
         uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: devhub
 
-      - name: 'Prepare a pool of scratch orgs'
+      - name: "Delete Pool"
         continue-on-error: true
         run: |
           poolTag="${{ inputs.poolTag }}"
@@ -90,11 +92,10 @@ jobs:
           eval $command
 
       # Upload Flxbl logs
-      - name: 'Publish logs'
+      - name: "Publish logs"
         uses: actions/upload-artifact@v4
         with:
           name: "deleteLog_${{ inputs.deleteJobType }}_${{ inputs.poolTag }}"
           path: .sfpowerscripts
           if-no-files-found: ignore
           retention-days: 1
-          
