@@ -46,14 +46,14 @@ jobs:
           rm limits.json
 
           # If to few remaining daily scratch orgs, exit
-          if [ $remainingDailyScratchOrgs -lt 50 ]
+          if [ $remainingDailyScratchOrgs -lt 15 ]
           then
               echo "::error title=Close to remaining Daily Scratch Org Limit::Remaining DailyScratchOrgs: $remainingDailyScratchOrgs"
               exit 1
           fi
 
           # If to few remaining active scratch orgs, exit
-          if [ $remainingActiveScratchOrgs -lt 25 ]
+          if [ $remainingActiveScratchOrgs -lt 10 ]
           then
               echo "::error title=Close to remaining Active Scratch Orgs::Remaining ActiveScratchOrgs: $remainingActiveScratchOrgs"
               exit 1
