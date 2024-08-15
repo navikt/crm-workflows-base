@@ -25,6 +25,13 @@ jobs:
         with:
           ref: ${{ github.event.inputs.gitRef }}
           fetch-depth: "0"
+      - name: "Checkout workflows-base"
+        uses: actions/checkout@v4
+        with:
+          repository: navikt/crm-workflows-base
+          ref: dxAtScale
+          fetch-depth: "0"
+          path: flows-base
       - uses: actions/setup-java@v4
         with:
           java-version: 17
@@ -62,14 +69,13 @@ jobs:
           # temporarily run on whatever, diffed or not
           echo "diffedSfFiles=**/*.xml)" >> $GITHUB_OUTPUT
           #echo "diffedSfFiles=$(git diff --name-only --diff-filter=d HEAD~ -- **/*.{cls,cmp,component,css,html,js,json,page,trigger,xml} **/{aura,lwc}/**/*.js | tr '\n' ' ')" >> $GITHUB_OUTPUT
-
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
         uses: forcedotcom/run-code-analyzer@v1
         if: steps.getDiff.outputs.diffedSfFiles != ''
         with:
           run-command: run
-          run-arguments: --normalize-severity --target ${{ steps.getDiff.outputs.diffedSfFiles }} --outfile results.html
+          run-arguments: --normalize-severity --pmdconfig=flows-base/pmd-rules/permrules.xml
           results-artifact-name: salesforce-code-analyzer-results
 
       - name: Check the Salesforce Code Analyzer outputs to determine whether to fail
