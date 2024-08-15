@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ruleset
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    name="Draconian security measures"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd"
+>
+	<description>Draconian security measures</description>
+    <rule name="NoModifyAll"
+          language="xml"
+          message="We want _no_ instances where modifyAllRecords is true."
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <priority>3</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        //PermissionSet/objectPermissions/modifyAllRecords/text[@Text = "true"]
+                        ]]>
+                </value>
+            </property>
+        </properties>
+    </rule>
+</ruleset>

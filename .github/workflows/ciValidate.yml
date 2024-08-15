@@ -25,6 +25,13 @@ jobs:
         with:
           ref: ${{ github.event.inputs.gitRef }}
           fetch-depth: "0"
+      - name: "Checkout workflows-base"
+        uses: actions/checkout@v4
+        with:
+          repository: navikt/crm-workflows-base
+          ref: no-modifyall
+          fetch-depth: "0"
+          path: flows-base
       - uses: actions/setup-java@v4
         with:
           java-version: 17
@@ -71,7 +78,7 @@ jobs:
         if: steps.getDiff.outputs.diffedSfFiles != '[]'
         with:
           run-command: run
-          run-arguments: --normalize-severity --target fromJson(${{ steps.getDiff.outputs.diffedSfFiles }}) --outfile results.html
+          run-arguments: --normalize-severity --target fromJson(${{ steps.getDiff.outputs.diffedSfFiles }}) --pmdconfig=flows-base/pmd-rules/permrules.xml --outfile results.html
           results-artifact-name: salesforce-code-analyzer-results
 
       - name: Check the Salesforce Code Analyzer outputs to determine whether to fail
