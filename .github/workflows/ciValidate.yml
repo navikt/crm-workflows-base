@@ -59,7 +59,9 @@ jobs:
       - name: "Get diff sf file names"
         id: getDiff
         run: |
-          mapfile -t diffedSfFiles < <(git diff --name-only --diff-filter=d HEAD~ -- \*.{cls,cmp,component,css,html,js,json,page,trigger,xml})
+          #mapfile -t diffedSfFiles < <(git diff --name-only --diff-filter=d HEAD~ -- \*.{cls,cmp,component,css,html,js,json,page,trigger,xml})
+          shopt -s globstar
+          diffedSfFiles=(**/*.xml) # temporary hack to always run the next step
           json=$(jq -c -n '$ARGS.positional' --args "${diffedSfFiles[@]}")
           echo "diffedSfFiles=$json" >> $GITHUB_OUTPUT
 
