@@ -10,7 +10,7 @@
           language="xml"
           message="We want _no_ instances where modifyAllRecords is true."
           class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
-        <priority>3</priority>
+        <priority>2</priority>
         <properties>
             <property name="xpath">
                 <value>
