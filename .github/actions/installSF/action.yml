@@ -3,7 +3,7 @@ description: "Install SF cli with npm"
 inputs:
   version:
     description: "Version for the SF CLI version"
-    default: "2.32.8"
+    default: "2.54.6"
     required: false
 runs:
   using: "composite"
