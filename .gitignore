@@ -13,3 +13,4 @@ node_modules
 *.vim
 TAGS
 tags
+pmd-rules.jar

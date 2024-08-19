@@ -72,13 +72,25 @@ jobs:
           json=$(jq -c -n '$ARGS.positional' --args "${diffedSfFiles[@]}")
           echo "diffedSfFiles=$json" >> $GITHUB_OUTPUT
 
+      - name: Prep PMD Rules
+        id: prepPmdRules
+        run: |
+          jar --create --file pmd-rules.jar flows-base/pmd-rules/
+
+      - name: Prep Salesforce Code Analyzer
+        id: prepCodeAnalyzer
+        uses: forcedotcom/run-code-analyzer@v0
+        with:
+          run-command: rule
+          run-arguments: add -l xml -p pmd-rules.jar
+
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
         uses: forcedotcom/run-code-analyzer@v1
         if: steps.getDiff.outputs.diffedSfFiles != '[]'
         with:
           run-command: run
-          run-arguments: --normalize-severity --target fromJson(${{ steps.getDiff.outputs.diffedSfFiles }}) --pmdconfig=flows-base/pmd-rules/permrules.xml --outfile results.html
+          run-arguments: --normalize-severity --target fromJson(${{ steps.getDiff.outputs.diffedSfFiles }}) --outfile results.html
           results-artifact-name: salesforce-code-analyzer-results
 
       - name: Check the Salesforce Code Analyzer outputs to determine whether to fail
