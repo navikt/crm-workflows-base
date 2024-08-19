@@ -82,7 +82,8 @@ jobs:
         uses: forcedotcom/run-code-analyzer@v1
         with:
           run-command: rule
-          run-arguments: add -l xml -p pmd-rules.jar
+          run-arguments: add --normalize-severity -l xml -p pmd-rules.jar
+          results-artifact-name: salesforce-code-analyzer-prep-results
 
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
