@@ -79,7 +79,7 @@ jobs:
 
       - name: Prep Salesforce Code Analyzer
         id: prepCodeAnalyzer
-        uses: forcedotcom/run-code-analyzer@v0
+        uses: forcedotcom/run-code-analyzer@v1
         with:
           run-command: rule
           run-arguments: add -l xml -p pmd-rules.jar
