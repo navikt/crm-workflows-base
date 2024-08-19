@@ -9,10 +9,12 @@ inputs:
     required: true
   setDefaultUsername:
     description: Set the authenticated org as the default username that all commands run against.
-    required: true
+    default: "false"
+    required: false
   setDefaultDevhubUsername:
     description: Set the authenticated org as the default dev hub org for scratch org creation
-    required: true
+    default: "false"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -20,15 +22,30 @@ runs:
     - name: Authenticate org
       run: |
         echo ${{ inputs.auth-URL }} > ./SFDX_URL.txt
-        
-        if [ ${{ inputs.setDefaultUsername }} ] && [ ${{ inputs.setDefaultDevhubUsername }} ]; then
-          sf org login sfdx-url --sfdx-url-file ./SFDX_URL.txt --alias ${{ inputs.alias }} --set-default-dev-hub --set-default
-        elif [ ${{ inputs.setDefaultUsername }} ]; then
-          sf org login sfdx-url --sfdx-url-file ./SFDX_URL.txt --alias ${{ inputs.alias }} --set-default
-        elif [ ${{ inputs.setDefaultDevhubUsername }} ]; then
-          sf org login sfdx-url --sfdx-url-file ./SFDX_URL.txt --alias ${{ inputs.alias }} --set-default-dev-hub
-        else
-          sf org login sfdx-url --sfdx-url-file ./SFDX_URL.txt --alias ${{ inputs.alias }}
+
+        command="sf org login sfdx-url --sfdx-url-file ./SFDX_URL.txt --alias ${{ inputs.alias }}"
+
+        if [ ${{ inputs.setDefaultUsername }} ];
+        then
+          command+=" --set-default"
         fi
+
+        if [ ${{ inputs.setDefaultDevhubUsername }} ];
+        then
+          command+=" --set-default-dev-hub"
+        fi
+
+        command+=" --json > loginResult.json"
+
+        eval $command
+
+        if [ $(jq .status loginResult.json) == 1 ];
+        then
+          echo "::error title=Failed to authenticate::$(jq .message authResult.json)"
+          rm -f ./SFDX_URL.txt
+          rm -f ./loginResult.json
+        fi
+
         rm -f ./SFDX_URL.txt
+        rm -f ./loginResult.json
       shell: bash
