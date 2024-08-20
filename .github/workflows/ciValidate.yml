@@ -72,18 +72,11 @@ jobs:
           json=$(jq -c -n '$ARGS.positional' --args "${diffedSfFiles[@]}")
           echo "diffedSfFiles=$json" >> $GITHUB_OUTPUT
 
-      - name: Prep PMD Rules
-        id: prepPmdRules
-        run: |
-          jar --create --file pmd-rules.jar flows-base/pmd-rules/
-
       - name: Prep Salesforce Code Analyzer
         id: prepCodeAnalyzer
-        uses: forcedotcom/run-code-analyzer@v1
-        with:
-          run-command: rule
-          run-arguments: add --normalize-severity -l xml -p pmd-rules.jar
-          results-artifact-name: salesforce-code-analyzer-prep-results
+        run: |
+          jar --create --file pmd-rules.jar flows-base/pmd-rules/
+          sf scanner rule add --language xml --path pmd-rules.jar
 
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
