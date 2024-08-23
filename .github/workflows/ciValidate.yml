@@ -66,9 +66,8 @@ jobs:
       - name: "Get diff sf file names"
         id: getDiff
         run: |
-          # temporarily run on whatever, diffed or not
-          echo "diffedSfFiles=**/*.xml)" >> $GITHUB_OUTPUT
-          #echo "diffedSfFiles=$(git diff --name-only --diff-filter=d HEAD~ -- **/*.{cls,cmp,component,css,html,js,json,page,trigger,xml} **/{aura,lwc}/**/*.js | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          echo "diffedSfFiles=$(git diff --name-only --diff-filter=d HEAD~ -- **/*.{cls,cmp,component,css,html,js,json,page,trigger,xml} **/{aura,lwc}/**/*.js | tr '\n' ' ')" >> $GITHUB_OUTPUT
+
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
         uses: forcedotcom/run-code-analyzer@v1
