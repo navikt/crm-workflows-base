@@ -75,8 +75,12 @@ jobs:
       - name: Prep Salesforce Code Analyzer
         id: prepCodeAnalyzer
         run: |
-          jar --create --file pmd-rules.jar flows-base/pmd-rules/
-          sf scanner rule add --language xml --path pmd-rules.jar
+          for langdir in flows-base/pmd-rules/category/*; do
+            language=${langdir##*/}
+            jarfile=pmd-rules-$language.jar
+            jar --create --file "$jarfile" "$langdir"
+            sf scanner rule add --language "$language" --path "$jarfile"
+          done
 
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
