@@ -86,14 +86,14 @@ jobs:
         if: steps.getDiff.outputs.diffedSfFiles != '[]'
         with:
           run-command: run
-          run-arguments: --normalize-severity --target ${{ fromJson(steps.getDiff.outputs.diffedSfFiles) }} --outfile results.html
+          run-arguments: --normalize-severity --target "${diffedSfFiles[@]}" --outfile results.html
           results-artifact-name: salesforce-code-analyzer-results
 
       - name: Run sf scanner, for comparison
         id: run-sf-scanner
         if: steps.getDiff.outputs.diffedSfFiles != '[]'
         run: |
-          sf scanner run --normalize-severity --target ${{ fromJson(steps.getDiff.outputs.diffedSfFiles) }} --outfile results.html
+          sf scanner run --normalize-severity --target "${diffedSfFiles[@]}" --outfile results.html
       - name: Print some info about the above
         id: print-run-code-analyzer-info
         run: |
