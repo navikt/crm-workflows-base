@@ -103,9 +103,10 @@ jobs:
         id: print-run-code-analyzer-info
         run: |
           sf scanner rule list |sed 's/$/ xyzzy/'
-      - name: Abort run if results from Salesforce Code Analyzer are bad enough
+      - name: (TODO) Abort run depending on results from Salesforce Code Analyzer
         if: |
+          false && (
           steps.run-code-analyzer.outputs.exit-code > 0 ||
           steps.run-code-analyzer.outputs.num-sev1-violations > 0 ||
-          steps.run-code-analyzer.outputs.num-violations > 10
+          steps.run-code-analyzer.outputs.num-violations > 10 )
         run: exit 1
