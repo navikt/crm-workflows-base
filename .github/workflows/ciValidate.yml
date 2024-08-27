@@ -94,15 +94,6 @@ jobs:
           run-arguments: --normalize-severity --target ${{steps.getDiff.outputs.diffedSfFilesString}} --outfile results.html
           results-artifact-name: salesforce-code-analyzer-results
 
-      - name: Run sf scanner, for comparison
-        id: run-sf-scanner
-        if: steps.getDiff.outputs.diffedSfFiles != '[]'
-        run: |
-          sf scanner run --normalize-severity --target ${{steps.getDiff.outputs.diffedSfFilesString}} --outfile results.html
-      - name: Print some info about the above
-        id: print-run-code-analyzer-info
-        run: |
-          sf scanner rule list |sed 's/$/ xyzzy/'
       - name: (TODO) Abort run depending on results from Salesforce Code Analyzer
         if: |
           false && (
