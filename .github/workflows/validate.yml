@@ -3,7 +3,7 @@ on:
   workflow_call:
 jobs:
   testValidate:
-    uses: navikt/crm-workflows-base/.github/workflows/ciValidate.yml@master
+    uses: navikt/crm-workflows-base/.github/workflows/ciValidate.yml@no-modifyall
     secrets: inherit
 
   # ################################################################# #
