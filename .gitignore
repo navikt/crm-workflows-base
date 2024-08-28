@@ -7,3 +7,10 @@
 
 # Dependency directories
 node_modules
+
+# misc
+.*.sw?
+*.vim
+TAGS
+tags
+pmd-rules.jar

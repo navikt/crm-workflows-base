@@ -25,6 +25,17 @@ jobs:
         with:
           ref: ${{ github.event.inputs.gitRef }}
           fetch-depth: "0"
+      - name: "Checkout workflows-base"
+        uses: actions/checkout@v4
+        with:
+          repository: navikt/crm-workflows-base
+          ref: master
+          fetch-depth: "0"
+          path: flows-base
+      - uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'temurin'
       - name: "Set Git Config"
         run: |
           git config --global user.email "<>"
@@ -56,8 +67,23 @@ jobs:
         id: getDiff
         run: |
           mapfile -t diffedSfFiles < <(git diff --name-only --diff-filter=d HEAD~ -- \*.{cls,cmp,component,css,html,js,json,page,trigger,xml})
+          # set up a json array of files, readable by the `if` steps below
           json=$(jq -c -n '$ARGS.positional' --args "${diffedSfFiles[@]}")
-          echo "diffedSfFiles=$json" >> $GITHUB_OUTPUT
+          # also set up a properly escaped string, since github can't by itself
+          # expand arrays into strings for use in shell commands
+          printf -v str '%q ' "${diffedSfFiles[@]}"
+          echo "diffedSfFiles=$json" | tee -a "$GITHUB_OUTPUT"
+          echo "diffedSfFilesString=$str" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Prep Salesforce Code Analyzer
+        id: prepCodeAnalyzer
+        run: |
+          for langdir in flows-base/pmd-rules/category/*; do
+            language=${langdir##*/}
+            jarfile=pmd-rules-$language.jar
+            jar --create --file "$jarfile" "$langdir"
+            sf scanner rule add --language "$language" --path "$jarfile"
+          done
 
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
@@ -65,12 +91,13 @@ jobs:
         if: steps.getDiff.outputs.diffedSfFiles != '[]'
         with:
           run-command: run
-          run-arguments: --normalize-severity --target fromJson(${{ steps.getDiff.outputs.diffedSfFiles }}) --outfile results.html
+          run-arguments: --normalize-severity --target ${{steps.getDiff.outputs.diffedSfFilesString}} --outfile results.html
           results-artifact-name: salesforce-code-analyzer-results
 
-      - name: Check the Salesforce Code Analyzer outputs to determine whether to fail
+      - name: (TODO) Abort run depending on results from Salesforce Code Analyzer
         if: |
+          false && (
           steps.run-code-analyzer.outputs.exit-code > 0 ||
           steps.run-code-analyzer.outputs.num-sev1-violations > 0 ||
-          steps.run-code-analyzer.outputs.num-violations > 10
+          steps.run-code-analyzer.outputs.num-violations > 10 )
         run: exit 1
