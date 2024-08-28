@@ -18,7 +18,7 @@
         },
         {
           "package": "crm-platform-base",
-          "versionNumber": "0.225.0.3"
+          "versionNumber": "0.226.0.1"
         },
         {
           "package": "crm-platform-admin",
@@ -38,7 +38,7 @@
         },
         {
           "package": "crm-platform-integration",
-          "versionNumber": "0.118.0.2"
+          "versionNumber": "0.120.0.1"
         },
         {
           "package": "crm-community-base",
@@ -62,7 +62,7 @@
         },
         {
           "package": "crm-journal-utilities",
-          "versionNumber": "0.30.0.1"
+          "versionNumber": "0.31.0.1"
         },
         {
           "package": "crm-platform-oppgave",
