@@ -11,6 +11,9 @@ on:
         description: "Path to the pool config file"
         required: true
         type: string
+    secrets:
+      CRM_PROD_SFDX_URL:
+        required: true
 
 jobs:
   pool:
