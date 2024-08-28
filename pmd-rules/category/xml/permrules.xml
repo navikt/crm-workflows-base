@@ -6,16 +6,16 @@
     xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd"
 >
 	<description>Draconian security measures</description>
-    <rule name="NoModifyAll"
+    <rule name="NoViewOrModifyAll"
           language="xml"
-          message="We want _no_ instances where modifyAllRecords is true."
+          message="We want _no_ instances where either view- or modifyAllRecords is true."
           class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
         <priority>1</priority>
         <properties>
             <property name="xpath">
                 <value>
                     <![CDATA[
-                        //PermissionSet/objectPermissions/modifyAllRecords/text[@Text = "true"]
+                        //PermissionSet/objectPermissions/*[matches(name(), '^(view|modify)AllRecords$')]/text[@Text = "true"]
                         ]]>
                 </value>
             </property>
