@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: navikt/crm-workflows-base
-          ref: master
+          ref: pmd-annotation
           fetch-depth: "0"
           path: flows-base
       - uses: actions/setup-java@v4
