@@ -15,7 +15,7 @@
             <property name="xpath">
                 <value>
                     <![CDATA[
-                        //ModifierNode/Annotation[matches(@Image, '^[a-z]')]
+                        //ModifierNode/Annotation[matches(@RawName, '^[^A-Z]')]
                         ]]>
                 </value>
             </property>
