@@ -62,11 +62,11 @@
         },
         {
           "package": "crm-journal-utilities",
-          "versionNumber": "0.33.0.1"
+          "versionNumber": "0.35.0.1"
         },
         {
           "package": "crm-platform-oppgave",
-          "versionNumber": "0.54.0.2"
+          "versionNumber": "0.55.0.2"
         },
         {
           "package": "crm-sf-saf",
