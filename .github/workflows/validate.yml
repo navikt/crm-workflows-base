@@ -3,7 +3,6 @@ on:
   workflow_call:
 jobs:
   testValidate:
-    if: ${{ github.actor != 'dependabot[bot]' }}
     uses: navikt/crm-workflows-base/.github/workflows/ciValidate.yml@master
     secrets: inherit
 
@@ -11,7 +10,6 @@ jobs:
   # ########################### COMPILE ############################# #
   # ################################################################# #
   setup:
-    if: ${{ github.actor != 'dependabot[bot]' }}
     name: Setup
     runs-on: ubuntu-latest
     permissions:
@@ -93,7 +91,6 @@ jobs:
         shell: bash
 
   compile:
-    if: ${{ github.actor != 'dependabot[bot]' }}
     name: Compile Metadata
     needs: setup
     runs-on: ubuntu-latest
@@ -133,7 +130,6 @@ jobs:
   # ########################### RUN TESTS ########################### #
   # ################################################################# #
   run-tests:
-    if: ${{ github.actor != 'dependabot[bot]' }}
     name: Run Apex Tests
     needs: compile
     runs-on: ubuntu-latest
@@ -195,7 +191,6 @@ jobs:
   # ###################### CHECK CODE COVERAGE ###################### #
   # ################################################################# #
   check-code-coverage:
-    if: ${{ github.actor != 'dependabot[bot]' }}
     name: Validate 85% Code Coverage
     needs: run-tests
     runs-on: ubuntu-latest
@@ -274,7 +269,6 @@ jobs:
   # ############################ CLEANUP ############################ #
   # ################################################################# #
   cleanup:
-    if: ${{ github.actor != 'dependabot[bot]' }}
     name: Cleanup
     needs: [setup, compile, run-tests, check-code-coverage]
     if: always()
