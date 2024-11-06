@@ -43,7 +43,7 @@ jobs:
           cp sfdx-project.json "$tmpfile"
           sf package installed list --target-org devhub --json |
             jq '[.result[] | select(.SubscriberPackageNamespace == null) | { package: .SubscriberPackageName, versionNumber: .SubscriberPackageVersionNumber}]' > tmp.json
-          packages=$(jq -r --argfile source tmp.json '[JOIN(INDEX($source[]; .package); .packageDirectories[].dependencies[]; .package; add)]' sfdx-project.json)
+          packages=$(jq -r --slurpfile source tmp.json '[JOIN(INDEX($source[0][]; .package); .packageDirectories[].dependencies[]; .package; add)]' sfdx-project.json)
           jq --argjson p "$packages" '.packageDirectories[].dependencies |= $p' "$tmpfile" > sfdx-project.json
           rm -f "$tmpfile" tmp.json
 
