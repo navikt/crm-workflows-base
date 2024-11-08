@@ -170,9 +170,9 @@ jobs:
           classes=""
           cd force-app
           for p in $( grep -r -l -i --include="*.cls" "@istest" . | sed 's@.*/@@' ); do
-            classes+=$(echo $p | cut -f 1 -d '.')","
+            classes+=$(echo $p | cut -f 1 -d '.')" --tests "
           done
-          echo "classes=$( echo $classes | sed 's/\(.*\),/\1 /' )" >> $GITHUB_OUTPUT
+          echo "classes=$( echo $classes | sed 's/\(.*\) --tests /\1 /' )" >> $GITHUB_OUTPUT
 
       # Run Apex tests in scratch org
       - name: Run Apex tests
