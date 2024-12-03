@@ -15,10 +15,9 @@ jobs:
       packageId: ${{ steps.package-version-create.outputs.packageId }}
       alphaVersionNumber: ${{ steps.package-version-create.outputs.alphaVersionNumber }}
     steps:
-
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Install SF
       - name: Install SF
@@ -57,7 +56,6 @@ jobs:
           echo
           echo Package ID: $packageId
 
-
   # ################################################################# #
   # ######################### CREATE RELEASE ######################## #
   # ################################################################# #
@@ -68,10 +66,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # set release variables
       - name: Set release fields
@@ -96,7 +93,7 @@ jobs:
 
       # create github release
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ steps.release-fields.outputs.tagName }}
