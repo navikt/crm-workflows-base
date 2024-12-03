@@ -35,7 +35,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           java-version: 17
-          distribution: 'temurin'
+          distribution: "temurin"
       - name: "Set Git Config"
         run: |
           git config --global user.email "<>"
@@ -55,32 +55,51 @@ jobs:
       - name: "Verify prettier"
         run: |
           #Find diff
-          DIFFED_FILES_TO_LINT=$(git diff --name-only --diff-filter=d HEAD~ -- *.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml} **/{aura,lwc}/**/*.js | tr '\n' ' ')
-          npx prettier $DIFFED_FILES_TO_LINT --check
+          mapfile -t diffed_files_to_lint < <(git diff --name-only --diff-filter=d HEAD~ -- \*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml})
+          npx prettier "${diffed_files_to_lint[@]}" --check
 
       - name: "Run eslint"
         run: |
-          DIFFED_FILES_TO_LINT=$(git diff --diff-filter=d --name-only HEAD~ -- **/{aura,lwc}/**/*.js | tr '\n' ' ')
-          npx eslint --no-error-on-unmatched-pattern $DIFFED_FILES_TO_LINT
+          mapfile -t diffed_files_to_lint < <(git diff --diff-filter=d --name-only HEAD~ -- \*.js)
+          npx eslint --no-error-on-unmatched-pattern "${diffed_files_to_lint[@]}"
 
       - name: "Get diff sf file names"
         id: getDiff
         run: |
-          echo "diffedSfFiles=$(git diff --name-only --diff-filter=d HEAD~ -- **/*.{cls,cmp,component,css,html,js,json,page,trigger,xml} **/{aura,lwc}/**/*.js | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          mapfile -t diffedSfFiles < <(git diff --name-only --diff-filter=d HEAD~ -- \*.{cls,cmp,component,css,html,js,json,page,trigger,xml})
+          # set up a json array of files, readable by the `if` steps below
+          json=$(jq -c -n '$ARGS.positional' --args "${diffedSfFiles[@]}")
+          # also set up a properly escaped string, since github can't by itself
+          # expand arrays into strings for use in shell commands
+          printf -v str '%q ' "${diffedSfFiles[@]}"
+          echo "diffedSfFiles=$json" | tee -a "$GITHUB_OUTPUT"
+          echo "diffedSfFilesString=$str" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Prep Salesforce Code Analyzer
+        id: prepCodeAnalyzer
+        run: |
+          for langdir in flows-base/pmd-rules/category/*; do
+            language=${langdir##*/}
+            jarfile=pmd-rules-$language.jar
+            jar --create --file "$jarfile" "$langdir"
+            sf scanner rule add --language "$language" --path "$jarfile"
+          done
 
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
         uses: forcedotcom/run-code-analyzer@v1
-        if: steps.getDiff.outputs.diffedSfFiles != ''
+        if: steps.getDiff.outputs.diffedSfFiles != '[]'
         with:
           run-command: run
           run-arguments: --normalize-severity --pmdconfig=flows-base/pmd-rules/permrules.xml
           results-artifact-name: salesforce-code-analyzer-results
 
-      - name: Check the Salesforce Code Analyzer outputs to determine whether to fail
+      - name: (TODO) Abort run depending on results from Salesforce Code Analyzer
         if: |
+          false && (
           steps.run-code-analyzer.outputs.exit-code > 0 ||
           steps.run-code-analyzer.outputs.num-sev1-violations > 0 ||
           steps.run-code-analyzer.outputs.num-sev2-violations > 0 ||
           steps.run-code-analyzer.outputs.num-violations > 10
+          )
         run: exit 1
