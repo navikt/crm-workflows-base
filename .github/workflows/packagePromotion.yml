@@ -99,7 +99,7 @@ jobs:
 
       # The main branch is protected
       - name: Create new branch and pull request for updated package version ID
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v7
         with:
           title: "Added new package version ID"
           commit-message: ${{steps.build-commit-message.outputs.message}}
@@ -109,7 +109,7 @@ jobs:
 
       # Merge pull request
       - name: Merge pull request
-        uses: juliangruber/merge-pull-request-action@v1
+        uses: juliangruber/merge-pull-request-action@v1.3.1
         with:
           # ! USES CUSTOM PAT TO INITIATE STATUS CHECKS (SEE "Require status checks to pass before merging" IN BRANCHES SETTINGS IN REPO)
           github-token: ${{ secrets.CRM_DEPLOYMENT_PAT }}
@@ -161,7 +161,7 @@ jobs:
 
       # create github release
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{steps.release-fields.outputs.tagName}}
