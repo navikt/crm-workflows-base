@@ -72,7 +72,7 @@ jobs:
 
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Deploy unpackagable content
       - name: Deploy unpackagable content
@@ -91,7 +91,7 @@ jobs:
           else
             echo "successfullyDeployedMetadata=false" >> $GITHUB_OUTPUT
           fi
-          
+
           rm output.json
 
   report-deploy-status:
