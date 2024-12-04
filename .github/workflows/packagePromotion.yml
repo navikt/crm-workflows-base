@@ -99,6 +99,7 @@ jobs:
 
       # The main branch is protected
       - name: Create new branch and pull request for updated package version ID
+        id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
           title: "Added new package version ID"
@@ -113,7 +114,7 @@ jobs:
         with:
           # ! USES CUSTOM PAT TO INITIATE STATUS CHECKS (SEE "Require status checks to pass before merging" IN BRANCHES SETTINGS IN REPO)
           github-token: ${{ secrets.CRM_DEPLOYMENT_PAT }}
-          number: ${{ env.PULL_REQUEST_NUMBER }}
+          number: ${{ steps.cpr.outputs.pull-request-number }}
           method: squash
 
   create-release:
