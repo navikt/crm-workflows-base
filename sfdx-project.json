@@ -10,7 +10,7 @@
       "dependencies": [
         {
           "package": "crm-platform-email-scheduling",
-          "versionNumber": "1.7.0.2"
+          "versionNumber": "1.8.0.2"
         },
         {
           "package": "crm-shared-flowComponents",
