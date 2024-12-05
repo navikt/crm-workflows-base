@@ -172,7 +172,7 @@ jobs:
           mapfile -t classes < <(grep -r -l -i --include="*.cls" "@istest")
           classes=("${classes[@]##*/}");
           classes=("${classes[@]%.cls}");
-          echo "classes=$(printf " --tests %s" "${classes[@]}")" >> $GITHUB_OUTPUT
+          echo "classes=$(printf " --tests %q" "${classes[@]}")" >> $GITHUB_OUTPUT
 
       # Run Apex tests in scratch org
       - name: Run Apex tests
