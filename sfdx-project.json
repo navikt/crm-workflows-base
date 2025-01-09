@@ -18,7 +18,7 @@
         },
         {
           "package": "crm-platform-base",
-          "versionNumber": "0.247.0.1"
+          "versionNumber": "0.249.0.1"
         },
         {
           "package": "crm-platform-admin",
@@ -38,7 +38,7 @@
         },
         {
           "package": "crm-platform-integration",
-          "versionNumber": "0.142.0.1"
+          "versionNumber": "0.143.0.2"
         },
         {
           "package": "crm-community-base",
