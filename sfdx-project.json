@@ -34,7 +34,7 @@
         },
         {
           "package": "crm-henvendelse-base",
-          "versionNumber": "0.27.0.1"
+          "versionNumber": "0.28.0.1"
         },
         {
           "package": "crm-platform-integration",
@@ -62,7 +62,7 @@
         },
         {
           "package": "crm-journal-utilities",
-          "versionNumber": "0.41.0.1"
+          "versionNumber": "0.42.0.1"
         },
         {
           "package": "crm-platform-oppgave",
@@ -74,7 +74,7 @@
         },
         {
           "package": "crm-henvendelse",
-          "versionNumber": "0.157.0.1"
+          "versionNumber": "0.158.0.2"
         },
         {
           "package": "henvendelse-migrator",
