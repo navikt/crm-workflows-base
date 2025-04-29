@@ -170,14 +170,15 @@ jobs:
           classes=""
           cd force-app
           for p in $( grep -r -l -i --include="*.cls" "@istest" . | sed 's@.*/@@' ); do
-            classes+=$(echo $p | cut -f 1 -d '.')","
+            classes+="--tests "$(echo  $p | cut -f 1 -d '.')" "
           done
-          echo "classes=$( echo $classes | sed 's/\(.*\),/\1 /' )" >> $GITHUB_OUTPUT
+          classes=$(echo "$classes" | sed 's/[[:space:]]\+$//')
+          echo "classes=$classes" >> "$GITHUB_OUTPUT"
 
       # Run Apex tests in scratch org
       - name: Run Apex tests
         if: steps.test-classes-in-repo.outputs.classes
-        run: sf apex run test --tests ${{ steps.test-classes-in-repo.outputs.classes }} --code-coverage --result-format human --output-dir ./tests/apex --wait 20
+        run: sf apex run test ${{ steps.test-classes-in-repo.outputs.classes }} --code-coverage --result-format human --output-dir ./tests/apex --wait 25
 
       # Upload Apex test results
       - name: Upload Apex test results
