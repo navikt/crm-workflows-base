@@ -58,7 +58,7 @@
         },
         {
           "package": "crm-shared-timeline",
-          "versionNumber": "1.32.0.2"
+          "versionNumber": "1.33.0.1"
         },
         {
           "package": "crm-journal-utilities",
@@ -70,7 +70,7 @@
         },
         {
           "package": "crm-sf-saf",
-          "versionNumber": "0.34.0.1"
+          "versionNumber": "0.35.0.4"
         },
         {
           "package": "crm-henvendelse",
