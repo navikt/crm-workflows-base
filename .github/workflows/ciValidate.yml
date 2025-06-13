@@ -50,7 +50,7 @@ jobs:
 
       - name: "Install dev dependencies"
         run: |
-          npm install
+          npm install --production=false
 
       - name: "Verify prettier"
         run: |
