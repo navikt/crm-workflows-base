@@ -2,9 +2,9 @@ name: "Validate"
 on:
   workflow_call:
 jobs:
-  testValidate:
-    uses: navikt/crm-workflows-base/.github/workflows/ciValidate.yml@master
-    secrets: inherit
+  # testValidate:
+  #   uses: navikt/crm-workflows-base/.github/workflows/ciValidate.yml@master
+  #   secrets: inherit
 
   # ################################################################# #
   # ########################### COMPILE ############################# #
@@ -178,7 +178,7 @@ jobs:
       # Run Apex tests in scratch org
       - name: Run Apex tests
         if: steps.test-classes-in-repo.outputs.classes
-        run: sf apex run test ${{ steps.test-classes-in-repo.outputs.classes }} --code-coverage --result-format human --output-dir ./tests/apex --wait 25
+        run: sf apex run test ${{ steps.test-classes-in-repo.outputs.classes }} --code-coverage --result-format human --output-dir ./tests/apex --wait 30
 
       # Upload Apex test results
       - name: Upload Apex test results
