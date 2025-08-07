@@ -19,7 +19,6 @@ jobs:
   update:
     name: "Update sfdx-project.json"
     runs-on: ubuntu-latest
-    container: ghcr.io/flxbl-io/sfops
     permissions:
       contents: write
     steps:
