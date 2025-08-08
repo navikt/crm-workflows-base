@@ -30,6 +30,7 @@ jobs:
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: devhub
+          setDefaultDevhubUsername: true
 
       - name: "Set Git Config"
         run: |
