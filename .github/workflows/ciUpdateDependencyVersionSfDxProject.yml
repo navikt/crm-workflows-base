@@ -22,6 +22,9 @@ jobs:
     permissions:
       contents: write
     steps:
+      # Install SF
+      - name: Install SF
+        uses: navikt/crm-workflows-base/.github/actions/installSF@master
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.gitRef }}
@@ -30,7 +33,6 @@ jobs:
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: devhub
-          setDefaultDevhubUsername: true
 
       - name: "Set Git Config"
         run: |
