@@ -33,7 +33,7 @@ jobs:
   delete:
     name: "Delete Pool"
     runs-on: ubuntu-latest
-    container: ghcr.io/flxbl-io/sfops
+    container: ghcr.io/flxbl-io/sfp:latest
     timeout-minutes: 720 #Set to Maximum Time out
     steps:
       - name: "Authenticate Dev Hub"
