@@ -50,7 +50,7 @@
         },
         {
           "package": "crm-shared-user-notification",
-          "versionNumber": "0.24.0.1"
+          "versionNumber": "0.25.0.1"
         },
         {
           "package": "crm-thread-view",
