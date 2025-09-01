@@ -1,0 +1,126 @@
+{
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "60.0",
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "crm-workflows-base",
+      "versionNumber": "0.1.0.NEXT",
+      "dependencies": [
+        {
+          "package": "crm-platform-email-scheduling",
+          "versionNumber": "1.8.0.2"
+        },
+        {
+          "package": "crm-shared-flowComponents",
+          "versionNumber": "0.4.0.3"
+        },
+        {
+          "package": "crm-platform-base",
+          "versionNumber": "0.282.0.1"
+        },
+        {
+          "package": "crm-platform-admin",
+          "versionNumber": "0.4.0.1"
+        },
+        {
+          "package": "crm-platform-access-control",
+          "versionNumber": "0.162.0.11"
+        },
+        {
+          "package": "crm-platform-reporting",
+          "versionNumber": "0.41.0.1"
+        },
+        {
+          "package": "crm-henvendelse-base",
+          "versionNumber": "0.36.0.1"
+        },
+        {
+          "package": "crm-platform-integration",
+          "versionNumber": "0.159.0.1"
+        },
+        {
+          "package": "crm-community-base",
+          "versionNumber": "0.130.0.2"
+        },
+        {
+          "package": "crm-shared-base",
+          "versionNumber": "1.1.0.1"
+        },
+        {
+          "package": "crm-shared-user-notification",
+          "versionNumber": "0.25.0.1"
+        },
+        {
+          "package": "crm-thread-view",
+          "versionNumber": "0.7.0.1"
+        },
+        {
+          "package": "crm-shared-timeline",
+          "versionNumber": "1.35.0.1"
+        },
+        {
+          "package": "crm-journal-utilities",
+          "versionNumber": "0.50.0.1"
+        },
+        {
+          "package": "crm-platform-oppgave",
+          "versionNumber": "0.65.0.1"
+        },
+        {
+          "package": "crm-sf-saf",
+          "versionNumber": "0.37.0.1"
+        },
+        {
+          "package": "crm-henvendelse",
+          "versionNumber": "0.180.0.1"
+        },
+        {
+          "package": "henvendelse-migrator",
+          "versionNumber": "0.22.0.3"
+        }
+      ]
+    }
+  ],
+  "packageAliases": {
+    "crm-nks-base": "0Ho2o000000fxWmCAI",
+    "crm-platform-email-scheduling": "0Ho2o000000fxWwCAI",
+    "crm-arbeidsforhold": "0Ho2o000000fxX1CAI",
+    "crm-nks-integration": "0Ho2o000000fxX6CAI",
+    "crm-shared-timeline": "0Ho2o000000fxXBCAY",
+    "crm-shared-base": "0Ho2o000000fxXLCAY",
+    "crm-ips": "0Ho2o000000fxXQCAY",
+    "crm-henvendelse": "0Ho2o000000fxXfCAI",
+    "crm-journal-utilities": "0Ho2o000000fxXkCAI",
+    "crm-sto": "0Ho2o000000fxXpCAI",
+    "henvendelse-migrator": "0Ho2o000000fxXuCAI",
+    "crm-platform-oppgave": "0Ho2o000000fxXzCAI",
+    "crm-shared-user-notification": "0Ho2o000000fxY4CAI",
+    "crm-avvikssytem": "0Ho2o000000fxY9CAI",
+    "crm-shared-flowComponents": "0Ho2o000000fxYJCAY",
+    "crm-hot-kurs": "0Ho2o000000KylvCAC",
+    "crm-arbeidsgiver-base": "0Ho2o0000008OQtCAM",
+    "crm-platform-access-control": "0Ho2o0000008OR3CAM",
+    "crm-platform-base": "0Ho2o0000008ORmCAM",
+    "crm-platform-integration": "0Ho2o0000008ORrCAM",
+    "crm-hot-tolk": "0Ho2o0000008OSVCA2",
+    "crm-platform-reporting": "0Ho2o0000008OSfCAM",
+    "crm-arbeidsgiver-integration": "0Ho2o0000008OSpCAM",
+    "crm-community-base": "0Ho2o0000008OSzCAM",
+    "crm-platform-admin": "0Ho2o0000008OT4CAM",
+    "crm-nks-innholdsbibliotek": "0Ho7U000000blJJSAY",
+    "crm-arbeidsgiver-kontakt-oss": "0Ho7U0000004CAkSAM",
+    "sfpowerscripts-artifact": "0Ho7U0000004CAzSAM",
+    "crm-arbeidsgiver-innsyn": "0Ho7U0000004CB4SAM",
+    "crm-sf-saf": "0Ho7U0000000001SAA",
+    "crm-knowledge": "0Ho7U0000000006SAA",
+    "crm-nks-chat": "0Ho7U000000000GSAQ",
+    "crm-nks-base-components": "0Ho7U000000000LSAQ",
+    "crm-arbiedsgiver-dialog": "0Ho7U000000000VSAQ",
+    "crm-henvendelse-base": "0Ho7U000000000kSAA",
+    "crm-nav-dialog-kontor": "0Ho7U000000000pSAA",
+    "crm-thread-view": "0Ho7U000000000zSAA",
+    "crm-nks-survey": "0Ho7U0000000014SAA"
+  }
+}
