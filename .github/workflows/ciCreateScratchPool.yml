@@ -1,15 +1,96 @@
-name: 'Create Scratch Pool'
+name: "Create Scratch Pool"
 
 on:
   workflow_call:
+    inputs:
+      gitRef:
+        description: "Commit Id from where the pools should be created"
+        required: false
+        type: string
+      poolConfigPath:
+        description: "Path to the pool config file"
+        required: true
+        type: string
+    secrets:
+      CRM_PROD_SFDX_URL:
+        required: true
 
 jobs:
   pool:
-    name: 'Replenish Dev Pool'
+    name: "Replenish Pool"
     runs-on: ubuntu-latest
+    container: ghcr.io/flxbl-io/sfp:latest
+    timeout-minutes: 720 #Set to Maximum Time out
+    env:
+      poolTag: ""
+    permissions:
+      contents: read
+      packages: read
     steps:
-
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.gitRef }}
+          ref: ${{ inputs.gitRef }}
           fetch-depth: 0
+
+      - name: "Authenticate Dev Hub"
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: devhub
+
+      - name: "Check Scratch Limits"
+        run: |
+
+          sf org list limits --target-org devhub --json >> limits.json
+
+          remainingDailyScratchOrgs=$(jq '.result[] | select(.name=="DailyScratchOrgs").remaining' limits.json)
+          remainingActiveScratchOrgs=$(jq '.result[] | select(.name=="ActiveScratchOrgs").remaining' limits.json)
+
+          rm limits.json
+
+          # If to few remaining daily scratch orgs, exit
+          if [ $remainingDailyScratchOrgs -lt 15 ]
+          then
+              echo "::error title=Close to remaining Daily Scratch Org Limit::Remaining DailyScratchOrgs: $remainingDailyScratchOrgs"
+              exit 1
+          fi
+
+          # If to few remaining active scratch orgs, exit
+          if [ $remainingActiveScratchOrgs -lt 10 ]
+          then
+              echo "::error title=Close to remaining Active Scratch Orgs::Remaining ActiveScratchOrgs: $remainingActiveScratchOrgs"
+              exit 1
+          fi
+
+      # Authenticate to npm
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: "https://npm.pkg.github.com"
+
+      - name: "Prepare a pool of scratch orgs"
+        continue-on-error: true
+        run: |
+          # export SFPOWERSCRIPTS_ARTIFACT_PACKAGE=04t7U000000Y3S3QAK
+
+          echo "poolTag=$(jq --raw-output '.tag' ${{inputs.poolConfigPath}})" >> $GITHUB_ENV
+
+          #Create key list
+          packageNames=$(jq --raw-output '.packageAliases | keys | join(" ")' sfdx-project.json)
+          keys=""
+          for p in $packageNames; do
+            keys+="$p:${{secrets.CRM_PACKAGE_KEY}} "
+          done
+
+          #Prepare Pool
+          sfp pool prepare --poolconfig ${{ inputs.poolConfigPath }} --targetdevhubusername devhub --keys "$keys"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        # Upload Flxbl logs
+      - name: "Publish logs"
+        uses: actions/upload-artifact@v4
+        with:
+          name: "logs_${{ env.poolTag }}"
+          path: .sfpowerscripts
+          if-no-files-found: ignore
+          retention-days: 1
