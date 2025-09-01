@@ -37,7 +37,7 @@ jobs:
     timeout-minutes: 720 #Set to Maximum Time out
     steps:
       - name: "Authenticate Dev Hub"
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: devhub

@@ -29,7 +29,7 @@ jobs:
         with:
           ref: ${{ inputs.gitRef }}
 
-      - uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@dxAtScale
+      - uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: devhub
