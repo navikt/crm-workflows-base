@@ -1,0 +1,32 @@
+name: Fill Scratch Pools
+description: Action to fill scratch org pools
+inputs:
+  dev-hub:
+    description: The alias of the Dev Hub org
+    required: true
+  sfdx-project-path:
+    description: The path to sfdx-project.json
+    required: false
+  package-key:
+    description: The key of the packages to install
+    required: true
+  pool-config-path:
+    description: The path to the pool configuration file
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Check Dev Hub scratch limits
+      shell: bash
+      env:
+        DEV_HUB: ${{ inputs.dev-hub }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/check_scratch_limits.sh"
+
+    - name: Prepare pool
+      shell: bash
+      env:
+        CRM_PACKAGE_KEY: ${{ inputs.package-key }}
+        SFDX_PROJECT_PATH: ${{ inputs.sfdx-project-path }}
+        POOL_CONFIG_PATH: ${{ inputs.pool-config-path }}
+        DEV_HUB: ${{ inputs.dev-hub }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/prepare_pool.sh"
