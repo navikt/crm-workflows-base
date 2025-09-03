@@ -37,7 +37,7 @@ on:
     secrets:
       DEV_HUB_SFDX_URL:
         required: true
-      METRICS_KEYS:
+      METRICS_KEY:
         required: true
       CRM_PACKAGE_KEY:
         required: true
@@ -149,4 +149,4 @@ jobs:
         if: ${{ always() }}
         uses: navikt/sf-platform/.github/actions/pushLoggedMetrics@d77aeff38e7ba9938368c80e415f8615b1cc4308
         with:
-          metricsKey: ${{ secrets.METRICS_KEYS }}
+          metricsKey: ${{ secrets.METRICS_KEY }}
