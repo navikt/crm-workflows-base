@@ -9,7 +9,7 @@ inputs:
     required: false
   package-key:
     description: The key of the packages to install
-    required: true
+    required: false
   pool-config-path:
     description: The path to the pool configuration file
     required: true

@@ -12,44 +12,49 @@ done
 # Inputs and defaults
 SFDX_PROJECT_PATH="${SFDX_PROJECT_PATH:-$GITHUB_WORKSPACE/sfdx-project.json}"
 
-if [ -z "${CRM_PACKAGE_KEY:-}" ]; then
-  echo "::error title=Missing Variable::CRM_PACKAGE_KEY is not set."
-  exit 1
-fi
-echo "::add-mask::$CRM_PACKAGE_KEY"
-
 if [ ! -f "$SFDX_PROJECT_PATH" ]; then
   echo "::error title=Missing File::sfdx-project.json not found at '$SFDX_PROJECT_PATH'"
   exit 1
 fi
+
 if [ -z "${DEV_HUB:-}" ]; then
   echo "::error title=Missing Variable::Environment variable 'DEV_HUB' is not set."
   exit 1
 fi
+
 if [ -z "${POOL_CONFIG_PATH:-}" ]; then
   echo "::error title=Missing Variable::Environment variable 'POOL_CONFIG_PATH' is not set."
   exit 1
 fi
+
 if [ ! -f "$POOL_CONFIG_PATH" ]; then
   echo "::error title=Missing File::Pool config not found at '$POOL_CONFIG_PATH'"
   exit 1
 fi
 
-# Read package aliases robustly (0+ results)
-mapfile -t packageNames < <(jq -r '(.packageAliases // {}) | keys[]?' "$SFDX_PROJECT_PATH") || {
-  echo "::error title=JQ Error::Failed to read packageAliases from $SFDX_PROJECT_PATH"
-  exit 1
-}
-
-pairs=()
-for p in "${packageNames[@]}"; do
-  pairs+=("$p:$CRM_PACKAGE_KEY")
-done
-
 keys=""
-if ((${#pairs[@]} > 0)); then
-  printf -v keys '%s ' "${pairs[@]}"
-  keys=${keys% }  # trim trailing space
+
+if [ -n "${CRM_PACKAGE_KEY:-}" ]; then
+  echo "::add-mask::$CRM_PACKAGE_KEY"
+  
+  # Read package aliases robustly (0+ results)
+  mapfile -t packageNames < <(jq -r '(.packageAliases // {}) | keys[]?' "$SFDX_PROJECT_PATH") || {
+    echo "::error title=JQ Error::Failed to read packageAliases from $SFDX_PROJECT_PATH"
+    exit 1
+  }
+
+  pairs=()
+  for p in "${packageNames[@]}"; do
+    pairs+=("$p:$CRM_PACKAGE_KEY")
+  done
+
+  if ((${#pairs[@]} > 0)); then
+    printf -v keys '%s ' "${pairs[@]}"
+    keys=${keys% }  # trim trailing space
+  fi
+
+else
+  echo "::notice No package key found, dropping key pair creation"
 fi
 
 # Prepare Pool (conditionally add --keys)
@@ -58,5 +63,4 @@ if [ -n "$keys" ]; then
   args+=(--keys "$keys")
 fi
 
-echo "::notice title=Preparing pool::devHub=$DEV_HUB; keysCount=${#pairs[@]}"
 sfp "${args[@]}"

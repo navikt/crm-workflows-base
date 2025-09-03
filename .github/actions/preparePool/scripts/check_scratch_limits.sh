@@ -24,15 +24,25 @@ trap 'rm -f "$tmp_limits_file"' EXIT
 
 sf org list limits --target-org "$DEV_HUB" --json > "$tmp_limits_file"
 
-remainingDailyScratchOrgs=$(jq '.result[] | select(.name=="DailyScratchOrgs").remaining' "$tmp_limits_file") || {
+remainingDailyScratchOrgs=$(jq -r '.result[] | select(.name=="DailyScratchOrgs").remaining // empty' "$tmp_limits_file") || {
     echo "::error title=JQ Error::Failed to parse DailyScratchOrgs from limits.json"
     exit 1
 }
 
-remainingActiveScratchOrgs=$(jq '.result[] | select(.name=="ActiveScratchOrgs").remaining' "$tmp_limits_file") || {
+if [ -z "$remainingDailyScratchOrgs" ]; then
+    echo "::error title=Missing Limit::DailyScratchOrgs not found in limits response"
+    exit 1
+fi
+
+remainingActiveScratchOrgs=$(jq -r '.result[] | select(.name=="ActiveScratchOrgs").remaining // empty' "$tmp_limits_file") || {
     echo "::error title=JQ Error::Failed to parse ActiveScratchOrgs from limits.json"
     exit 1
 }
+
+if [ -z "$remainingActiveScratchOrgs" ]; then
+    echo "::error title=Missing Limit::ActiveScratchOrgs not found in limits response"
+    exit 1
+fi}
 
 # Exit if remaining daily scratch orgs are below threshold
 if ! [[ "$remainingDailyScratchOrgs" =~ ^[0-9]+$ ]]; then
