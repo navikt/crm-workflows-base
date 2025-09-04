@@ -114,7 +114,7 @@ jobs:
           fi
           echo "pool-tag=$poolTag" >> "$GITHUB_OUTPUT"
         env:
-          POOL_CONFIG_PATH: ${{ inputs.pool-config-path }}
+          POOL_CONFIG_PATH: ${{ matrix.pool.poolConfigPath }}
       - name: Clear pool
         id: clearPool
         if: ${{ env.CLEAR_POOLS == true }}
@@ -131,7 +131,6 @@ jobs:
           sfdx-project-path: ./sfdx-project.json
           package-key: ${{ secrets.CRM_PACKAGE_KEY }}
           pool-config-path: ${{ matrix.pool.poolConfigPath }}
-          delete-job-type: ${{ matrix.pool.deleteJobType }}
           is-ci-pool: ${{ matrix.pool.isCiPool }}
           pool-tag: ${{ steps.setPoolTag.outputs.pool-tag }}
         env:
