@@ -23,7 +23,7 @@ on:
       pool-matrix-def-path:
         description: Path to the file describing the pools to create
         required: false
-        default: config/poolMatrixDef.json
+        default: config/pool-matrix-def.json
         type: string
       clear-pools:
         description: If checked, clear unused scratches in the pools
