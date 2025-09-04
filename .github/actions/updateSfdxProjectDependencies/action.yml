@@ -1,0 +1,24 @@
+name: Update sfdx-project.json dependencies from installed packages
+description: Update sfdx-project.json dependencies based on installed packages in the Dev Hub org
+inputs:
+  target-org:
+    description: Alias or username of the target org to fetch installed packages from
+    required: true
+  sfdx-project-path:
+    description: The path to sfdx-project.json
+    required: false
+    default: "sfdx-project.json"
+outputs:
+  updated:
+    description: Whether sfdx-project.json was updated
+    value: ${{ steps.update.outputs.updated }}
+runs:
+  using: "composite"
+  steps:
+    - name: Update sfdx-project.json dependencies
+      id: update
+      shell: bash
+      env:
+        TARGET_ORG: ${{ inputs.target-org }}
+        SFDX_PROJECT_PATH: ${{ inputs.sfdx-project-path }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/update_sfdx_project_dependencies.sh"
