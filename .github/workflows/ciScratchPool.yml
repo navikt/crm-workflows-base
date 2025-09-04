@@ -6,7 +6,7 @@ on:
       gitRef:
         description: "Commit Id from where the pools should be created"
         required: false
-        default: "master"
+        default: "main"
   # Det er satt opp skedulering for når poolet oppdateres.
   # Det er ikke behov for å kjøre denne jobber 24/7 og det er derfor satt opp noen skeduleringer (husk at tid er UTC)
   # Det kjøres en jobb hver time 08:00-17:00 mandag til fredag, dette er fordelt på to jobber fordelt på vinter/sommertid
@@ -20,7 +20,7 @@ jobs:
   updatePackageDependencies:
     uses: navikt/crm-workflows-base/.github/workflows/ciUpdateDependencyVersionSfDxProject.yml@master
     with:
-      gitRef: ${{ inputs.gitRef || 'master' }}
+      gitRef: ${{ inputs.gitRef || 'main' }}
     secrets:
       CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
     permissions:
@@ -56,7 +56,7 @@ jobs:
           ]
     uses: navikt/crm-workflows-base/.github/workflows/ciCreateScratchPool.yml@master
     with:
-      gitRef: ${{ inputs.gitRef || 'master' }}
+      gitRef: ${{ inputs.gitRef || 'main' }}
       poolConfigPath: ${{ matrix.poolConfigPath }}
     permissions:
       contents: read
