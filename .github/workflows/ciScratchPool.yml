@@ -22,7 +22,7 @@ jobs:
     steps:
       # Install SF
       - name: Install SF
-        uses: navikt/crm-workflows-base/.github/actions/installSF@master
+        uses: navikt/crm-workflows-base/.github/actions/installSF@main
       - uses: actions/checkout@v5
         with:
           ref: main
