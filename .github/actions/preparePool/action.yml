@@ -1,0 +1,74 @@
+name: Fill Scratch Pools
+description: Action to fill scratch org pools
+inputs:
+  dev-hub:
+    description: The alias of the Dev Hub org
+    required: true
+  sfdx-project-path:
+    description: The path to sfdx-project.json
+    required: false
+  package-key:
+    description: The key of the packages to install
+    required: false
+  pool-config-path:
+    description: The path to the pool configuration file
+    required: true
+  delete-job-type:
+    description: The type of delete job to run when cleaning up the pool
+    required: false
+    default: "auto"
+  clear-pools:
+    description: Whether to clear scratch orgs from the pool
+    required: false
+    default: "false"
+  is-ci-pool:
+    description: Whether this is a CI pool
+    required: false
+    default: "false"
+runs:
+  using: "composite"
+  steps:
+    - name: Check Dev Hub scratch limits
+      shell: bash
+      env:
+        DEV_HUB: ${{ inputs.dev-hub }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/check_scratch_limits.sh"
+
+    - name: Set pool tag
+      id: setPoolTag
+      shell: bash
+      run: |
+        poolTag=$(jq -r '.tag // empty' "$POOL_CONFIG_PATH")
+        if [[ ! "$poolTag" =~ ^[A-Za-z0-9._-]+$ ]]; then
+          echo "Invalid poolTag characters" >&2
+          exit 1
+        fi
+        echo "pool-tag=$poolTag" >> "$GITHUB_OUTPUT"
+      env:
+        POOL_CONFIG_PATH: ${{ inputs.pool-config-path }}
+
+    - name: Clear pool
+      id: clearPool
+      if: ${{ inputs.clear-pools == "true" }}
+      uses: navikt/sf-gha-deleteScratchPool@1f0986d2312a2969e658946acb496f6dcd7d4032
+      with:
+        devhub: ${{ inputs.dev-hub }}
+        poolTag: ${{ steps.setPoolTag.outputs.pool-tag }}
+        deleteJobType: ${{ inputs.delete-job-type }}
+        isCiPool: ${{ inputs.is-ci-pool }}
+
+    - name: Prepare pool
+      shell: bash
+      env:
+        CRM_PACKAGE_KEY: ${{ inputs.package-key }}
+        SFDX_PROJECT_PATH: ${{ inputs.sfdx-project-path }}
+        POOL_CONFIG_PATH: ${{ inputs.pool-config-path }}
+        DEV_HUB: ${{ inputs.dev-hub }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/prepare_pool.sh"
+
+    - name: Delete orphans
+      uses: navikt/sf-gha-deleteScratchPool@1f0986d2312a2969e658946acb496f6dcd7d4032
+      with:
+        devhub: ${{ inputs.dev-hub }}
+        deleteJobType: orphans
+        isCiPool: ${{ inputs.is-ci-pool }}
