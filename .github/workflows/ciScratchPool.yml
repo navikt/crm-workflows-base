@@ -25,25 +25,6 @@ jobs:
       CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
     permissions:
       contents: write
-
-  clearCiPool:
-    if: github.event.schedule == '15 2 * * *'
-    uses: navikt/crm-workflows-base/.github/workflows/ciDeletePool.yml@master
-    with:
-      poolTag: "ci"
-      deleteJobType: "allscratchorgs"
-    secrets:
-      CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
-
-  cleanupDevPool:
-    if: github.event.schedule == '15 2 * * *'
-    uses: navikt/crm-workflows-base/.github/workflows/ciDeletePool.yml@master
-    with:
-      poolTag: "dev"
-      deleteJobType: "unassigned"
-    secrets:
-      CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
-
   createPool:
     if: ${{ always() }}
     needs: [clearCiPool, cleanupDevPool, updatePackageDependencies]
@@ -61,13 +42,12 @@ jobs:
     permissions:
       contents: read
       packages: read
-    secrets: inherit
-
-  deleteOrphans:
-    if: ${{ always() }}
-    needs: createPool
-    uses: navikt/crm-workflows-base/.github/workflows/ciDeletePool.yml@master
-    with:
-      deleteJobType: "orphans"
     secrets:
-      CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
+      DEV_HUB_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL }}
+      METRICS_KEY: ${{ secrets.METRICS_KEY }}
+      CRM_PACKAGE_KEY: ${{ secrets.CRM_PACKAGE_KEY }}
+
+    uses: navikt/crm-workflows-base/.github/workflows/manageScratchPool.yml@improvedPoolJob
+    with:
+      clear-pools: ${{github.event.schedule == '15 2 * * *'}}
+      sfp-version: latest
