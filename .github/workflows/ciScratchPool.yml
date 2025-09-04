@@ -2,11 +2,7 @@ name: "Replenish Pools - Auto Triggered"
 
 on:
   workflow_dispatch:
-    inputs:
-      gitRef:
-        description: "Commit Id from where the pools should be created"
-        required: false
-        default: "main"
+
   # Det er satt opp skedulering for når poolet oppdateres.
   # Det er ikke behov for å kjøre denne jobber 24/7 og det er derfor satt opp noen skeduleringer (husk at tid er UTC)
   # Det kjøres en jobb hver time 08:00-17:00 mandag til fredag, dette er fordelt på to jobber fordelt på vinter/sommertid
@@ -20,25 +16,14 @@ jobs:
   updatePackageDependencies:
     uses: navikt/crm-workflows-base/.github/workflows/ciUpdateDependencyVersionSfDxProject.yml@master
     with:
-      gitRef: ${{ inputs.gitRef || 'main' }}
+      gitRef: "main"
     secrets:
       CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
     permissions:
       contents: write
   createPool:
     if: ${{ always() }}
-    needs: [clearCiPool, cleanupDevPool, updatePackageDependencies]
-    strategy:
-      matrix:
-        poolConfigPath:
-          [
-            "config/project-dev-pool-def.json",
-            "config/project-ci-pool-def.json",
-          ]
-    uses: navikt/crm-workflows-base/.github/workflows/ciCreateScratchPool.yml@master
-    with:
-      gitRef: ${{ inputs.gitRef || 'main' }}
-      poolConfigPath: ${{ matrix.poolConfigPath }}
+    needs: [updatePackageDependencies]
     permissions:
       contents: read
       packages: read
@@ -47,7 +32,10 @@ jobs:
       METRICS_KEY: ${{ secrets.METRICS_KEY }}
       CRM_PACKAGE_KEY: ${{ secrets.CRM_PACKAGE_KEY }}
 
-    uses: navikt/crm-workflows-base/.github/workflows/manageScratchPool.yml@improvedPoolJob
+    uses: navikt/crm-workflows-base/.github/workflows/manageScratchPool.yml@main
     with:
+      pool-matrix-def-path: config/pool-matrix-def.json
+      # Clear pools only when triggered by schedule (not manual trigger)
+      # This ensures that we only clear unused scratches during the scheduled runs
       clear-pools: ${{github.event.schedule == '15 2 * * *'}}
       sfp-version: latest
