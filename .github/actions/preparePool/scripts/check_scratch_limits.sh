@@ -42,7 +42,7 @@ remainingActiveScratchOrgs=$(jq -r '.result[] | select(.name=="ActiveScratchOrgs
 if [ -z "$remainingActiveScratchOrgs" ]; then
     echo "::error title=Missing Limit::ActiveScratchOrgs not found in limits response"
     exit 1
-fi}
+fi
 
 # Exit if remaining daily scratch orgs are below threshold
 if ! [[ "$remainingDailyScratchOrgs" =~ ^[0-9]+$ ]]; then
