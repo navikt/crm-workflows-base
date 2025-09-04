@@ -62,4 +62,4 @@ fi
 
 echo "::notice title=Updated dependencies::targetOrg=$TARGET_ORG, file=$SFDX_PROJECT_PATH, changed=$updated"
 
-echo "changed=$updated" >> "$GITHUB_OUTPUT"
+echo "updated=$updated" >> "$GITHUB_OUTPUT"
