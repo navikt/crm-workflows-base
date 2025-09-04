@@ -27,11 +27,12 @@ on:
         type: string
       clear-pools:
         description: If checked, clear unused scratches in the pools
-        required: true
+        required: false
+        default: false
         type: boolean
       sfp-version:
         description: The version of SFP to use
-        required: true
+        required: false
         default: latest
         type: string
     secrets:
@@ -40,7 +41,7 @@ on:
       METRICS_KEY:
         required: true
       CRM_PACKAGE_KEY:
-        required: true
+        required: false
 jobs:
   prepareMatrixRun:
     runs-on: ubuntu-latest
