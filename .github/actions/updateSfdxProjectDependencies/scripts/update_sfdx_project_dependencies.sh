@@ -41,8 +41,8 @@ jq --slurpfile versions "$TMP_VERSIONS" '
     if (.dependencies // empty) != [] then
       .dependencies |=
       (map(
-        if (.package and ($versions[.package] // null)) then
-          .versionNumber = $versions[.package]
+        if (.package and ($versions[0][.package] // null)) then
+          .versionNumber = $versions[0][.package]
         else .
         end
       ))
