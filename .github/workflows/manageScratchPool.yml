@@ -88,7 +88,6 @@ jobs:
       contents: read
       packages: read
     env:
-      POOL_TAG: ""
       CLEAR_POOLS: ${{ inputs.clear-pools }}
       DEV_HUB_ALIAS: dev-hub
     steps:
@@ -104,6 +103,27 @@ jobs:
           setDefaultDevhubUsername: true
           alias: ${{ env.DEV_HUB_ALIAS }}
 
+      - name: Set pool tag
+        id: setPoolTag
+        shell: bash
+        run: |
+          poolTag=$(jq -r '.tag // empty' "$POOL_CONFIG_PATH")
+          if [[ ! "$poolTag" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            echo "Invalid poolTag characters" >&2
+            exit 1
+          fi
+          echo "pool-tag=$poolTag" >> "$GITHUB_OUTPUT"
+        env:
+          POOL_CONFIG_PATH: ${{ inputs.pool-config-path }}
+      - name: Clear pool
+        id: clearPool
+        if: ${{ env.CLEAR_POOLS == true }}
+        uses: navikt/sf-gha-deleteScratchPool@1f0986d2312a2969e658946acb496f6dcd7d4032
+        with:
+          devhub: ${{ env.DEV_HUB_ALIAS }}
+          poolTag: ${{ steps.setPoolTag.outputs.pool-tag }}
+          deleteJobType: ${{ matrix.pool.deleteJobType }}
+          isCiPool: ${{ inputs.is-ci-pool }}
       - name: Create Pool
         uses: navikt/crm-workflows-base/.github/actions/preparePool@main
         with:
@@ -112,8 +132,8 @@ jobs:
           package-key: ${{ secrets.CRM_PACKAGE_KEY }}
           pool-config-path: ${{ matrix.pool.poolConfigPath }}
           delete-job-type: ${{ matrix.pool.deleteJobType }}
-          clear-pools: ${{ inputs.clear-pools }}
           is-ci-pool: ${{ matrix.pool.isCiPool }}
+          pool-tag: ${{ steps.setPoolTag.outputs.pool-tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required to be able to download packages from GHCR in SFP
 
