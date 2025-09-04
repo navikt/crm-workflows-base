@@ -105,7 +105,7 @@ jobs:
           alias: ${{ env.DEV_HUB_ALIAS }}
 
       - name: Create Pool
-        uses: navikt/crm-workflows-base/.github/actions/preparePool@c8714dce6a7922fd52e1a587929d579464b24419
+        uses: navikt/crm-workflows-base/.github/actions/preparePool@main
         with:
           dev-hub: ${{ env.DEV_HUB_ALIAS }}
           sfdx-project-path: ./sfdx-project.json
