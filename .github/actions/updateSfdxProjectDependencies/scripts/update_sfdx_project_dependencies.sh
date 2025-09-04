@@ -54,6 +54,12 @@ jq --slurpfile versions "$TMP_VERSIONS" '
 # Check for changes
 isChanged=$(git status --porcelain "$SFDX_PROJECT_PATH" | wc -l)
 
-echo "::notice title=Updated dependencies::targetOrg=$TARGET_ORG, file=$SFDX_PROJECT_PATH, changed=$isChanged"
+if [ "$isChanged" -gt 0 ]; then
+  updated=true
+else
+  updated=false
+fi
 
-echo "changed=$isChanged" >> "$GITHUB_OUTPUT"
+echo "::notice title=Updated dependencies::targetOrg=$TARGET_ORG, file=$SFDX_PROJECT_PATH, changed=$updated"
+
+echo "changed=$updated" >> "$GITHUB_OUTPUT"
