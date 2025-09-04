@@ -7,7 +7,7 @@ on:
         description: Path to the file describing the pools to create
         required: true
         type: string
-        default: config/poolMatrixDef.json
+        default: config/pool-matrix-def.json
       clear-pools:
         description: If checked, clear unused scratches in the pools
         required: true
@@ -15,9 +15,8 @@ on:
         default: false
       sfp-version:
         description: The version of SFP to use
-        required: true
+        required: false
         type: string
-        default: latest
   workflow_call:
     inputs:
       pool-matrix-def-path:
@@ -33,7 +32,6 @@ on:
       sfp-version:
         description: The version of SFP to use
         required: false
-        default: latest
         type: string
     secrets:
       DEV_HUB_SFDX_URL:
@@ -80,7 +78,7 @@ jobs:
     name: Replenish Pool
     needs: prepareMatrixRun
     runs-on: ubuntu-latest
-    container: ghcr.io/flxbl-io/sfp:${{ inputs.sfp-version }}
+    container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp@sha256:cf56952fa4a57a6ed22f90e2fedebbfbc05600b7f21e440277107ff7d9505771' }}
     timeout-minutes: 720 #Set to Maximum Time out
     strategy:
       fail-fast: false
@@ -99,20 +97,6 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Set pool tag
-        run: |
-          poolTag=$(jq --raw-output '.tag // empty' "$POOL_CONFIG_PATH")
-          echo "POOL_TAG=$poolTag" >> "$GITHUB_ENV"
-        env:
-          POOL_CONFIG_PATH: ${{ matrix.pool.poolConfigPath }}
-
-      - name: Print Values
-        run: |
-          echo Pool Tag: "$POOL_TAG"
-          echo Pool Config Path: ${{ matrix.pool.poolConfigPath }}
-          echo Pool Delete Job Type: ${{ matrix.pool.deleteJobType }}
-          echo Clear unused scratch orgs: "$CLEAR_POOLS"
-
       - name: "Authenticate Dev Hub"
         uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@c941a6ea7474883b849e53f69eb4eeba83854fe7
         with:
@@ -120,31 +104,18 @@ jobs:
           setDefaultDevhubUsername: true
           alias: ${{ env.DEV_HUB_ALIAS }}
 
-      - name: Clear pool
-        id: clearPool
-        if: ${{ inputs.clear-pools }}
-        uses: navikt/sf-gha-deleteScratchPool@1f0986d2312a2969e658946acb496f6dcd7d4032
-        with:
-          devhub: ${{ env.DEV_HUB_ALIAS }}
-          poolTag: ${{ env.POOL_TAG }}
-          deleteJobType: ${{ matrix.pool.deleteJobType }}
-          isCiPool: ${{ matrix.pool.isCiPool }}
-
       - name: Create Pool
-        uses: navikt/crm-workflows-base/.github/actions/preparePool@134a14b95c52d8d51445f20e5f2cda3226b1da46
+        uses: navikt/crm-workflows-base/.github/actions/preparePool@c8714dce6a7922fd52e1a587929d579464b24419
         with:
           dev-hub: ${{ env.DEV_HUB_ALIAS }}
+          sfdx-project-path: ./sfdx-project.json
           package-key: ${{ secrets.CRM_PACKAGE_KEY }}
           pool-config-path: ${{ matrix.pool.poolConfigPath }}
+          delete-job-type: ${{ matrix.pool.deleteJobType }}
+          clear-pools: ${{ inputs.clear-pools }}
+          is-ci-pool: ${{ matrix.pool.isCiPool }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Delete orphans
-        uses: navikt/sf-gha-deleteScratchPool@1f0986d2312a2969e658946acb496f6dcd7d4032
-        with:
-          devhub: ${{ env.DEV_HUB_ALIAS }}
-          deleteJobType: orphans
-          isCiPool: ${{ matrix.pool.isCiPool }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required to be able to download packages from GHCR in SFP
 
       - name: Push logged metrics
         if: ${{ always() }}
