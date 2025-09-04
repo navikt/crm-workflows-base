@@ -40,6 +40,7 @@ runs:
       run: bash "$GITHUB_ACTION_PATH/scripts/prepare_pool.sh"
 
     - name: Delete orphans
+      if: ${{ always() }}
       uses: navikt/sf-gha-deleteScratchPool@1f0986d2312a2969e658946acb496f6dcd7d4032
       with:
         devhub: ${{ inputs.dev-hub }}
