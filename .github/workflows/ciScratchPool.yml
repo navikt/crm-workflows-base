@@ -14,13 +14,41 @@ on:
 
 jobs:
   updatePackageDependencies:
-    uses: navikt/crm-workflows-base/.github/workflows/ciUpdateDependencyVersionSfDxProject.yml@master
-    with:
-      gitRef: "main"
-    secrets:
-      CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL}}
+    runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      TARGET_ORG_ALIAS: dev-hub
+    steps:
+      # Install SF
+      - name: Install SF
+        uses: navikt/crm-workflows-base/.github/actions/installSF@master
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          alias: ${{ env.TARGET_ORG_ALIAS }}
+
+      - uses: navikt/crm-workflows-base/.github/actions/updateSfdxProjectDependencies@main
+        id: update-dependencies
+
+        with:
+          target-org: ${{ env.TARGET_ORG_ALIAS }}
+          sfdx-project-path: sfdx-project.json
+
+      - name: Commit changes
+        uses: navikt/sf-platform/.github/actions/commitFiles@cfe393a0ec7dd2fa8af1388bc159192673a87c94
+        if: ${{ steps.update-dependencies.outputs.updated == 'true' }}
+        with:
+          files: sfdx-project.json
+          commitMessage: Update package versions for impacted packages
+          token: ${{ secrets.GITHUB_TOKEN }}
+
   createPool:
     if: ${{ always() }}
     needs: [updatePackageDependencies]
