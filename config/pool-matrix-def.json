@@ -1,0 +1,14 @@
+{
+  "pools": [
+    {
+      "poolConfigPath": "config/ci-pool-def.json",
+      "deleteJobType": "allscratchorgs",
+      "isCiPool": true
+    },
+    {
+      "poolConfigPath": "config/dev-pool-def.json",
+      "deleteJobType": "unassigned",
+      "isCiPool": false
+    }
+  ]
+}

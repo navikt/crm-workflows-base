@@ -1,0 +1,124 @@
+name: Replenish Scratch Pools
+
+on:
+  workflow_dispatch:
+    inputs:
+      pool-matrix-def-path:
+        description: Path to the file describing the pools to create
+        required: true
+        type: string
+        default: config/pool-matrix-def.json
+      clear-pools:
+        description: If checked, clear unused scratches in the pools
+        required: true
+        type: boolean
+        default: false
+      sfp-version:
+        description: The version of SFP to use
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      pool-matrix-def-path:
+        description: Path to the file describing the pools to create
+        required: false
+        default: config/pool-matrix-def.json
+        type: string
+      clear-pools:
+        description: If checked, clear unused scratches in the pools
+        required: false
+        default: false
+        type: boolean
+      sfp-version:
+        description: The version of SFP to use
+        required: false
+        type: string
+    secrets:
+      DEV_HUB_SFDX_URL:
+        required: true
+      METRICS_KEY:
+        required: true
+      CRM_PACKAGE_KEY:
+        required: false
+jobs:
+  prepareMatrixRun:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      matrix-json: ${{ steps.getMatrix.outputs.matrix-json }}
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: getMatrix
+        run: |
+          set -euo pipefail
+          if [ ! -f "$POOL_MATRIX_DEF_PATH" ]; then
+              echo "::error title=Matrix file not found::'$POOL_MATRIX_DEF_PATH'"
+              exit 1
+          fi
+
+          if ! jq -e '.pools and (.pools | type=="array")' "$POOL_MATRIX_DEF_PATH" >/dev/null; then
+              echo "::error title=Invalid matrix file::Expected a top-level 'pools' array in $POOL_MATRIX_DEF_PATH"
+              jq . "$POOL_MATRIX_DEF_PATH" || true
+              exit 1
+          fi
+          content=$(jq --compact-output '.' "$POOL_MATRIX_DEF_PATH")
+          echo "matrix-json=$content" >> "$GITHUB_OUTPUT"
+        env:
+          POOL_MATRIX_DEF_PATH: ${{ inputs.pool-matrix-def-path }}
+
+  replenish:
+    concurrency:
+      group: replenish-${{ github.workflow }}-${{ github.ref_name }}-${{ matrix.pool.poolConfigPath }}
+      cancel-in-progress: false
+    name: Replenish Pool
+    needs: prepareMatrixRun
+    runs-on: ubuntu-latest
+    container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp@sha256:cf56952fa4a57a6ed22f90e2fedebbfbc05600b7f21e440277107ff7d9505771' }}
+    timeout-minutes: 720 #Set to Maximum Time out
+    strategy:
+      fail-fast: false
+      matrix:
+        pool: ${{ fromJson(needs.prepareMatrixRun.outputs.matrix-json).pools }}
+    permissions:
+      contents: read
+      packages: read
+    env:
+      POOL_TAG: ""
+      CLEAR_POOLS: ${{ inputs.clear-pools }}
+      DEV_HUB_ALIAS: dev-hub
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: "Authenticate Dev Hub"
+        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@c941a6ea7474883b849e53f69eb4eeba83854fe7
+        with:
+          auth-url: ${{ secrets.DEV_HUB_SFDX_URL }}
+          setDefaultDevhubUsername: true
+          alias: ${{ env.DEV_HUB_ALIAS }}
+
+      - name: Create Pool
+        uses: navikt/crm-workflows-base/.github/actions/preparePool@c8714dce6a7922fd52e1a587929d579464b24419
+        with:
+          dev-hub: ${{ env.DEV_HUB_ALIAS }}
+          sfdx-project-path: ./sfdx-project.json
+          package-key: ${{ secrets.CRM_PACKAGE_KEY }}
+          pool-config-path: ${{ matrix.pool.poolConfigPath }}
+          delete-job-type: ${{ matrix.pool.deleteJobType }}
+          clear-pools: ${{ inputs.clear-pools }}
+          is-ci-pool: ${{ matrix.pool.isCiPool }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required to be able to download packages from GHCR in SFP
+
+      - name: Push logged metrics
+        if: ${{ always() }}
+        uses: navikt/sf-platform/.github/actions/pushLoggedMetrics@d77aeff38e7ba9938368c80e415f8615b1cc4308
+        with:
+          metricsKey: ${{ secrets.METRICS_KEY }}
