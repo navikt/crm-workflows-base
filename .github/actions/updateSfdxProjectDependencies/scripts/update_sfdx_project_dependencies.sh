@@ -35,7 +35,7 @@ jq -e '
 ' "$TMP_VERSIONS.raw" > "$TMP_VERSIONS"
 
 # Update dependencies.versionNumber for matching packages
-jq --argfile versions "$TMP_VERSIONS" '
+jq --slurpfile versions "$TMP_VERSIONS" '
   .packageDirectories |=
   (map(
     if (.dependencies // empty) != [] then
