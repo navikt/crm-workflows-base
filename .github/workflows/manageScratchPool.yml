@@ -42,6 +42,7 @@ on:
         required: false
 jobs:
   prepareMatrixRun:
+    name: Prepare Matrix Run
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -53,7 +54,8 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - id: getMatrix
+      - name: Get pool matrix
+        id: getMatrix
         run: |
           set -euo pipefail
           if [ ! -f "$POOL_MATRIX_DEF_PATH" ]; then
@@ -91,13 +93,14 @@ jobs:
       CLEAR_POOLS: ${{ inputs.clear-pools }}
       DEV_HUB_ALIAS: dev-hub
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: "Checkout code"
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: "Authenticate Dev Hub"
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@c941a6ea7474883b849e53f69eb4eeba83854fe7
+        uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
         with:
           auth-url: ${{ secrets.DEV_HUB_SFDX_URL }}
           setDefaultDevhubUsername: true
@@ -135,6 +138,33 @@ jobs:
           pool-tag: ${{ steps.setPoolTag.outputs.pool-tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required to be able to download packages from GHCR in SFP
+
+      - name: Push logged metrics
+        if: ${{ always() }}
+        uses: navikt/sf-platform/.github/actions/pushLoggedMetrics@d77aeff38e7ba9938368c80e415f8615b1cc4308
+        with:
+          metricsKey: ${{ secrets.METRICS_KEY }}
+  cleanup:
+    name: Cleanup
+    needs: replenish
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp@sha256:cf56952fa4a57a6ed22f90e2fedebbfbc05600b7f21e440277107ff7d9505771' }}
+    env:
+      DEV_HUB_ALIAS: dev-hub
+    steps:
+      - name: "Authenticate Dev Hub"
+        uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
+        with:
+          auth-url: ${{ secrets.DEV_HUB_SFDX_URL }}
+          setDefaultDevhubUsername: true
+          alias: ${{ env.DEV_HUB_ALIAS }}
+      - name: Delete orphans
+        uses: navikt/sf-gha-deleteScratchPool@1f0986d2312a2969e658946acb496f6dcd7d4032
+        with:
+          devhub: ${{ env.DEV_HUB_ALIAS }}
+          deleteJobType: orphans
+          isCiPool: false
 
       - name: Push logged metrics
         if: ${{ always() }}

@@ -14,6 +14,7 @@ on:
 
 jobs:
   updatePackageDependencies:
+    name: Update package dependencies
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -29,12 +30,14 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
+      - name: Authenticate Target Org
+        uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: ${{ env.TARGET_ORG_ALIAS }}
 
-      - uses: navikt/crm-workflows-base/.github/actions/updateSfdxProjectDependencies@main
+      - name: Update sfdx-project.json dependencies
+        uses: navikt/crm-workflows-base/.github/actions/updateSfdxProjectDependencies@main
         id: update-dependencies
 
         with:
@@ -50,6 +53,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   createPool:
+    name: Create Scratch Pools
     if: ${{ always() }}
     needs: [updatePackageDependencies]
     permissions:
