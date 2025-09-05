@@ -37,7 +37,7 @@ jobs:
           alias: ${{ env.TARGET_ORG_ALIAS }}
 
       - name: Update sfdx-project.json dependencies
-        uses: navikt/crm-workflows-base/.github/actions/updateSfdxProjectDependencies@main
+        uses: navikt/sf-gha-update-sfdx-project-dependencies@1a644c3aeb569394ed71ddc889b1f08d4bed6117
         id: update-dependencies
 
         with:
