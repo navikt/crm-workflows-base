@@ -104,7 +104,7 @@ jobs:
           if [ -d "${{ inputs.unpackagable }}" ]; then
             echo "Starting deployment of ${{ inputs.unpackagable }}"
             echo "deployMetadata=true" >> $GITHUB_OUTPUT
-            ${{ inputs.SFDX_ENV }} sf project deploy start --source-dir ${{inputs.unpackagable}} --json | tee output.json
+            ${{ inputs.SFDX_ENV }} sf project deploy start --source-dir ${{inputs.unpackagable}} --ignore-conflicts --json | tee output.json
             echo "deployOutput=$(jq -r '.message' output.json)" >> $GITHUB_OUTPUT
             if [ $(jq -r '.status' output.json) == "0" ]; then
               echo "successfullyDeployedMetadata=true" >> $GITHUB_OUTPUT
