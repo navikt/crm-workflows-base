@@ -168,6 +168,6 @@ jobs:
 
       - name: Push logged metrics
         if: ${{ always() }}
-        uses: navikt/sf-platform/.github/actions/pushLoggedMetrics@d77aeff38e7ba9938368c80e415f8615b1cc4308
+        uses: navikt/sf-platform/.github/actions/pushLoggedMetrics@537bd8d2169ece77edbdfcea4e6dbe626221e9c0
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
