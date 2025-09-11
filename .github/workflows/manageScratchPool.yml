@@ -128,7 +128,7 @@ jobs:
           deleteJobType: ${{ matrix.pool.deleteJobType }}
           isCiPool: ${{ inputs.is-ci-pool }}
       - name: Create Pool
-        uses: navikt/crm-workflows-base/.github/actions/preparePool@main
+        uses: navikt/sf-gha-prepare-pool@850f5de8487be37ddbc3a69beb16620fdfd2037d
         with:
           dev-hub: ${{ env.DEV_HUB_ALIAS }}
           sfdx-project-path: ./sfdx-project.json
