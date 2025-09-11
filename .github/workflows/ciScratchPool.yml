@@ -45,7 +45,7 @@ jobs:
           sfdx-project-path: sfdx-project.json
 
       - name: Commit changes
-        uses: navikt/sf-platform/.github/actions/commitFiles@cfe393a0ec7dd2fa8af1388bc159192673a87c94
+        uses: navikt/sf-gha-commit-files@216c5afbc28f2122a1385838e65bceb88af7a1c1
         if: ${{ steps.update-dependencies.outputs.updated == 'true' }}
         with:
           files: sfdx-project.json
