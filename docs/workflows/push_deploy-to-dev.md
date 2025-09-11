@@ -43,7 +43,7 @@ jobs:
 
       # Authenticate prod
       - name: Authenticate prod
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: prod
@@ -52,7 +52,7 @@ jobs:
 
       # Authenticate dev sandbox
       - name: Authenticate dev sandbox
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
         with:
           auth-url: ${{ secrets.DEV_SFDX_URL }}
           alias: dev
