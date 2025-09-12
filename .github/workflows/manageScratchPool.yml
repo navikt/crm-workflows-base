@@ -141,7 +141,7 @@ jobs:
 
       - name: Push logged metrics
         if: ${{ always() }}
-        uses: navikt/sf-platform/.github/actions/pushLoggedMetrics@d77aeff38e7ba9938368c80e415f8615b1cc4308
+        uses: navikt/sf-gha-push-statsd-metrics@643bfaed45ec2cb4caff47ed57bb3b2f01586fe9
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
   cleanup:
@@ -168,6 +168,6 @@ jobs:
 
       - name: Push logged metrics
         if: ${{ always() }}
-        uses: navikt/sf-platform/.github/actions/pushLoggedMetrics@537bd8d2169ece77edbdfcea4e6dbe626221e9c0
+        uses: navikt/sf-gha-push-statsd-metrics@643bfaed45ec2cb4caff47ed57bb3b2f01586fe9
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
