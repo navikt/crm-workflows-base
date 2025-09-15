@@ -19,6 +19,8 @@ on:
         required: false
       DEV_HUB_SFDX_URL:
         required: true
+      METRICS_KEY:
+        required: false
 jobs:
   validate:
     name: Validate
