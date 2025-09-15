@@ -166,6 +166,10 @@ jobs:
           deleteJobType: orphans
           isCiPool: false
 
+      - name: Genereate Pool Metrics
+        run: |
+          sfp pool metrics publish --targetdevhubusername "$DEV_HUB_ALIAS"
+
       - name: Push logged metrics
         if: ${{ always() }}
         uses: navikt/sf-gha-push-statsd-metrics@643bfaed45ec2cb4caff47ed57bb3b2f01586fe9
