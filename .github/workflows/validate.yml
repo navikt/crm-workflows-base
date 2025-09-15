@@ -23,7 +23,7 @@ jobs:
   validate:
     name: Validate
     runs-on: ubuntu-latest
-    container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp@sha256:cf56952fa4a57a6ed22f90e2fedebbfbc05600b7f21e440277107ff7d9505771' }}
+    container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp@sha256:aa4d765c81f3901700d0e3695dbb1ce47f8ed3b60564db2e02892dfdc50c0501' }}
     timeout-minutes: 720 #Set to Maximum Time out
     permissions:
       contents: read
