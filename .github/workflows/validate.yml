@@ -1,316 +1,88 @@
 name: "Validate"
 on:
   workflow_call:
+    inputs:
+      sfp-version:
+        description: The version of SFP to use
+        required: false
+        type: string
+      ref:
+        description: The git ref to checkout
+        required: false
+        type: string
+      base-ref:
+        description: The base git ref to compare changes against (used for PRs)
+        required: false
+        type: string
+    secrets:
+      PACKAGE_KEY:
+        required: false
+      DEV_HUB_SFDX_URL:
+        required: true
 jobs:
-  # testValidate:
-  #   uses: navikt/crm-workflows-base/.github/workflows/ciValidate.yml@master
-  #   secrets: inherit
-
-  # ################################################################# #
-  # ########################### COMPILE ############################# #
-  # ################################################################# #
-  setup:
-    name: Setup
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
+    container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp@sha256:cf56952fa4a57a6ed22f90e2fedebbfbc05600b7f21e440277107ff7d9505771' }}
+    timeout-minutes: 720 #Set to Maximum Time out
     permissions:
       contents: read
+    env:
+      DEV_HUB_ALIAS: devhub
     steps:
-      # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-      # Install SF
-      - name: Install SF
-        uses: navikt/crm-workflows-base/.github/actions/installSF@master
+      - name: Delete unpackagable
+        run: |
+          rm -rf **/unpackagable
+          rm -rf **/unpackagable-with-auto-deploy
+          rm -rf **/scratch-org
+
+      - name: Generate package keys
+        id: generate-package-keys
+        uses: navikt/crm-workflows-base/.github/actions/createPackageKeyPairs@main
+        with:
+          sfdx-project-path: sfdx-project.json
+          package-key: ${{ secrets.PACKAGE_KEY }}
 
       # Authenticate dev hub
       - name: Authenticate Dev Hub
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        uses: navikt/sf-gha-authenticateOrg@60379a2f63da30da5df533b40823c8a13dad168f
         with:
-          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
-          alias: prod
+          auth-url: ${{ secrets.DEV_HUB_SFDX_URL }}
+          alias: ${{ env.DEV_HUB_ALIAS }}
           setDefaultUsername: true
           setDefaultDevhubUsername: true
-
-      # Create scratch org
-      - name: Create scratch org
-        run: sf org create scratch --definition-file config/project-scratch-def.json --alias scratch-org --set-default --duration-days 1
-
-      # Set SCRATCH_ORG_SFDX_AUTH_URL.txt
-      # ! saves sf auth url as artifact to circumvent GitHub Actions censoring of the value (which occurs when used with job output)
-      # ! artifact is later deleted
-      - name: Set SCRATCH_ORG_SFDX_AUTH_URL.txt
-        id: set-auth-url
-        run: sf org display --target-org scratch-org --verbose --json | jq '.result.sfdxAuthUrl' | sed 's/\"//g' > SCRATCH_ORG_SFDX_AUTH_URL.txt
-
-      # Upload SCRATCH_ORG_SFDX_AUTH_URL.txt
-      - name: Upload SF AuthUrl
-        uses: actions/upload-artifact@v4
-        with:
-          name: sfdx-auth-url
-          path: SCRATCH_ORG_SFDX_AUTH_URL.txt
-
-      # Install dependent packages
-      - name: Install packages
-        run: |
-          packageAliases=$(jq -r '.packageDirectories[0].dependencies[]?.package' sfdx-project.json)
-
-
-          if [ -z "$packageAliases" ]
-          then
-            echo "No packages to install"
-          else
-
-            echo $packageAliases
-
-            for packageAlias in ${packageAliases[@]}; do
-              echo $packageAlias
-
-              packageId=$(jq --arg alias ${packageAlias} -r '.packageAliases | to_entries[] | select( .key == $alias ).value' sfdx-project.json)
-              packageVersionNumber=$(jq --arg alias ${packageAlias} -r '.packageDirectories[0].dependencies[] | select(.package == $alias).versionNumber' sfdx-project.json)
-
-              echo $packageId
-              echo $packageVersionNumber
-
-              sf package version list -p $packageId --concise --order-by "MajorVersion DESC, MinorVersion DESC, PatchVersion DESC, BuildNumber DESC" --json | jq | tee subscriberPackageVersionList.json >/dev/null
-
-              subscriberPackageVersionId=$(jq --arg version ${packageVersionNumber} -r 'if (.result | length) == 0 then "NO_RESULT" else [.result[] | select(.Version==$version or (.Version|startswith($version | [splits("LATEST")] | .[0])))] | .[0].SubscriberPackageVersionId end' subscriberPackageVersionList.json)
-
-              echo $subscriberPackageVersionId
-
-              if [ $subscriberPackageVersionId == NO_RESULT ]
-              then
-                  echo
-                  echo ERROR: Could not install package $packageAlias
-              else
-                  sf package install --target-org scratch-org --package $subscriberPackageVersionId --no-prompt --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --wait 15 --publish-wait 10
-              fi
-            done
-          fi
-
+      - name: Validate metadata
         shell: bash
-
-  compile:
-    name: Compile Metadata
-    needs: setup
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      # Checkout source code
-      - name: Checkout source code
-        uses: actions/checkout@v4
-
-      # Install SF
-      - name: Install SF
-        uses: navikt/crm-workflows-base/.github/actions/installSF@master
-
-        # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-      - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v4
-        with:
-          name: sfdx-auth-url
-
-      # Authenticate scratch org
-      - name: Authenticate scratch org
-        run: sf org login sfdx-url --sfdx-url-file ./SCRATCH_ORG_SFDX_AUTH_URL.txt --alias scratch-org --set-default
-
-      # Delete unpackagable and scratch-org folder
-      - name: Delete unpackagable
         run: |
-          rm -rf ./force-app/unpackagable
-          rm -rf ./force-app/unpackagable-with-auto-deploy
-          rm -rf ./force-app/scratch-org
-
-      # Deploy source to scratch org
-      - name: Push source to scratch org
-        run: sf project deploy start
-
-  # ################################################################# #
-  # ########################### RUN TESTS ########################### #
-  # ################################################################# #
-  run-tests:
-    name: Run Apex Tests
-    needs: compile
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    outputs:
-      hasTestClasses: ${{ steps.test-classes-in-repo.outputs.classes }}
-    steps:
-      # Checkout source code
-      - name: Checkout source code
-        uses: actions/checkout@v4
-
-      # Install SF
-      - name: Install SF
-        uses: navikt/crm-workflows-base/.github/actions/installSF@master
-
-      # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-      - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v4
-        with:
-          name: sfdx-auth-url
-
-      # Authenticate scratch org
-      - name: Authenticate scratch org
-        run: sf org login sfdx-url --sfdx-url-file ./SCRATCH_ORG_SFDX_AUTH_URL.txt --alias scratch-org --set-default
-
-      # Delete unpackagable and scratch-org folder
-      - name: Delete unpackagable
-        run: |
-          rm -rf ./force-app/unpackagable
-          rm -rf ./force-app/unpackagable-with-auto-deploy
-          rm -rf ./force-app/scratch-org
-
-      # Get all test classes from current repo
-      - name: Get all test classes from current repo
-        id: test-classes-in-repo
-        run: |
-          classes=""
-          cd force-app
-          for p in $( grep -r -l -i --include="*.cls" "@istest" . | sed 's@.*/@@' ); do
-            classes+="--tests "$(echo  $p | cut -f 1 -d '.')" "
-          done
-          classes=$(echo "$classes" | sed 's/[[:space:]]\+$//')
-          echo "classes=$classes" >> "$GITHUB_OUTPUT"
-
-      # Run Apex tests in scratch org
-      - name: Run Apex tests
-        if: steps.test-classes-in-repo.outputs.classes
-        run: sf apex run test ${{ steps.test-classes-in-repo.outputs.classes }} --code-coverage --result-format human --output-dir ./tests/apex --wait 30
-
-      # Upload Apex test results
-      - name: Upload Apex test results
-        if: steps.test-classes-in-repo.outputs.classes && success() || steps.test-classes-in-repo.outputs.classes && failure() # uploads tests results even if tests fail
-        uses: actions/upload-artifact@v4
-        with:
-          name: apex-tests
-          path: ./tests/apex
-
-  # ################################################################# #
-  # ###################### CHECK CODE COVERAGE ###################### #
-  # ################################################################# #
-  check-code-coverage:
-    name: Validate 85% Code Coverage
-    needs: run-tests
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      # Checkout source code
-      - name: Checkout source code
-        uses: actions/checkout@v4
-
-      # Download tests
-      - name: Download tests
-        if: ${{ needs.run-tests.outputs.hasTestClasses }}
-        uses: actions/download-artifact@v4
-        with:
-          name: apex-tests
-          path: ./tests/apex
-
-      # Delete unpackagable and scratch-org folder
-      - name: Delete unpackagable
-        run: |
-          rm -rf ./force-app/unpackagable
-          rm -rf ./force-app/unpackagable-with-auto-deploy
-          rm -rf ./force-app/scratch-org
-
-      # Get code coverage
-      - name: Get code coverage
-        id: getCodeCoverage
-        if: ${{ needs.run-tests.outputs.hasTestClasses }}
-        run: |
-          classes=()
-          cd ./force-app
-          for p in $( grep -r -l -i --include="*.cls" "" . | sed 's@.*/@@' ); do
-            class=$(echo $p | cut -f 1 -d '.')
-            classes[${#classes[@]}]=$class
-          done
-          cd ..
-
-          totalCovered=0
-          totalLines=0
-
-          # ! calculate code coverage for this repo only
-          for row in $(jq -c -r '.[]' <<< "$(cat ./tests/apex/test-result-codecoverage.json)"); do
-            name=$(jq -r '.name' <<< $row)
-            if [[ " ${classes[@]} " =~ " ${name} " ]]; then
-            
-              covered=$(jq '.totalCovered' <<< $row)
-              lines=$(jq '.totalLines' <<< $row)
-              
-              if [[ $covered != "null" && $lines != "null" && $lines != "0" ]]; then
-                let totalCovered+=covered
-                let totalLines+=lines
-              fi
-            fi
-          done
-
-          let codecoverage=totalCovered*100/totalLines
-          echo "codecoverage=$(echo $codecoverage)" >> $GITHUB_OUTPUT
-
-      # Validate at least 85% code coverage
-      - name: Validate at least 85% code coverage
-        if: ${{ needs.run-tests.outputs.hasTestClasses }}
-        run: |
-          codecoverage=${{ steps.getCodeCoverage.outputs.codecoverage }}
-          echo "Code coverage is $codecoverage%"
-
-          # ! do the actual check on code coverage percentage
-          if [ $codecoverage -lt 85 ]; then
-            echo "Because it is less than 85%, the validation failed"
-            exit 125
-          else
-            echo "Because it is equal or more than 85%, the validation succeeded"
+          args=(sfp validate -p ci -v "$DEV_HUB_ALIAS" --coveragepercent 85 --disableartifactupdate  --deletescratchorg --tag "$GITHUB_REPO")
+          if [ -n "$SFP_PACKAGE_KEY_PAIRS" ]; then
+            args+=(--keys "$SFP_PACKAGE_KEY_PAIRS")
           fi
 
-  # ################################################################# #
-  # ############################ CLEANUP ############################ #
-  # ################################################################# #
-  cleanup:
-    name: Cleanup
-    needs: [setup, compile, run-tests, check-code-coverage]
-    if: always()
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      # Checkout source code
-      - name: Checkout source code
-        uses: actions/checkout@v4
+          if [ -n "$REF" ]; then
+            args+=(--targetbranch "$REF")
+          fi
 
-      # Install SF
-      - name: Install SF
-        uses: navikt/crm-workflows-base/.github/actions/installSF@master
+          if [ -n "$BASE_REF" ]; then
+            args+=(--basebranch "$BASE_REF")
+          fi
 
-      # Authenticate dev hub
-      - name: Authenticate Dev Hub
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+          echo "Running: ${args[*]}"
+          "${args[@]}"
+        env:
+          SFP_PACKAGE_KEY_PAIRS: ${{ steps.generate-package-keys.outputs.package-keys }}
+          REF: ${{ inputs.ref }}
+          BASE_REF: ${{ inputs.base-ref }}
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: Push logged metrics
+        if: ${{ always() }}
+        uses: navikt/sf-gha-push-statsd-metrics@643bfaed45ec2cb4caff47ed57bb3b2f01586fe9
         with:
-          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
-          alias: prod
-          setDefaultUsername: true
-          setDefaultDevhubUsername: true
-
-      # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-      - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v4
-        with:
-          name: sfdx-auth-url
-
-      # Authenticate scratch org
-      - name: Authenticate scratch org
-        run: sf org login sfdx-url --sfdx-url-file ./SCRATCH_ORG_SFDX_AUTH_URL.txt --alias scratch-org --set-default
-
-      # Delete SCRATCH_ORG_SFDX_AUTH_URL.txt
-      - name: Delete SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: sfdx-auth-url
-
-      # Delete scratch orgs
-      - name: Delete scratch org
-        if: always()
-        run: sf org delete scratch --target-org=scratch-org --no-prompt
+          metricsKey: ${{ secrets.METRICS_KEY }}
