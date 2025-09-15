@@ -1,0 +1,22 @@
+name: Generate package key pairs
+description: Generate package key pairs based on submitted package key and path to `sfdx-project.json`sfdx-project.json
+inputs:
+  sfdx-project-path:
+    description: The path to sfdx-project.json
+    required: true
+  package-key:
+    description: The key of the packages to install
+    required: true
+outputs:
+  package-keys:
+    description: The generated package keys
+runs:
+  using: "composite"
+  steps:
+    - name: Create package key pairs
+      id: create_keys
+      shell: bash
+      env:
+        CRM_PACKAGE_KEY: ${{ inputs.package-key }}
+        SFDX_PROJECT_PATH: ${{ inputs.sfdx-project-path }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/createPackageKeyPairs.sh"
