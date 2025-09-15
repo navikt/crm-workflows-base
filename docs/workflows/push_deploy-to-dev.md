@@ -38,8 +38,8 @@ jobs:
         uses: actions/checkout@v2
 
       # Install SFDX
-      - name: Install SFDX
-        uses: navikt/crm-workflows-base/.github/actions/installSF@master
+      - name: Install SF CLI
+        uses: navikt/sf-gha-install-sf-cli@3f1abbc990b03fb544e80169920fea2e94946d1a
 
       # Authenticate prod
       - name: Authenticate prod
