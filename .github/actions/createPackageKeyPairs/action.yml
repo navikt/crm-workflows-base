@@ -9,6 +9,7 @@ inputs:
     required: true
 outputs:
   package-keys:
+    value: ${{ steps.create_keys.outputs.package-keys }}
     description: The generated package keys
 runs:
   using: "composite"
