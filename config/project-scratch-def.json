@@ -7,10 +7,6 @@
     "API",
     "Communities",
     "ContactsToMultipleAccounts",
-    "CustomerCommunity",
-    "CustomerCommunityLogin",
-    "CustomerCommunityPlus",
-    "CustomerCommunityPlusLogin",
     "FieldService:5",
     "FieldServiceDispatcherUser:5",
     "FieldServiceMobileUser:5",
@@ -21,7 +17,6 @@
     "LiveAgent",
     "LiveMessage",
     "PersonAccounts",
-    "PlatformCache",
     "ProcessBuilder",
     "ServiceCloud",
     "ServiceUser",
@@ -78,6 +73,9 @@
     },
     "liveAgentSettings": {
       "enableLiveAgent": true
+    },
+    "liveMessageSettings": {
+      "enableLiveMessage": true
     },
     "nameSettings": {
       "enableMiddleName": true
