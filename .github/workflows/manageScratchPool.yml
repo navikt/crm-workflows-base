@@ -168,6 +168,7 @@ jobs:
 
       - name: Genereate Pool Metrics
         run: |
+          export SFPOWERSCRIPTS_STATSD=true
           sfp pool metrics publish --targetdevhubusername "$DEV_HUB_ALIAS"
 
       - name: Push logged metrics
