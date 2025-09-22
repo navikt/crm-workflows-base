@@ -103,15 +103,48 @@ jobs:
             fi
             echo "versionNumber (requested): $versionNumber"
       
-            # 2) List available versions (robust against preamble/warnings on stdout)
-            # Keep only from the first "{" onward (drops any stray text before JSON)
-            sf package version list -p "$packageId" --concise \
-              --order-by "MajorVersion DESC, MinorVersion DESC, PatchVersion DESC, BuildNumber DESC" \
-              --json 2>sf_warn.log \
-              | awk 'found{print} /^\{/{found=1}' \
-              | jq . > subscriberPackageVersionList.json || {
-                echo "ERROR: Failed to parse JSON for $alias (see sf_warn.log)"; cat sf_warn.log >&2; exit 3;
-              }
+            # 2) List available versions (robust against warnings/ANSI/BOM in stdout)
+            clean_json() {
+              # strip ANSI, strip BOM, start from first {, stop after last }
+              sed -r 's/\x1B\[[0-9;]*[A-Za-z]//g' \
+              | sed '1s/^\xEF\xBB\xBF//' \
+              | awk '
+                  BEGIN{buf="";depth=0;found=0}
+                  {
+                    # find first {
+                    if(!found){
+                      i=index($0,"{");
+                      if(i==0) next;
+                      line=substr($0,i);
+                      found=1;
+                    } else {
+                      line=$0
+                    }
+                    # accumulate and track brace depth; braces inside strings are rare here, good enough
+                    for(j=1;j<=length(line);j++){
+                      c=substr(line,j,1);
+                      buf=buf c;
+                      if(c=="{") depth++;
+                      else if(c=="}") depth--;
+                    }
+                    if(found && depth==0){
+                      print buf;
+                      exit
+                    }
+                  }
+                  END{ if(found && depth==0) exit 0; else exit 1 }
+                '
+            }
+            
+            # call sf, sanitize, then jq it
+            if ! sf package version list -p "$packageId" --concise \
+                  --order-by "MajorVersion DESC, MinorVersion DESC, PatchVersion DESC, BuildNumber DESC" \
+                  --json 2>sf_warn.log \
+                  | clean_json \
+                  | jq . > subscriberPackageVersionList.json
+            then
+              echo "ERROR: Failed to parse JSON for $alias (see sf_warn.log)"; cat sf_warn.log >&2; exit 3
+            fi
       
             # 3) Pick exact match OR prefix match when versionNumber ends with LATEST
             # Strip a trailing 'LATEST' when present for prefix matching
