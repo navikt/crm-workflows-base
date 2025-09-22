@@ -55,31 +55,30 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
+      
           : "${CRM_PACKAGE_KEY:=${{ secrets.CRM_PACKAGE_KEY }}}"
-
+      
           # 1) Collect unique dependency aliases across ALL packageDirectories
           mapfile -t packageAliases < <(
             jq -r '
-              [ .packageDirectories[]?                        # all dirs (src-temp, force-app, etc.)
-                | .dependencies[]?                            # any dependencies array
-                | .package                                    # pick alias
-              ] | unique[]?                                   # dedupe + allow 0 results
+              [ .packageDirectories[]?              # all dirs (src-temp, force-app, etc.)
+                | .dependencies[]?                  # any dependencies array
+                | .package                          # pick alias
+              ] | unique[]?                         # dedupe + allow 0 results
             ' sfdx-project.json
           )
-
+      
           if ((${#packageAliases[@]} == 0)); then
             echo "No packages to install (no dependencies found under any packageDirectories)."
             exit 0
           fi
-
+      
           echo "Dependency aliases to install: ${packageAliases[*]}"
-
-          # 2) For each dependency alias, resolve packageId, versionNumber, latest matching version, and whether to pass a key
+      
           for alias in "${packageAliases[@]}"; do
             echo "----"
             echo "Processing: $alias"
-
+      
             # Resolve packageId from packageAliases
             packageId=$(jq -r --arg alias "$alias" '.packageAliases[$alias] // empty' sfdx-project.json)
             if [[ -z "$packageId" ]]; then
@@ -87,64 +86,76 @@ jobs:
               continue
             fi
             echo "packageId: $packageId"
-
+      
             # Resolve requested versionNumber from matching dependency (first match wins if defined multiple places)
             versionNumber=$(jq -r --arg alias "$alias" '
               first(
-                .packageDirectories[]? 
-                | .dependencies[]? 
-                | select(.package == $alias) 
+                .packageDirectories[]?
+                | .dependencies[]?
+                | select(.package == $alias)
                 | .versionNumber
               ) // empty
             ' sfdx-project.json)
-
+      
             if [[ -z "$versionNumber" ]]; then
               echo "WARN: No versionNumber configured for '$alias' in dependencies. Skipping."
               continue
             fi
             echo "versionNumber (requested): $versionNumber"
-
-            # Query available package versions and pick exact or prefix match (handles .LATEST pattern)
+      
+            # 2) List available versions (robust against preamble/warnings on stdout)
+            # Keep only from the first "{" onward (drops any stray text before JSON)
             sf package version list -p "$packageId" --concise \
               --order-by "MajorVersion DESC, MinorVersion DESC, PatchVersion DESC, BuildNumber DESC" \
-              --json | jq . > subscriberPackageVersionList.json
-
-            subscriberPackageVersionId=$(jq -r --arg v "$versionNumber" '
-              if (.result | length) == 0
-              then "NO_RESULT"
-              else (
-                [ .result[]
-                  | select(.Version == $v or (.Version | startswith(($v | split("LATEST")[0]))))
-                ] | .[0].SubscriberPackageVersionId
-              )
-            ' subscriberPackageVersionList.json)
-
+              --json 2>sf_warn.log \
+              | awk 'found{print} /^\{/{found=1}' \
+              | jq . > subscriberPackageVersionList.json || {
+                echo "ERROR: Failed to parse JSON for $alias (see sf_warn.log)"; cat sf_warn.log >&2; exit 3;
+              }
+      
+            # 3) Pick exact match OR prefix match when versionNumber ends with LATEST
+            # Strip a trailing 'LATEST' when present for prefix matching
+            subscriberPackageVersionId=$(
+              jq -r --arg v "$versionNumber" '
+                (.result // []) as $r
+                | if ($r | length) == 0 then "NO_RESULT"
+                  else (
+                    $v as $req
+                    | ($req | sub("LATEST$"; "")) as $prefix
+                    | [ $r[]
+                        | select(.Version == $req or (.Version | startswith($prefix)))
+                      ]
+                    | (.[0].SubscriberPackageVersionId // "NO_RESULT")
+                  )
+                end
+              ' subscriberPackageVersionList.json
+            )
+      
             if [[ "$subscriberPackageVersionId" == "NO_RESULT" || -z "$subscriberPackageVersionId" ]]; then
               echo "ERROR: Could not find a matching version for '$alias' ($versionNumber). Skipping."
               continue
             fi
             echo "SubscriberPackageVersionId (selected): $subscriberPackageVersionId"
-
+      
             # Decide if this alias gets the installation key:
             # - packageKeyConfig[alias] == false  => NO key
             # - anything else (missing/true)      => USE key (if provided)
             use_key=$(jq -r --arg alias "$alias" '((.packageKeyConfig // {})[$alias] != false) | tostring' sfdx-project.json)
             echo "use_key (per packageKeyConfig): $use_key"
-
-            # Build install args
+      
             args=(sf package install --target-org scratch-org --package "$subscriberPackageVersionId" --no-prompt --wait 15 --publish-wait 10)
-
+      
             if [[ "$use_key" == "true" ]]; then
               if [[ -n "${CRM_PACKAGE_KEY:-}" ]]; then
                 echo "::add-mask::$CRM_PACKAGE_KEY"
                 args+=(--installation-key "$CRM_PACKAGE_KEY")
               else
-                echo "WARN: '$alias' wants a key (not disabled) but CRM_PACKAGE_KEY is empty. Install will likely fail if a key is required."
+                echo "WARN: '$alias' marked key-enabled but CRM_PACKAGE_KEY is empty. Install may fail if key is required."
               fi
             else
               echo "packageKeyConfig[$alias] == false → installing WITHOUT key."
             fi
-
+      
             echo "Installing: ${args[*]}"
             "${args[@]}"
           done
