@@ -10,23 +10,23 @@
       "dependencies": [
         {
           "package": "sf-external-force-di",
-          "versionNumber": "0.1.0.LATEST"
+          "versionNumber": "0.1.0.1"
         },
         {
           "package": "platform-data-model",
-          "versionNumber": "0.1.0.LATEST"
+          "versionNumber": "0.1.2.1"
         },
         {
           "package": "custom-metadata-dao",
-          "versionNumber": "0.1.0.LATEST"
+          "versionNumber": "0.1.2.1"
         },
         {
           "package": "custom-permission-helper",
-          "versionNumber": "0.1.0.LATEST"
+          "versionNumber": "0.1.2.1"
         },
         {
           "package": "feature-toggle",
-          "versionNumber": "0.1.0.LATEST"
+          "versionNumber": "0.1.3.1"
         },
         {
           "package": "crm-platform-email-scheduling",
