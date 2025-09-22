@@ -9,6 +9,10 @@
       "versionNumber": "0.1.0.NEXT",
       "dependencies": [
         {
+          "package": "sf-external-force-di",
+          "versionNumber": "0.1.0.LATEST"
+        },
+        {
           "package": "platform-data-model",
           "versionNumber": "0.1.0.LATEST"
         },
@@ -100,6 +104,7 @@
     }
   ],
   "packageAliases": {
+    "sf-external-force-di": "0HoQC000000052v0AA",
     "platform-data-model": "0HoKB00000000010AA",
     "custom-metadata-dao": "0HoKB000000000B0AQ",
     "custom-permission-helper": "0HoKB000000000f0AA",
