@@ -58,24 +58,35 @@ jobs:
       
           : "${CRM_PACKAGE_KEY:=${{ secrets.CRM_PACKAGE_KEY }}}"
       
-          # 1) Collect unique dependency aliases across ALL packageDirectories
-          mapfile -t packageAliases < <(
+          # 1) Collect dependency aliases across ALL packageDirectories, preserving order of appearance
+          mapfile -t deps_in_order < <(
             jq -r '
-              [ .packageDirectories[]?              # all dirs (src-temp, force-app, etc.)
-                | .dependencies[]?                  # any dependencies array
-                | .package                          # pick alias
-              ] | unique[]?                         # dedupe + allow 0 results
+              .packageDirectories[]?      # respect file order
+              | .dependencies[]?          # respect order inside each array
+              | .package
             ' sfdx-project.json
           )
-      
-          if ((${#packageAliases[@]} == 0)); then
+          
+          # Deduplicate while preserving first occurrence order
+          declare -A _seen=()
+          ordered_aliases=()
+          for a in "${deps_in_order[@]}"; do
+            [[ -n "$a" ]] || continue
+            if [[ -z "${_seen[$a]:-}" ]]; then
+              _seen["$a"]=1
+              ordered_aliases+=("$a")
+            fi
+          done
+          
+          if ((${#ordered_aliases[@]} == 0)); then
             echo "No packages to install (no dependencies found under any packageDirectories)."
             exit 0
           fi
-      
-          echo "Dependency aliases to install: ${packageAliases[*]}"
-      
-          for alias in "${packageAliases[@]}"; do
+          
+          echo "Dependency aliases to install (ordered): ${ordered_aliases[*]}"
+          
+          # Iterate in declared order
+          for alias in "${ordered_aliases[@]}"; do
             echo "----"
             echo "Processing: $alias"
       
