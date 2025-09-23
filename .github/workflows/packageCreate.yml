@@ -38,26 +38,95 @@ jobs:
           setDefaultDevhubUsername: true
 
       # Delete unpackagable and scratch-org folder
-      - name: Delete unpackagable
-        run: |
-          rm -rf ./force-app/unpackagable
-          rm -rf ./force-app/unpackagable-with-auto-deploy
-          rm -rf ./force-app/scratch-org
-      # Create package version
       - name: Create package version
         id: package-version-create
+        shell: bash
         run: |
-          sf package version create --target-dev-hub prod --definition-file config/project-scratch-def.json --package $(jq -r '.packageDirectories[0].package' sfdx-project.json) --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --wait 120 --code-coverage --json | tee output.json
-          # ! manually cancel the process if the package failed to be created
-          if [ $(cat output.json |jq '.status') == "1" ]; then
+          set -euo pipefail
+      
+          # Helper to sanitize SF CLI JSON on stdout (drops ANSI, BOM, preamble)
+          clean_json() {
+            sed -r 's/\x1B\[[0-9;]*[A-Za-z]//g' \
+            | sed '1s/^\xEF\xBB\xBF//' \
+            | awk '
+                BEGIN{buf="";depth=0;found=0}
+                {
+                  if(!found){
+                    i=index($0,"{"); if(i==0) next; line=substr($0,i); found=1;
+                  } else { line=$0 }
+                  for(j=1;j<=length(line);j++){
+                    c=substr(line,j,1); buf=buf c;
+                    if(c=="{") depth++; else if(c=="}") depth--;
+                  }
+                  if(found && depth==0){ print buf; exit }
+                }
+                END{ if(found && depth==0) exit 0; else exit 1 }
+              '
+          }
+      
+          # Pick the FIRST package dir that actually declares "package"
+          PKG_ALIAS=$(
+            jq -r '
+              [ .packageDirectories[]? | select(.package != null) | .package ][0] // empty
+            ' sfdx-project.json
+          )
+      
+          if [[ -z "$PKG_ALIAS" ]]; then
+            echo "::error title=No package alias found::No entry with a \"package\" field in packageDirectories."
+            jq -r '.packageDirectories' sfdx-project.json || true
+            exit 1
+          fi
+      
+          echo "Using package alias: $PKG_ALIAS"
+      
+          # Create the version (set installation key for the version)
+          sf package version create \
+            --target-dev-hub prod \
+            --definition-file config/project-scratch-def.json \
+            --package "$PKG_ALIAS" \
+            --installation-key "${{ secrets.CRM_PACKAGE_KEY }}" \
+            --wait 120 \
+            --code-coverage \
+            --json \
+            2>create_warn.log \
+            | clean_json \
+            | tee output.json >/dev/null
+      
+          # If the CLI reported an error in JSON, fail the job with a clear code
+          STATUS=$(jq -r '.status' output.json)
+          if [[ "$STATUS" != "0" ]]; then
+            echo "::error title=sf package version create failed::$(jq -r '.message // .name' output.json)"
+            cat output.json
             exit 125
           fi
-          packageId=$(cat output.json | jq -r '.result.SubscriberPackageVersionId')
-          echo "packageId=$(echo $packageId)" >> $GITHUB_OUTPUT
-          echo "betaVersionNumber=$(cat sfdx-project.json | jq -r '.packageAliases | keys_unsorted[-1]' | sed 's/.*-//')" >> $GITHUB_OUTPUT
-          echo "codeCoverage=$( sf package version report --package $(echo $packageId) --json | jq -r '.result.CodeCoverage.apexCodeCoveragePercentage' )" >> $GITHUB_OUTPUT
+      
+          # Parse results robustly from JSON
+          packageId=$(jq -r '.result.SubscriberPackageVersionId' output.json)
+          versionNumber=$(jq -r '.result.VersionNumber' output.json)   # e.g. 0.160.0.12
+          betaVersionNumber=$(jq -r '.result.VersionNumber | split(".")[3]' output.json)  # "12"
+      
+          if [[ -z "$packageId" || -z "$versionNumber" ]]; then
+            echo "::error title=Missing fields::No packageId/versionNumber in output.json"
+            cat output.json
+            exit 1
+          fi
+      
+          # Get code coverage from report (clean JSON again just in case)
+          codeCoverage=$(
+            sf package version report --package "$packageId" --json 2>report_warn.log \
+            | clean_json \
+            | jq -r '.result.CodeCoverage.apexCodeCoveragePercentage // empty'
+          )
+      
+          echo "packageId=$packageId" >> "$GITHUB_OUTPUT"
+          echo "betaVersionNumber=$betaVersionNumber" >> "$GITHUB_OUTPUT"
+          echo "codeCoverage=${codeCoverage:-}" >> "$GITHUB_OUTPUT"
+      
           echo
-          echo Package ID: $packageId
+          echo "Package ID: $packageId"
+          echo "Version:    $versionNumber  (beta build: $betaVersionNumber)"
+          echo "Coverage:   ${codeCoverage:-n/a}%"
+
 
   validate-in-sit:
     name: Validate install in SIT Sandbox
