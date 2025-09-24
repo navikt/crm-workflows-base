@@ -89,7 +89,6 @@ jobs:
             --code-coverage \
             --json \
             2>create_warn.log \
-            | clean_json \
             | tee output.json >/dev/null
       
           # If the CLI reported an error in JSON, fail the job with a clear code
