@@ -80,6 +80,7 @@ jobs:
           echo "Using package alias: $PKG_ALIAS"
       
           # Create the version (set installation key for the version)
+          # 1) Capture raw stdout/stderr to files
           sf package version create \
             --target-dev-hub prod \
             --definition-file config/project-scratch-def.json \
@@ -88,43 +89,79 @@ jobs:
             --wait 120 \
             --code-coverage \
             --json \
-            2>create_warn.log \
-            | tee output.json >/dev/null
-      
-          # If the CLI reported an error in JSON, fail the job with a clear code
-          STATUS=$(jq -r '.status' output.json)
-          if [[ "$STATUS" != "0" ]]; then
-            echo "::error title=sf package version create failed::$(jq -r '.message // .name' output.json)"
-            cat output.json
-            exit 125
-          fi
-      
-          # Parse results robustly from JSON
-          packageId=$(jq -r '.result.SubscriberPackageVersionId' output.json)
-          versionNumber=$(jq -r '.result.VersionNumber' output.json)   # e.g. 0.160.0.12
-          betaVersionNumber=$(jq -r '.result.VersionNumber | split(".")[3]' output.json)  # "12"
-      
-          if [[ -z "$packageId" || -z "$versionNumber" ]]; then
-            echo "::error title=Missing fields::No packageId/versionNumber in output.json"
-            cat output.json
+            1> raw_create_stdout.log \
+            2> create_warn.log
+          
+          # 2) Try to extract a clean JSON object from stdout
+          if ! clean_json < raw_create_stdout.log > output.json; then
+            echo "::error title=No JSON from sf::sf did not emit valid JSON on stdout (or JSON was truncated)."
+            echo "::group::sf stdout"
+            sed -n '1,200p' raw_create_stdout.log || true
+            echo "::endgroup::"
+            echo "::group::sf stderr/warnings"
+            sed -n '1,200p' create_warn.log || true
+            echo "::endgroup::"
             exit 1
           fi
-      
-          # Get code coverage from report (clean JSON again just in case)
+          
+          # 3) Now parse and validate the JSON like before
+          STATUS=$(jq -r '.status' output.json)
+          if [[ "$STATUS" != "0" ]]; then
+            echo "::error title=sf package version create failed::$(jq -r '.message // .name // "Unknown error"' output.json)"
+            echo "::group::output.json"
+            cat output.json
+            echo "::endgroup::"
+            echo "::group::sf stderr/warnings"
+            sed -n '1,200p' create_warn.log || true
+            echo "::endgroup::"
+            exit 125
+          fi
+          
+          packageId=$(jq -r '.result.SubscriberPackageVersionId' output.json)
+          versionNumber=$(jq -r '.result.VersionNumber' output.json)
+          betaVersionNumber=$(jq -r '.result.VersionNumber | split(".")[3]' output.json)
+          
+          if [[ -z "$packageId" || -z "$versionNumber" ]]; then
+            echo "::error title=Missing fields::No packageId/versionNumber in output.json"
+            echo "::group::output.json"
+            cat output.json
+            echo "::endgroup::"
+            exit 1
+          fi
+          
+          # Get code coverage (capture, sanitize, parse)
+          sf package version report --package "$packageId" --json \
+            1> raw_report_stdout.log \
+            2> report_warn.log
+          
           codeCoverage=$(
-            sf package version report --package "$packageId" --json 2>report_warn.log \
-            | clean_json \
+            clean_json < raw_report_stdout.log \
             | jq -r '.result.CodeCoverage.apexCodeCoveragePercentage // empty'
           )
-      
+          
           echo "packageId=$packageId" >> "$GITHUB_OUTPUT"
           echo "betaVersionNumber=$betaVersionNumber" >> "$GITHUB_OUTPUT"
           echo "codeCoverage=${codeCoverage:-}" >> "$GITHUB_OUTPUT"
-      
+          
           echo
           echo "Package ID: $packageId"
           echo "Version:    $versionNumber  (beta build: $betaVersionNumber)"
           echo "Coverage:   ${codeCoverage:-n/a}%"
+
+
+      - name: Upload diagnostics (always)
+        if: always()            # runs on success or failure
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-create-diagnostics
+          path: |
+            raw_create_stdout.log
+            create_warn.log
+            raw_report_stdout.log
+            report_warn.log
+            output.json
+          if-no-files-found: warn
+          retention-days: 14
 
 
   validate-in-sit:
