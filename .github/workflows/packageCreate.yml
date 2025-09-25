@@ -38,6 +38,12 @@ jobs:
           setDefaultDevhubUsername: true
 
       # Delete unpackagable and scratch-org folder
+      - name: Delete unpackagable
+        run: |
+          rm -rf ./force-app/unpackagable
+          rm -rf ./force-app/unpackagable-with-auto-deploy
+          rm -rf ./force-app/scratch-org
+          
       - name: Create package version
         id: package-version-create
         shell: bash
