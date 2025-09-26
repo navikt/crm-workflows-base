@@ -7,6 +7,10 @@ inputs:
   package-key:
     description: Installation key to apply to password-protected dependencies
     required: true
+  devhub-alias:
+    description: Alias of the Dev Hub org to use for retrieving package version information
+    required: false
+    default: devhub
 outputs:
   package-keys:
     description: Space-separated list of package:key pairs for protected dependencies
@@ -20,10 +24,13 @@ runs:
       env:
         CRM_PACKAGE_KEY: ${{ inputs.package-key }}
         SFDX_PROJECT_PATH: ${{ inputs.sfdx-project-path }}
+        DEVHUB_ALIAS: ${{ inputs.devhub-alias }}
       run: |
         set -euo pipefail
         echo "::add-mask::${CRM_PACKAGE_KEY}"
         keys="$(bash "$GITHUB_ACTION_PATH/scripts/createPackageKeyPairs.sh" \
           --sfdx-project-path "$SFDX_PROJECT_PATH" \
-          --package-key "$CRM_PACKAGE_KEY")"
+          --package-key "$CRM_PACKAGE_KEY" \
+          --devhub-alias "$DEVHUB_ALIAS" \
+          --latest-fallback
         echo "package-keys=${keys}" >> "$GITHUB_OUTPUT"
