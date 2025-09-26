@@ -134,8 +134,6 @@ jobs:
           sfdx-project-path: ./sfdx-project.json
           package-key: ${{ secrets.CRM_PACKAGE_KEY }}
           pool-config-path: ${{ matrix.pool.poolConfigPath }}
-          is-ci-pool: ${{ matrix.pool.isCiPool }}
-          pool-tag: ${{ steps.setPoolTag.outputs.pool-tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required to be able to download packages from GHCR in SFP
 
