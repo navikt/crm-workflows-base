@@ -128,7 +128,7 @@ jobs:
           deleteJobType: ${{ matrix.pool.deleteJobType }}
           isCiPool: ${{ inputs.is-ci-pool }}
       - name: Create Pool
-        uses: navikt/sf-gha-prepare-pool@850f5de8487be37ddbc3a69beb16620fdfd2037d
+        uses: navikt/sf-gha-prepare-pool@7adec0b20dd8ea61b6b9d1a0aa306c7830500aa6
         with:
           dev-hub: ${{ env.DEV_HUB_ALIAS }}
           sfdx-project-path: ./sfdx-project.json
