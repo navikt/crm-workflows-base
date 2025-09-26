@@ -153,7 +153,7 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.setPoolTag.outputs.pool-tag && format('logs-{0}', steps.setPoolTag.outputs.pool-tag) || 'logs' }}
+          name: ${{ steps.setPoolTag.outputs.pool-tag && format('create-pool-logs-{0}', steps.setPoolTag.outputs.pool-tag) || 'create-pool-logs' }}
           path: "${{ github.workspace }}/.sfpowerscripts"
           if-no-files-found: ignore
           retention-days: 7
@@ -189,3 +189,12 @@ jobs:
         uses: navikt/sf-gha-push-statsd-metrics@643bfaed45ec2cb4caff47ed57bb3b2f01586fe9
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
+
+      - name: "Publish logs"
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cleanup-logs
+          path: "${{ github.workspace }}/.sfpowerscripts"
+          if-no-files-found: ignore
+          retention-days: 7
