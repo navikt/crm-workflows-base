@@ -41,6 +41,7 @@ runs:
             --sfdx-project-path "$SFDX_PROJECT_PATH" \
             --package-key "$CRM_PACKAGE_KEY" \
             --devhub "$DEVHUB_ALIAS" \
+            --modified-last-days 3000 \
             --latest-fallback \
             $debug_flag
         )"
