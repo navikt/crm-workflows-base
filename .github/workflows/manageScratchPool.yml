@@ -148,6 +148,15 @@ jobs:
         uses: navikt/sf-gha-push-statsd-metrics@643bfaed45ec2cb4caff47ed57bb3b2f01586fe9
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
+
+      - name: "Publish logs"
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: "logs"
+          path: .sfpowerscripts
+          if-no-files-found: ignore
+          retention-days: 1
   cleanup:
     name: Cleanup
     needs: replenish
