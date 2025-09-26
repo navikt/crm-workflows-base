@@ -80,7 +80,7 @@ jobs:
     name: Replenish Pool
     needs: prepareMatrixRun
     runs-on: ubuntu-latest
-    container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp@sha256:cf56952fa4a57a6ed22f90e2fedebbfbc05600b7f21e440277107ff7d9505771' }}
+    container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp@39.8.0-17204768834' }}
     timeout-minutes: 720 #Set to Maximum Time out
     strategy:
       fail-fast: false
