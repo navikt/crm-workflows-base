@@ -1,18 +1,18 @@
 name: Generate package key pairs
-description: Generate package key pairs based on submitted package key and path to `sfdx-project.json`sfdx-project.json
+description: Generate package key pairs based on submitted package key and path to sfdx-project.json
 inputs:
   sfdx-project-path:
-    description: The path to sfdx-project.json
+    description: Path to sfdx-project.json
     required: true
   package-key:
-    description: The key of the packages to install
+    description: Installation key to apply to password-protected dependencies
     required: true
 outputs:
   package-keys:
+    description: Space-separated list of package:key pairs for protected dependencies
     value: ${{ steps.create_keys.outputs.package-keys }}
-    description: The generated package keys
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Create package key pairs
       id: create_keys
@@ -20,4 +20,10 @@ runs:
       env:
         CRM_PACKAGE_KEY: ${{ inputs.package-key }}
         SFDX_PROJECT_PATH: ${{ inputs.sfdx-project-path }}
-      run: bash "$GITHUB_ACTION_PATH/scripts/createPackageKeyPairs.sh"
+      run: |
+        set -euo pipefail
+        echo "::add-mask::${CRM_PACKAGE_KEY}"
+        keys="$(bash "$GITHUB_ACTION_PATH/scripts/createPackageKeyPairs.sh" \
+          --sfdx-project-path "$SFDX_PROJECT_PATH" \
+          --package-key "$CRM_PACKAGE_KEY")"
+        echo "package-keys=${keys}" >> "$GITHUB_OUTPUT"
