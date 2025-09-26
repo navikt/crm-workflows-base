@@ -209,11 +209,17 @@ debug "Running: sf ${sf_args[*]}"
   set -e
 }
 if (( sf_rc != 0 )); then
-  # If stderr empty, surface a synthetic message.
-  if [[ ! -s /tmp/sf_err.log ]]; then
-    echo "sf command failed with exit code $sf_rc (no stderr output)." >&2
+  echo "Error: sf package version list command failed (exit $sf_rc)" >&2
+  if [[ -s /tmp/sf_err.log ]]; then
+    echo "-- sf stderr --" >&2
+    sed 's/^/  /' /tmp/sf_err.log >&2 || true
+  else
+    echo "(No stderr captured from sf)" >&2
   fi
-  fail "sf package version list command failed (exit $sf_rc)" || exit 2
+  echo "Invoked command: sf ${sf_args[*]}" >&2
+  echo "Packages flag: $packagesFlag" >&2
+  [[ "$DEBUG" == "true" ]] && sf --version >&2 || true
+  exit 2
 fi
 response="$sf_output"
 

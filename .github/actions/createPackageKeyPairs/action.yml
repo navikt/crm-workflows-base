@@ -10,7 +10,11 @@ inputs:
   devhub-alias:
     description: Alias of the Dev Hub org to use for retrieving package version information
     required: false
-    default: devhub
+    default: dev-hub
+  debug:
+    description: Enable debug logging output
+    required: false
+    default: "false"
 outputs:
   package-keys:
     description: Space-separated list of package:key pairs for protected dependencies
@@ -28,11 +32,16 @@ runs:
       run: |
         set -euo pipefail
         echo "::add-mask::${CRM_PACKAGE_KEY}"
+        debug_flag=""
+        if [ "${{ inputs.debug }}" = "true" ]; then
+          debug_flag="--debug"
+        fi
         keys="$(
           bash "$GITHUB_ACTION_PATH/scripts/createPackageKeyPairs.sh" \
             --sfdx-project-path "$SFDX_PROJECT_PATH" \
             --package-key "$CRM_PACKAGE_KEY" \
             --devhub "$DEVHUB_ALIAS" \
-            --latest-fallback
+            --latest-fallback \
+            $debug_flag
         )"
         echo "package-keys=${keys}" >> "$GITHUB_OUTPUT"
