@@ -33,6 +33,11 @@ on:
         description: The version of SFP to use
         required: false
         type: string
+      sfp-log-level:
+        description: The log level for SFP actions
+        required: false
+        type: string
+        default: INFO
     secrets:
       DEV_HUB_SFDX_URL:
         required: true
@@ -128,12 +133,13 @@ jobs:
           deleteJobType: ${{ matrix.pool.deleteJobType }}
           isCiPool: ${{ inputs.is-ci-pool }}
       - name: Create Pool
-        uses: navikt/sf-gha-prepare-pool@4b5203028a100a5866564907a05cfe9963762d05
+        uses: navikt/sf-gha-prepare-pool@a6433a5f004776e685eaea097b28405dc49628e6
         with:
           dev-hub: ${{ env.DEV_HUB_ALIAS }}
           sfdx-project-path: ./sfdx-project.json
           package-key: ${{ secrets.CRM_PACKAGE_KEY }}
           pool-config-path: ${{ matrix.pool.poolConfigPath }}
+          sfp-log-level: ${{ inputs.sfp-log-level }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required to be able to download packages from GHCR in SFP
 

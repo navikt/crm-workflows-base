@@ -2,6 +2,19 @@ name: "Replenish Pools - Auto Triggered"
 
 on:
   workflow_dispatch:
+    inputs:
+      sfp-log-level:
+        description: The log level for SFP actions
+        required: false
+        type: choice
+        default: INFO
+        options:
+          - TRACE
+          - DEBUG
+          - INFO
+          - WARN
+          - ERROR
+          - FATAL
 
   # Det er satt opp skedulering for når poolet oppdateres.
   # Det er ikke behov for å kjøre denne jobber 24/7 og det er derfor satt opp noen skeduleringer (husk at tid er UTC)
@@ -69,5 +82,6 @@ jobs:
       pool-matrix-def-path: config/pool-matrix-def.json
       # Clear pools only when triggered by schedule (not manual trigger)
       # This ensures that we only clear unused scratches during the scheduled runs
-      clear-pools: ${{github.event.schedule == '15 2 * * *'}}
+      clear-pools: ${{ github.event.schedule == '15 2 * * *' }}
       sfp-version: latest
+      sfp-log-level: ${{ github.event.inputs.sfp-log-level || 'INFO' }}
