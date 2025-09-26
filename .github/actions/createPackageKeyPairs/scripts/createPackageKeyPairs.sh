@@ -39,7 +39,12 @@
 set -euo pipefail
 
 # Trap unexpected errors to aid debugging (excluding deliberate exits via fail())
-trap 'rc=$?; echo "Error: Script failed at line ${LINENO}. Last command: ${BASH_COMMAND}" >&2; exit $rc' ERR
+on_err() {
+  local status=$?
+  echo "Error: Script failed at line ${LINENO}. Last command: ${BASH_COMMAND}" >&2
+  exit $status
+}
+trap on_err ERR
 
 # --- Helpers -----------------------------------------------------------------
 
@@ -218,8 +223,7 @@ status=$(echo "$response" | jq -r '.status // empty')
 
 result_len=$(echo "$response" | jq '.result | length')
 debug "sf returned $result_len versions"
-
-"${DEBUG}" == "true" && debug "Indexing sf response for faster lookups and latest build selection"
+debug "Indexing sf response for faster lookups and latest build selection"
 # Pre-index: Package2Name|Version|IsPasswordProtected
 mapfile -t index_lines < <(echo "$response" | jq -r '.result[] | "\(.Package2Name)|\(.Version)|\(.IsPasswordProtected)"')
 declare -A protectedExact
@@ -275,7 +279,7 @@ for pkg in "${packageNames[@]}"; do
   fi
 
   if [[ "$LATEST_FALLBACK" == "true" ]]; then
-    IFS='.' read -r maj min pat build <<< "$depVersion"
+  IFS='.' read -r maj min pat _build <<< "$depVersion"  # build component not used in fallback selection
     triple="$maj.$min.$pat"
     latestProt="${protectedLatest["$pkg|$triple"]:-}"
     if [[ -n "$latestProt" ]]; then
