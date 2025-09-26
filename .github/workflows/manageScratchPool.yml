@@ -153,10 +153,10 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: "logs"
-          path: .sfpowerscripts
+          name: ${{ steps.setPoolTag.outputs.pool-tag && format('logs-{0}', steps.setPoolTag.outputs.pool-tag) || 'logs' }}
+          path: "${{ github.workspace }}/.sfpowerscripts"
           if-no-files-found: ignore
-          retention-days: 1
+          retention-days: 7
   cleanup:
     name: Cleanup
     needs: replenish
