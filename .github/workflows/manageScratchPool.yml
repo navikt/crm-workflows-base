@@ -195,6 +195,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cleanup-logs
-          path: "${{ github.workspace }}/.sfpowerscripts"
+          path: .sfpowerscripts/logs
           if-no-files-found: ignore
           retention-days: 7
