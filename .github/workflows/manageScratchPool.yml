@@ -186,7 +186,7 @@ jobs:
 
       - name: Push logged metrics
         if: ${{ always() }}
-        uses: navikt/sf-gha-push-statsd-metrics@23423055604ee1f0f8475738e5e3099f22661a43
+        uses: navikt/sf-gha-push-statsd-metrics@08c3064b1d8acb09845cf933da4c622cdfb6d1dc
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
 
