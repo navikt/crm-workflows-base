@@ -9,10 +9,11 @@
     "lint-staged": "lint-staged"
   },
   "devDependencies": {
+    "@flxbl-io/sfp": "^39.8.0",
+    "@prettier/plugin-xml": "^3.4.2",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.6",
-    "prettier": "3.6.2",
-    "@prettier/plugin-xml": "^3.4.2"
+    "prettier": "3.6.2"
   },
   "lint-staged": {
     "**/*.{css,html,js,json,md,xml,yaml,yml}": [
