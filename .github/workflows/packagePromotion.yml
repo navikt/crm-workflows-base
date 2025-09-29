@@ -97,32 +97,32 @@ jobs:
           echo "message=(CI) Updated to new version number $(cat sfdx-project.json | jq '.packageDirectories | map(select(.package != null))[0].versionNumber' -r | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
           cat sfdx-project.json
 
-      - name: Commit changes
-        uses: navikt/sf-gha-commit-files@216c5afbc28f2122a1385838e65bceb88af7a1c1
-        with:
-          files: sfdx-project.json
-          commitMessage: ${{steps.build-commit-message.outputs.message}}
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      # The main branch is protected
-      # - name: Create new branch and pull request for updated package version ID
-      #   id: cpr
-      #   uses: peter-evans/create-pull-request@v7
+      # - name: Commit changes
+      #   uses: navikt/sf-gha-commit-files@216c5afbc28f2122a1385838e65bceb88af7a1c1
       #   with:
-      #     title: "Added new package version ID"
-      #     commit-message: ${{steps.build-commit-message.outputs.message}}
-      #     branch: "auto/package-version-update"
-
+      #     files: sfdx-project.json
+      #     commitMessage: ${{steps.build-commit-message.outputs.message}}
       #     token: ${{ secrets.GITHUB_TOKEN }}
 
+      # The main branch is protected
+      - name: Create new branch and pull request for updated package version ID
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          title: "Added new package version ID"
+          commit-message: ${{steps.build-commit-message.outputs.message}}
+          branch: "auto/package-version-update"
+
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       # Merge pull request
-      # - name: Merge pull request
-      #   uses: juliangruber/merge-pull-request-action@v1.3.1
-      #   with:
-      #     # ! USES CUSTOM PAT TO INITIATE STATUS CHECKS (SEE "Require status checks to pass before merging" IN BRANCHES SETTINGS IN REPO)
-      #     github-token: ${{ secrets.CRM_DEPLOYMENT_PAT }}
-      #     number: ${{ steps.cpr.outputs.pull-request-number }}
-      #     method: squash
+      - name: Merge pull request
+        uses: juliangruber/merge-pull-request-action@v1.3.1
+        with:
+          # ! USES CUSTOM PAT TO INITIATE STATUS CHECKS (SEE "Require status checks to pass before merging" IN BRANCHES SETTINGS IN REPO)
+          github-token: ${{ secrets.CRM_DEPLOYMENT_PAT }}
+          number: ${{ steps.cpr.outputs.pull-request-number }}
+          method: squash
 
   create-release:
     name: Create GitHub Release
