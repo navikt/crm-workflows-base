@@ -45,6 +45,9 @@ on:
         required: true
       CRM_PACKAGE_KEY:
         required: false
+
+env:
+  DEV_HUB_ALIAS: dev-hub
 jobs:
   prepareMatrixRun:
     name: Prepare Matrix Run
@@ -96,8 +99,10 @@ jobs:
       packages: read
     env:
       CLEAR_POOLS: ${{ inputs.clear-pools }}
-      DEV_HUB_ALIAS: dev-hub
+
     steps:
+      - name: Turn on metrics
+        run: export SFPOWERSCRIPTS_STATSD=true
       - name: "Checkout code"
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -145,7 +150,7 @@ jobs:
 
       - name: Push logged metrics
         if: ${{ always() }}
-        uses: navikt/sf-gha-push-statsd-metrics@643bfaed45ec2cb4caff47ed57bb3b2f01586fe9
+        uses: navikt/sf-gha-push-statsd-metrics@f3e7e778a92f0d93ffab2078c20ef998eb19cbd6
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
 
@@ -154,7 +159,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.setPoolTag.outputs.pool-tag && format('create-pool-logs-{0}', steps.setPoolTag.outputs.pool-tag) || 'create-pool-logs' }}
-          path: "${{ github.workspace }}/.sfpowerscripts"
+          path: .sfpowerscripts/logs
           if-no-files-found: ignore
           retention-days: 7
   cleanup:
@@ -163,8 +168,6 @@ jobs:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp@sha256:cf56952fa4a57a6ed22f90e2fedebbfbc05600b7f21e440277107ff7d9505771' }}
-    env:
-      DEV_HUB_ALIAS: dev-hub
     steps:
       - name: "Authenticate Dev Hub"
         uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
