@@ -17,6 +17,12 @@ on:
         description: The version of SFP to use
         required: false
         type: string
+        default: 39.8.0-17204768834
+      sfp-log-level:
+        description: The log level for SFP actions
+        required: false
+        type: string
+        default: INFO
   workflow_call:
     inputs:
       pool-matrix-def-path:
@@ -33,6 +39,7 @@ on:
         description: The version of SFP to use
         required: false
         type: string
+        default: 39.8.0-17204768834
       sfp-log-level:
         description: The log level for SFP actions
         required: false
@@ -149,7 +156,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required to be able to download packages from GHCR in SFP
 
       - name: Push logged metrics
-        if: ${{ always() }}
+        if: ${{ always() && hashFiles('.sfpowerscripts/logs/metrics.log') != '' }}
         uses: navikt/sf-gha-push-statsd-metrics@f3e7e778a92f0d93ffab2078c20ef998eb19cbd6
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
@@ -167,7 +174,7 @@ jobs:
     needs: replenish
     if: ${{ always() }}
     runs-on: ubuntu-latest
-    container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp@sha256:cf56952fa4a57a6ed22f90e2fedebbfbc05600b7f21e440277107ff7d9505771' }}
+    container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp:39.8.0-17204768834' }}
     steps:
       - name: "Authenticate Dev Hub"
         uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
@@ -188,7 +195,7 @@ jobs:
           sfp pool metrics publish --targetdevhubusername "$DEV_HUB_ALIAS"
 
       - name: Push logged metrics
-        if: ${{ always() }}
+        if: ${{ always() && hashFiles('.sfpowerscripts/logs/metrics.log') != '' }}
         uses: navikt/sf-gha-push-statsd-metrics@f3e7e778a92f0d93ffab2078c20ef998eb19cbd6
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
