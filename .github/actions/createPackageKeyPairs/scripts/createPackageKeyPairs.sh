@@ -160,7 +160,7 @@ debug "Modified last days: $MODIFIED_DAYS"
 
 # --- Dependency Extraction ----------------------------------------------------
 
-declare -A packageVersions
+declare -A packageVersions=()
 numDirs=$(jq '.packageDirectories | length' "$SFDX_PROJECT_PATH") || fail "Unable to parse packageDirectories"
 debug "packageDirectories count: $numDirs"
 
@@ -285,7 +285,7 @@ for pkg in "${packageNames[@]}"; do
   fi
 
   if [[ "$LATEST_FALLBACK" == "true" ]]; then
-  IFS='.' read -r maj min pat _build <<< "$depVersion"  # build component not used in fallback selection
+    IFS='.' read -r maj min pat _build <<< "$depVersion"  # build component not used in fallback selection
     triple="$maj.$min.$pat"
     latestProt="${protectedLatest["$pkg|$triple"]:-}"
     if [[ -n "$latestProt" ]]; then
