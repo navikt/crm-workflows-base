@@ -25,6 +25,8 @@ on:
     - cron: "15 07-16 * 1-3,11,12 1-5" #Vintertid: At minute 15 past every hour from 7 through 16 on every day-of-week from Monday through Friday in every month from January through March, November, and December.
     - cron: "15 2 * * *" # At 02:15.
 
+env:
+  SFP_VERSION: 39.8.0-17204768834
 jobs:
   updatePackageDependencies:
     name: Update package dependencies
@@ -33,6 +35,7 @@ jobs:
       contents: write
     env:
       TARGET_ORG_ALIAS: dev-hub
+
     steps:
       # Install SF
       - name: Install SF
@@ -83,5 +86,5 @@ jobs:
       # Clear pools only when triggered by schedule (not manual trigger)
       # This ensures that we only clear unused scratches during the scheduled runs
       clear-pools: ${{ github.event.schedule == '15 2 * * *' }}
-      sfp-version: latest
+      sfp-version: ${{ github.env.SFP_VERSION }}
       sfp-log-level: ${{ github.event.inputs.sfp-log-level || 'INFO' }}
