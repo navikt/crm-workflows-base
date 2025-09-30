@@ -88,3 +88,11 @@ jobs:
         uses: navikt/sf-gha-push-statsd-metrics@643bfaed45ec2cb4caff47ed57bb3b2f01586fe9
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
+
+      - name: Upload logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          path: .sfpowerscripts/logs
+          if-no-files-found: ignore
+          retention-days: 7
