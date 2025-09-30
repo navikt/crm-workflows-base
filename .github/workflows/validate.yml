@@ -84,6 +84,11 @@ jobs:
           BASE_REF: ${{ inputs.base-ref }}
           GITHUB_REPO: ${{ github.repository }}
 
+      - name: Test object permissions
+        shell: bash
+        run: |
+          sfp apextests trigger --testlevel RunSpecifiedTests --targetusername "$DEV_HUB_ALIAS" --specifiedtests ObjectPermissionAnalyzerServiceTest
+
       - name: Push logged metrics
         if: ${{ always()  && hashFiles('.sfpowerscripts/logs/metrics.log') != ''  }}
         uses: navikt/sf-gha-push-statsd-metrics@f3e7e778a92f0d93ffab2078c20ef998eb19cbd6
@@ -95,6 +100,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: logs
-          path: .sfpowerscripts/logs
+          path: |
+            .sfpowerscripts/logs
+            .testresults
           if-no-files-found: ignore
           retention-days: 7
