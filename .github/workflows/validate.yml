@@ -86,7 +86,7 @@ jobs:
 
       - name: Push logged metrics
         if: ${{ always()  && hashFiles('.sfpowerscripts/logs/metrics.log') != ''  }}
-        uses: navikt/sf-gha-push-statsd-metrics@f3e7e778a92f0d93ffab2078c20ef998eb19cbd6
+        uses: navikt/sf-gha-push-statsd-metrics@589b90d02f30dc79049bf8313c24e346e2318383
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
 
