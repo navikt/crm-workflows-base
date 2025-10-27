@@ -106,6 +106,7 @@ jobs:
       packages: read
     env:
       CLEAR_POOLS: ${{ inputs.clear-pools }}
+      DISABLE_SF_METRICS_PUSH: ${{ vars.DISABLE_SF_METRICS_PUSH || 'false' }}
 
     steps:
       - name: Turn on metrics
