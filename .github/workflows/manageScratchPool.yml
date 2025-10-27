@@ -158,7 +158,7 @@ jobs:
 
       - name: Push logged metrics
         if: ${{ always() && hashFiles('.sfpowerscripts/logs/metrics.log') != '' }}
-        uses: navikt/sf-gha-push-statsd-metrics@67cbefecf1d1c852b14e1fea124048d5f27f45df
+        uses: navikt/sf-gha-push-statsd-metrics@781c41a6726b54ec3ee13bfc1e3d4c51e6326da8
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
 
@@ -197,7 +197,7 @@ jobs:
 
       - name: Push logged metrics
         if: ${{ always() && hashFiles('.sfpowerscripts/logs/metrics.log') != '' }}
-        uses: navikt/sf-gha-push-statsd-metrics@67cbefecf1d1c852b14e1fea124048d5f27f45df
+        uses: navikt/sf-gha-push-statsd-metrics@781c41a6726b54ec3ee13bfc1e3d4c51e6326da8
         with:
           metricsKey: ${{ secrets.METRICS_KEY }}
 
