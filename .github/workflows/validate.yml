@@ -20,8 +20,6 @@ on:
         required: false
       DEV_HUB_SFDX_URL:
         required: true
-      METRICS_KEY:
-        required: false
 jobs:
   validate:
     name: Validate
@@ -83,12 +81,6 @@ jobs:
           REF: ${{ inputs.ref }}
           BASE_REF: ${{ inputs.base-ref }}
           GITHUB_REPO: ${{ github.repository }}
-
-      - name: Push logged metrics
-        if: ${{ always()  && hashFiles('.sfpowerscripts/logs/metrics.log') != ''  }}
-        uses: navikt/sf-gha-push-statsd-metrics@781c41a6726b54ec3ee13bfc1e3d4c51e6326da8
-        with:
-          metricsKey: ${{ secrets.METRICS_KEY }}
 
       - name: Upload logs
         if: ${{ always() }}
