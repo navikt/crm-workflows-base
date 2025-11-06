@@ -20,14 +20,16 @@ on:
         required: false
       DEV_HUB_SFDX_URL:
         required: true
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+permissions:
+  contents: read
 jobs:
   validate:
     name: Validate
     runs-on: ubuntu-latest
     container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp:39.8.0-17204768834' }}
     timeout-minutes: 720 #Set to Maximum Time out
-    permissions:
-      contents: read
     env:
       DEV_HUB_ALIAS: devhub
     steps:
@@ -45,7 +47,7 @@ jobs:
 
       - name: Generate package keys
         id: generate-package-keys
-        uses: navikt/crm-workflows-base/.github/actions/createPackageKeyPairs@main
+        uses: navikt/sf-gha-create-package-key-pairs@46b927eab5565f2e9e0911d5867b2f7eaf31243e
         with:
           sfdx-project-path: sfdx-project.json
           package-key: ${{ secrets.PACKAGE_KEY }}
@@ -61,7 +63,7 @@ jobs:
       - name: Validate metadata
         shell: bash
         run: |
-          args=(sfp validate -p ci -v "$DEV_HUB_ALIAS" --coveragepercent 85 --disableartifactupdate  --deletescratchorg --tag "$GITHUB_REPO")
+          args=(sfp validate -pools ci -v "$DEV_HUB_ALIAS" --coveragepercent 85 --disableartifactupdate  --deletescratchorg --tag "$GITHUB_REPO")
           if [ -n "$SFP_PACKAGE_KEY_PAIRS" ]; then
             args+=(--keys "$SFP_PACKAGE_KEY_PAIRS")
           fi
