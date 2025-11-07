@@ -43,13 +43,6 @@ jobs:
           rm -rf **/unpackagable-with-auto-deploy
           rm -rf **/scratch-org
 
-      - name: Generate package keys
-        id: generate-package-keys
-        uses: navikt/sf-gha-create-package-key-pairs@46b927eab5565f2e9e0911d5867b2f7eaf31243e
-        with:
-          sfdx-project-path: sfdx-project.json
-          package-key: ${{ secrets.PACKAGE_KEY }}
-
       # Authenticate dev hub
       - name: Authenticate Dev Hub
         uses: navikt/sf-gha-authenticateOrg@60379a2f63da30da5df533b40823c8a13dad168f
@@ -58,10 +51,17 @@ jobs:
           alias: ${{ env.DEV_HUB_ALIAS }}
           setDefaultUsername: true
           setDefaultDevhubUsername: true
+      - name: Generate package keys
+        id: generate-package-keys
+        uses: navikt/sf-gha-create-package-key-pairs@46b927eab5565f2e9e0911d5867b2f7eaf31243e
+        with:
+          sfdx-project-path: sfdx-project.json
+          package-key: ${{ secrets.PACKAGE_KEY }}
+
       - name: Validate metadata
         shell: bash
         run: |
-          args=(sfp validate -pools ci -v "$DEV_HUB_ALIAS" --coveragepercent 85 --disableartifactupdate  --deletescratchorg --tag "$GITHUB_REPO")
+          args=(sfp validate pool -pools ci -v "$DEV_HUB_ALIAS" --coveragepercent 85 --disableartifactupdate  --deletescratchorg --tag "$GITHUB_REPO")
           if [ -n "$SFP_PACKAGE_KEY_PAIRS" ]; then
             args+=(--keys "$SFP_PACKAGE_KEY_PAIRS")
           fi
