@@ -1,4 +1,4 @@
-# [PR] Validation
+# Validation
 
 This workflow automatically validates that metadata is valid, tests run successfully and that code coverage is at least 85%. The workflows runs on all Pull Requests, regardless of source and destination.
 
