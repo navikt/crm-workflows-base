@@ -1,38 +1,69 @@
 # [PR] Validation
 
-|               |                     |
-| ------------- | ------------------- |
-| **Initiator** | Pull Request        |
-| **Type**      | Metadata Validation |
+This workflow automatically validates that metadata is valid, tests run successfully and that code coverage is at least 85%. The workflows runs on all Pull Requests, regardless of source and destination.
 
-## Intro
+The workflow uses `sfp cli`.
 
-This workflow automatically validates that metadata is valid, tests run successfully and that code coverage is at least 85%. The workflows runs on all Pull Requests, regardless of source and destination. You can also configure GitHub settings to requires some of the jobs (described below) to be passed before a PR can be merged.
+## Steps
 
-## Jobs
+### Checkout source code
 
-- Setup (`setup`)
-  - Creates a new scratch org
-  - Install all dependant packages
-- Compile Metadata (`compile`)
-  - Pushes metadata using `sfdx force:source:push`
-  - This is a separate step, so that it's easier to spot wether what job potentially failed. If this job failed, it means the metadata is invalid or contains compile errors.
-- Run Apex Tests (`run-tests`)
-  - Runs the actual tests, but only tests from this repository
-  - If this job fails, it means some of the tests did not pass. That probably means it's either missing some setup in the scratch org or that metadata (or potentially data) is missing from the new scratch org
-- Validate 85% Code Coverage (`check-code-coverage`)
-  - If this job fails, all tests passed but weren't totaling to at least 85% code coverage
-- Cleanup (`cleanup`)
-  - Deletes the scratch org
+Fetch all history for all tags and branches
+
+### Delete unpackagable
+
+Delete any folder named unpackagable, unpackagable-with-auto-deploy or scratch-org
+
+### Authenticate dev hub
+
+Authenticate towards the dev hub
+
+### Generate package keys
+
+Check if any package requires an installation key, if yes generate key-value pairs based on `secrets.PACKAGE_KEY` separated by spaces.
+Example string: "packageA:pw123 packageB:pw123"
+
+### Validate the metadata
+
+Validate using the command `sfp validate pool`. It fetches a scratch org from the pool `ci`.
+
+#### Available flags
+
+- --keys added if step "Generate package keys" produces a key-pair
+- --ref added if `ref` is used
+- --baseRef added if `baseRef` is used
+
+### Upload logs
+
+Upload any logs and store them for 7 days.
 
 ## Secrets
 
-- `secrets.CRM_PROD_SFDX_URL`
-  - Needed to create scratch orgs
-- `secrets.CRM_PACKAGE_KEY`
-  - Needed to install dependant packages
+- `secrets.DEV_HUB_SFDX_URL` Needed to authenticate with the dev hub
+- `secrets.PACKAGE_KEY` Needed to install packages with keys
 
-## Example Usage
+## Usage
+
+```yml
+uses: navikt/crm-workflows-base/.github/workflows/validate.yml@main
+  with:
+    # The version of SFP to use
+    # Required: true
+    # Default: 39.8.0-17204768834
+    sfp-version: ''
+
+    # The git ref to checkout
+    # Required: false
+    ref: ''
+
+    # The base git ref to compare changes against (used for PRs)
+    # Required: false
+    base-ref: ''
+```
+
+Note that `ref` and `base-ref` must be used together
+
+## Full Example
 
 ```yml
 name: "[PR] Validate"
@@ -40,11 +71,19 @@ on:
   pull_request:
     branches:
       - "*"
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   run-pr-validation:
     name: Validate PR
-    uses: navikt/crm-workflows-base/.github/workflows/validate.yml@master
+    uses: navikt/crm-workflows-base/.github/workflows/validate.yml@main
+    with:
+      base-ref: ${{ github.event.pull_request.base.sha }}
+      ref: ${{ github.event.pull_request.head.sha }}
     permissions:
       contents: read
-    secrets: inherit
+    secrets:
+      PACKAGE_KEY: ${{ secrets.PACKAGE_KEY }}
+      DEV_HUB_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL }}
 ```
