@@ -20,8 +20,6 @@ on:
         required: false
       DEV_HUB_SFDX_URL:
         required: true
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
 permissions:
   contents: read
 jobs:
