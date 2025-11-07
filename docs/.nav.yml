@@ -1,5 +1,4 @@
 -title: Workflows from crm-workflows-base
 
 nav:
-  - Actions
-  - "*"
+  Workflows: workflows
