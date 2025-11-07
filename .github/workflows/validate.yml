@@ -71,7 +71,7 @@ jobs:
           fi
 
           if [ -n "$BASE_REF" ]; then
-            args+=(--baseRef  h "$BASE_REF")
+            args+=(--baseRef "$BASE_REF")
           fi
 
           echo "Running: ${args[*]}"
