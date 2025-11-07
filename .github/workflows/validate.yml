@@ -67,11 +67,11 @@ jobs:
           fi
 
           if [ -n "$REF" ]; then
-            args+=(--targetbranch "$REF")
+            args+=(--ref "$REF")
           fi
 
           if [ -n "$BASE_REF" ]; then
-            args+=(--basebranch "$BASE_REF")
+            args+=(--baseRef  h "$BASE_REF")
           fi
 
           echo "Running: ${args[*]}"
