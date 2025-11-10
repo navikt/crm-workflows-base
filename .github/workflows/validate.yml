@@ -61,7 +61,7 @@ jobs:
       - name: Validate metadata
         shell: bash
         run: |
-          args=(sfp validate pool -pools ci -v "$DEV_HUB_ALIAS" --coveragepercent 85 --disableartifactupdate  --deletescratchorg --tag "$GITHUB_REPO")
+          args=(sfp validate pool --pools ci -v "$DEV_HUB_ALIAS" --coveragepercent 85 --disableartifactupdate  --deletescratchorg --tag "$GITHUB_REPO")
           if [ -n "$SFP_PACKAGE_KEY_PAIRS" ]; then
             args+=(--keys "$SFP_PACKAGE_KEY_PAIRS")
           fi
