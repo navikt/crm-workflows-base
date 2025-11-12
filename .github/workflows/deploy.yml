@@ -2,24 +2,24 @@ name: Deploy
 on:
   workflow_call:
     inputs:
-      packageId:
-        description: "Package ID"
-        required: true
-        type: string
       org:
         description: "Org (prod, preprod, dev, uat, sit)"
+        required: true
+        type: string
+      package-id:
+        description: "Package ID"
         required: false
         type: string
       metadata-path:
         description: "Path to metadata folder"
         required: false
         type: string
-      installWait:
+      install-wait:
         description: "Wait time for package install (minutes)"
         required: false
         type: number
         default: 10
-      publishWait:
+      publish-wait:
         description: "Publish wait time (minutes)"
         required: false
         type: number
@@ -70,21 +70,22 @@ jobs:
 
       # Install package in target org
       - uses: navikt/sf-gha-install-package@f33ba85b73abc2230720d228bcbc66ac70e28d15
-        if: ${{ inputs.packageId != '' }}
+        if: ${{ inputs.package-id != '' }}
         with:
           target-org: ${{ env.TARGET_ORG }}
-          package-id: ${{ inputs.packageId }}
+          package-id: ${{ inputs.package-id }}
           package-key: ${{ secrets.CRM_PACKAGE_KEY }}
-          install-wait: ${{ inputs.installWait }}
-          publish-wait: ${{ inputs.publishWait }}
+          install-wait: ${{ inputs.install-wait }}
+          publish-wait: ${{ inputs.publish-wait }}
 
       # Checkout source code
       - name: Checkout source code from master
         uses: actions/checkout@v5
         with:
           persist-credentials: false
+          fetch-depth: 1
 
-      # Deploy unpackagable content
+      # Deploy metadata
       - uses: navikt/sf-gha-deploy-metadata@a6d136bade9f4377eaf682ecdf5f5cb195abf5f3
         if: ${{ inputs.metadata-path != '' }}
         with:
