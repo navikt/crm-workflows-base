@@ -1,0 +1,93 @@
+name: Deploy
+on:
+  workflow_call:
+    inputs:
+      packageId:
+        description: "Package ID"
+        required: true
+        type: string
+      org:
+        description: "Org (prod, preprod, dev, uat, sit)"
+        required: false
+        type: string
+      metadata-path:
+        description: "Path to metadata folder"
+        required: false
+        type: string
+      installWait:
+        description: "Wait time for package install (minutes)"
+        required: false
+        type: number
+        default: 10
+      publishWait:
+        description: "Publish wait time (minutes)"
+        required: false
+        type: number
+        default: 10
+
+permissions: {}
+jobs:
+  deploy-package:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      TARGET_ORG: targetOrg
+    steps:
+      # Set SF Auth URL
+      - name: Set SF Auth URL
+        id: auth-url
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$ORG" in
+            prod)       SF_AUTH_URL="${{ secrets.CRM_PROD_SFDX_URL }}" ;;
+            preprod)    SF_AUTH_URL="${{ secrets.CRM_PREPROD_SFDX_URL }}" ;;
+            dev)        SF_AUTH_URL="${{ secrets.DEV_SFDX_URL }}" ;;
+            crm-uat)    SF_AUTH_URL="${{ secrets.CRM_UAT_SFDX_URL }}" ;;
+            uat)        SF_AUTH_URL="${{ secrets.UAT_SFDX_URL }}" ;;
+            sit)        SF_AUTH_URL="${{ secrets.CRM_SIT_SFDX_URL }}" ;;
+            *)          SF_AUTH_URL="$ORG" ;;
+          esac
+          echo "Auth URL set for $ORG"
+          echo "SF_AUTH_URL=$SF_AUTH_URL" >> "$GITHUB_ENV"
+        env:
+          ORG: "${{ inputs.org }}"
+
+      # Install SF
+      - name: Install SF
+        uses: navikt/sf-gha-install-sf-cli@3f1abbc990b03fb544e80169920fea2e94946d1a
+
+      # Authorize SF
+      - name: Authorize SF
+        uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
+        with:
+          auth-url: ${{ env.SF_AUTH_URL }}
+          alias: ${{ env.TARGET_ORG }}
+          setDefaultUsername: true
+          setDefaultDevhubUsername: false
+
+      # Install package in target org
+      - uses: navikt/sf-gha-install-package@f33ba85b73abc2230720d228bcbc66ac70e28d15
+        if: ${{ inputs.packageId != '' }}
+        with:
+          target-org: ${{ env.TARGET_ORG }}
+          package-id: ${{ inputs.packageId }}
+          package-key: ${{ secrets.CRM_PACKAGE_KEY }}
+          install-wait: ${{ inputs.installWait }}
+          publish-wait: ${{ inputs.publishWait }}
+
+      # Checkout source code
+      - name: Checkout source code from master
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      # Deploy unpackagable content
+      - uses: navikt/sf-gha-deploy-metadata@a6d136bade9f4377eaf682ecdf5f5cb195abf5f3
+        if: ${{ inputs.metadata-path != '' }}
+        with:
+          path: ${{ inputs.metadata-path }}
+          target-org: ${{ env.TARGET_ORG }}
+          validate-only: false
