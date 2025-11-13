@@ -119,6 +119,7 @@ jobs:
 
       - name: Set output
         id: set-output
+        if: always()
         run: |
           echo "package-installation-result=${{ steps.install-package.outcome }}" >> $GITHUB_OUTPUT
           echo "metadata-deployment-result=${{ steps.deploy-metadata.outcome }}" >> $GITHUB_OUTPUT
