@@ -24,6 +24,13 @@ on:
         required: false
         type: number
         default: 10
+    outputs:
+      package-installation-result:
+        description: "Result of package installation"
+        value: ${{ jobs.deploy-package.outputs.package-installation-result }}
+      metadata-deployment-result:
+        description: "Result of metadata deployment"
+        value: ${{ jobs.deploy-package.outputs.metadata-deployment-result }}
     secrets:
       PROD_AUTH_URL:
         required: false
@@ -47,6 +54,9 @@ jobs:
       contents: read
     env:
       TARGET_ORG: targetOrg
+    outputs:
+      package-installation-result: ${{ steps.set-output.outputs.package-installation-result }}
+      metadata-deployment-result: ${{ steps.set-output.outputs.metadata-deployment-result }}
     steps:
       # Set SF Auth URL
       - name: Set SF Auth URL
@@ -82,6 +92,7 @@ jobs:
 
       # Install package in target org
       - uses: navikt/sf-gha-install-package@f33ba85b73abc2230720d228bcbc66ac70e28d15
+        id: install-package
         if: ${{ inputs.package-id != '' }}
         with:
           target-org: ${{ env.TARGET_ORG }}
@@ -99,8 +110,15 @@ jobs:
 
       # Deploy metadata
       - uses: navikt/sf-gha-deploy-metadata@a6d136bade9f4377eaf682ecdf5f5cb195abf5f3
+        id: deploy-metadata
         if: ${{ inputs.metadata-path != '' }}
         with:
           path: ${{ inputs.metadata-path }}
           target-org: ${{ env.TARGET_ORG }}
           validate-only: false
+
+      - name: Set output
+        id: set-output
+        run: |
+          echo "package-installation-result=${{ steps.install-package.outcome }}" >> $GITHUB_OUTPUT
+          echo "metadata-deployment-result=${{ steps.deploy-metadata.outcome }}" >> $GITHUB_OUTPUT
