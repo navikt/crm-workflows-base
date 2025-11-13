@@ -24,6 +24,19 @@ on:
         required: false
         type: number
         default: 10
+    secrets:
+      PROD_AUTH_URL:
+        required: false
+      PREPROD_AUTH_URL:
+        required: false
+      DEV_AUTH_URL:
+        required: false
+      UAT_AUTH_URL:
+        required: false
+      SIT_AUTH_URL:
+        required: false
+      PACKAGE_KEY:
+        required: false
 
 permissions: {}
 jobs:
@@ -42,12 +55,11 @@ jobs:
         run: |
           set -euo pipefail
           case "$ORG" in
-            prod)       SF_AUTH_URL="${{ secrets.CRM_PROD_SFDX_URL }}" ;;
-            preprod)    SF_AUTH_URL="${{ secrets.CRM_PREPROD_SFDX_URL }}" ;;
-            dev)        SF_AUTH_URL="${{ secrets.DEV_SFDX_URL }}" ;;
-            crm-uat)    SF_AUTH_URL="${{ secrets.CRM_UAT_SFDX_URL }}" ;;
-            uat)        SF_AUTH_URL="${{ secrets.UAT_SFDX_URL }}" ;;
-            sit)        SF_AUTH_URL="${{ secrets.CRM_SIT_SFDX_URL }}" ;;
+            prod)       SF_AUTH_URL="${{ secrets.PROD_AUTH_URL }}" ;
+            preprod)    SF_AUTH_URL="${{ secrets.PREPROD_AUTH_URL }}" ;;
+            dev)        SF_AUTH_URL="${{ secrets.DEV_AUTH_URL }}" ;;
+            uat)        SF_AUTH_URL="${{ secrets.UAT_AUTH_URL }}" ;;
+            sit)        SF_AUTH_URL="${{ secrets.SIT_AUTH_URL }}" ;;
             *)          SF_AUTH_URL="$ORG" ;;
           esac
           echo "Auth URL set for $ORG"
@@ -74,7 +86,7 @@ jobs:
         with:
           target-org: ${{ env.TARGET_ORG }}
           package-id: ${{ inputs.package-id }}
-          package-key: ${{ secrets.CRM_PACKAGE_KEY }}
+          package-key: ${{ secrets.PACKAGE_KEY }}
           install-wait: ${{ inputs.install-wait }}
           publish-wait: ${{ inputs.publish-wait }}
 
