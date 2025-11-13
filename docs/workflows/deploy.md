@@ -30,13 +30,12 @@ If metadata-path is supplied, deploy the metadata in the target org.
 
 ## Secrets
 
-- `secrets.CRM_PROD_SFDX_URL` Required to authenticate towards production.
-- `secrets.CRM_PREPROD_SFDX_URL` Required to authenticate towards preprod sandbox.
-- `secrets.DEV_SFDX_URL` Required to authenticate towards dev sandbox.
-- `secrets.CRM_UAT_SFDX_URL` Required to authenticate towards crm-uat sandbox.
-- `secrets.UAT_SFDX_URL` Required to authenticate towards uat sandbox.
-- `secrets.CRM_SIT_SFDX_URL` Required to authenticate towards sit sandbox.
-- `secrets.CRM_PACKAGE_KEY` Needed to install packages with keys
+- `secrets.PROD_AUTH_URL` Required to authenticate towards production.
+- `secrets.PREPROD_AUTH_URL` Required to authenticate towards preprod sandbox.
+- `secrets.DEV_AUTH_URL` Required to authenticate towards dev sandbox.
+- `secrets.UAT_AUTH_URL` Required to authenticate towards uat sandbox.
+- `secrets.SIT_AUTH_URL` Required to authenticate towards sit sandbox.
+- `secrets.PACKAGE_KEY` Needed to install packages with keys
 
 ## Permissions
 
@@ -99,11 +98,9 @@ jobs:
       contents: read
     secrets:
       PACKAGE_KEY: ${{ secrets.PACKAGE_KEY }}
-      CRM_PROD_SFDX_URL: ${{ secrets.CRM_PROD_SFDX_URL }}
-      CRM_PREPROD_SFDX_URL: ${{ secrets.CRM_PREPROD_SFDX_URL }}
-      DEV_SFDX_URL: ${{ secrets.DEV_SFDX_URL }}
-      CRM_UAT_SFDX_URL: ${{ secrets.CRM_UAT_SFDX_URL }}
-      UAT_SFDX_URL: ${{ secrets.UAT_SFDX_URL }}
-      CRM_SIT_SFDX_URL: ${{ secrets.CRM_SIT_SFDX_URL }}
-      CRM_PACKAGE_KEY: ${{ secrets.CRM_PACKAGE_KEY }}
+      PROD_AUTH_URL: ${{ secrets.PROD_AUTH_URL }}
+      PREPROD_AUTH_URL: ${{ secrets.PREPROD_AUTH_URL }}
+      DEV_AUTH_URL: ${{ secrets.DEV_AUTH_URL }}
+      UAT_AUTH_URL: ${{ secrets.UAT_AUTH_URL }}
+      SIT_AUTH_URL: ${{ secrets.SIT_AUTH_URL }}
 ```
