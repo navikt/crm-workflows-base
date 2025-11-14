@@ -28,6 +28,10 @@ Check out the source code for the package
 
 If metadata-path is supplied, deploy the metadata in the target org.
 
+### Set output
+
+Set the output from the job
+
 ## Secrets
 
 - `secrets.PROD_AUTH_URL` Required to authenticate towards production.
