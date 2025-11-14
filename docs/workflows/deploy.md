@@ -16,7 +16,7 @@ Install SF CLI sing the action `sf-gha-install-sf-cli`
 
 Authenticate with the target org where we are deploying the package/metadata
 
-### Install pacage in target org
+### Install package in target org
 
 If a package id is suplied, try to intall the package in the target org.
 
@@ -43,7 +43,7 @@ Set the output from the job
 
 ## Permissions
 
-`contents: read` Is needed in order to checkout and read the metadata to deploy.
+`contents: read` Is needed in order to check out and read the metadata to deploy.
 
 ## Usage
 
