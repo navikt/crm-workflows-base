@@ -1,0 +1,242 @@
+name: "Create Package"
+on:
+  workflow_call:
+    inputs:
+      create-alpha-package:
+        description: "Whether to create an alpha package (skip validation)"
+        required: false
+        type: boolean
+        default: false
+      installation-key-bypass:
+        description: "Whether to bypass the installation key for the package"
+        required: false
+        type: boolean
+        default: false
+      scratch-org-def-file:
+        description: "Path to scratch org definition file"
+        required: false
+        type: string
+        default: config/project-scratch-def.json
+      metadata-path:
+        description: "Path to metadata to deploy after package installation"
+        required: false
+        type: string
+
+      wait:
+        description: "Wait time for package creation (minutes)"
+        required: false
+        type: number
+        default: 120
+    secrets:
+      DEV_HUB_AUTH_URL:
+        required: true
+      SIT_AUTH_URL:
+        required: true
+      PACKAGE_KEY:
+        required: false
+permissions: {}
+jobs:
+  create-package:
+    name: Create Package Version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      package-id: ${{ steps.package-version-create.outputs.package-id }}
+      version-number: ${{ steps.package-version-create.outputs.version-number }}
+      code-coverage: ${{ steps.package-version-create.outputs.code-coverage }}
+    env:
+      DEV_HUB_ALIAS: devhub
+    steps:
+      # Checkout source code
+      - name: Checkout source code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      # Install SF
+      - name: Install SF
+        uses: navikt/sf-gha-install-sf-cli@3f1abbc990b03fb544e80169920fea2e94946d1a
+
+      # Authorize Dev Hub
+      - name: Authorize PROD
+        uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
+        with:
+          auth-url: ${{ secrets.DEV_HUB_AUTH_URL }}
+          alias: ${{ env.DEV_HUB_ALIAS }}
+          setDefaultUsername: true
+          setDefaultDevhubUsername: true
+
+      # Delete unpackagable and scratch-org folder
+      - name: Delete unpackagable
+        run: |
+          rm -rf ./force-app/unpackagable
+          rm -rf ./force-app/unpackagable-with-auto-deploy
+          rm -rf ./force-app/scratch-org
+      # Create package version
+      - name: Create package version
+        id: package-version-create
+        env:
+          SCRATCH_ORG_DEF_FILE: ${{ inputs.scratch-org-def-file }}
+          WAIT: ${{ inputs.wait }}
+          CREATE_ALPHA_PACKAGE: ${{ inputs.create-alpha-package }}
+          INSTALLATION_KEY_BYPASS: ${{ inputs.installation-key-bypass }}
+          BRANCH_NAME: ${{ github.ref_name }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+
+          packageName=$(jq -r '.packageDirectories[0].package' sfdx-project.json)
+
+          command=("sf" "package" "version" "create" \
+            "--target-dev-hub" "$DEV_HUB_ALIAS" \
+            "--definition-file" "$SCRATCH_ORG_DEF_FILE" \
+            "--package" "$packageName" \
+            "--wait" "$WAIT" \
+            "--verbose" \
+            "--json" )
+
+          if [ "$BRANCH_NAME" != "$DEFAULT_BRANCH" ]; then
+            command+=("--branch" "$BRANCH_NAME")
+          fi
+
+          if [ "$CREATE_ALPHA_PACKAGE" = true ]; then
+            command+=("--skip-validation")
+          else
+            command+=("--code-coverage")
+          fi
+
+          if [ "$INSTALLATION_KEY_BYPASS" = true ]; then
+            command+=("--installation-key-bypass")
+            echo "Command to execute: ${command[*]}"
+          else
+            echo "Command to execute: ${command[*]}"
+            
+            echo "Installation key provided."
+            command+=( "--installation-key" "${{ secrets.PACKAGE_KEY }}" )
+          fi
+
+          "${command[@]}" | tee output.json
+
+          STATUS=$(jq -r '.status' output.json)
+
+          if [ "$STATUS" = "1" ]; then
+            MESSAGE=$(jq -r '.message // "Unknown error"' output.json)
+            echo "::error title=Package installation failed.::$MESSAGE"
+            exit 1
+          fi
+
+          packageId=$(jq -r '.result.SubscriberPackageVersionId' output.json)
+          versionNumber=$(jq -r '.result.VersionNumber' output.json)
+          codeCoverage=$(jq -r '.result.CodeCoverage // 0' )
+          echo "package-id=$packageId" >> $GITHUB_OUTPUT
+          echo "version-number=$versionNumber" >> $GITHUB_OUTPUT
+          echo "code-coverage=$codeCoverage" >> $GITHUB_OUTPUT
+
+  validate-in-sit:
+    name: Install in SIT Sandbox
+    needs: [create-package]
+    uses: navikt/crm-workflows-base/.github/workflows/deploy.yml@main
+    with:
+      package-id: ${{ needs.create-package.outputs.package-id }}
+      org: sit
+      metadata-path: ${{ inputs.metadata-path }}
+    secrets:
+      SIT_AUTH_URL: ${{ secrets.SIT_AUTH_URL }}
+      PACKAGE_KEY: ${{ secrets.PACKAGE_KEY }}
+
+  create-release:
+    name: Create release
+    needs: [create-package, validate-in-sit]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed to create releases
+    steps:
+      # Checkout source code
+      - name: Checkout source code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # set release variables
+      - name: Set release variables
+        id: release-variables
+        env:
+          VERSION_NUMBER: ${{ needs.create-package.outputs.version-number }}
+          PACKAGE_INSTALLATION_RESULT: ${{ needs.validate-in-sit.outputs.package-installation-result }}
+          METADATA_DEPLOYMENT_RESULT: ${{ needs.validate-in-sit.outputs.metadata-deployment-result }}
+          CREATE_ALPHA_PACKAGE: ${{ inputs.create-alpha-package }}
+          INSTALLATION_KEY_BYPASS: ${{ inputs.installation-key-bypass }}
+          BRANCH_NAME: ${{ github.ref_name }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+
+          IFS='.' read -r major minor patch build <<< "$VERSION_NUMBER"
+
+          versionNumber="$major.$minor.$patch"
+          prereleaseTag="beta"
+
+          if [ "$CREATE_ALPHA_PACKAGE" = "true" ]; then
+            prereleaseTag="alpha"
+          fi
+
+          version="${versionNumber}-${prereleaseTag}.${build}"
+
+          if [ "$BRANCH_NAME" != "$DEFAULT_BRANCH" ]; then
+            version+="+${BRANCH_NAME}"
+          fi
+
+          packageInstallationText="Package Installation (SIT Sandbox)"
+
+          if [ "$PACKAGE_INSTALLATION_RESULT" == "success" ]; then
+            packageInstallationText="✅ $packageInstallationText"
+          elif [ "$PACKAGE_INSTALLATION_RESULT" == "failure" ]; then
+            packageInstallationText="❌ $packageInstallationText"
+          elif [ "$PACKAGE_INSTALLATION_RESULT" == "skipped" ]; then
+            packageInstallationText="⚠️ $packageInstallationText - Skipped"
+          elif [ "$PACKAGE_INSTALLATION_RESULT" == "cancelled" ]; then
+            packageInstallationText="⚠️ $packageInstallationText - Cancelled"
+          else
+            packageInstallationText="❓ $packageInstallationText - Unknown Result"
+          fi
+
+          metadataDeployText="Metadata Deployment (SIT Sandbox)"
+
+          if [ "$METADATA_DEPLOYMENT_RESULT" == "success" ]; then
+            metadataDeployText="✅ $metadataDeployText"
+          elif [ "$METADATA_DEPLOYMENT_RESULT" == "failure" ]; then
+            metadataDeployText="❌ $metadataDeployText"
+          elif [ "$METADATA_DEPLOYMENT_RESULT" == "skipped" ]; then
+            metadataDeployText="⚠️ $metadataDeployText - Skipped"
+          elif [ "$METADATA_DEPLOYMENT_RESULT" == "cancelled" ]; then
+            metadataDeployText="⚠️ $metadataDeployText - Cancelled"
+          else
+            metadataDeployText="❓ $packageInstallationText - Unknown Result"
+          fi
+
+          echo "tag-name=v${version}" >> $GITHUB_OUTPUT
+          echo "release-name=$version" >> $GITHUB_OUTPUT
+          echo "metadata-deploy-text=$metadataDeployText" >> $GITHUB_OUTPUT
+          echo "package-installation-text=$packageInstallationText" >> $GITHUB_OUTPUT
+
+      # create github release
+      - name: Create Release
+        uses: softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ steps.release-variables.outputs.tag-name }}
+          name: ${{ steps.release-variables.outputs.release-name }}
+          body: |
+            **Version**: ${{ needs.create-package.outputs.version-number }}
+            **Package ID**: ${{ needs.create-package.outputs.package-id }}
+            **Code Coverage**: ${{ needs.create-package.outputs.code-coverage }}%
+            **Author**: ${{ github.actor }}
+            ✅ Package Creation
+            ${{ steps.release-variables.outputs.package-installation-text }}
+            ${{ steps.release-variables.outputs.metadata-deploy-text }}
+          draft: false
+          prerelease: true
+          generate_release_notes: true
