@@ -21,6 +21,10 @@ on:
         description: "Path to metadata to deploy after package installation"
         required: false
         type: string
+      version-description:
+        description: "Description for the package version"
+        required: false
+        type: string
 
       wait:
         description: "Wait time for package creation (minutes)"
@@ -84,6 +88,7 @@ jobs:
           INSTALLATION_KEY_BYPASS: ${{ inputs.installation-key-bypass }}
           BRANCH_NAME: ${{ github.ref_name }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          PACKAGE_VERSION_DESCRIPTION: ${{ inputs.version-description }}
         run: |
           set -euo pipefail
 
@@ -105,6 +110,10 @@ jobs:
             command+=("--skip-validation")
           else
             command+=("--code-coverage")
+          fi
+
+          if [ -n "$PACKAGE_VERSION_DESCRIPTION" ]; then
+            command+=("--description" "$PACKAGE_VERSION_DESCRIPTION")
           fi
 
           if [ "$INSTALLATION_KEY_BYPASS" = true ]; then
@@ -142,6 +151,8 @@ jobs:
       package-id: ${{ needs.create-package.outputs.package-id }}
       org: sit
       metadata-path: ${{ inputs.metadata-path }}
+    permissions:
+      contents: read
     secrets:
       SIT_AUTH_URL: ${{ secrets.SIT_AUTH_URL }}
       PACKAGE_KEY: ${{ secrets.PACKAGE_KEY }}
