@@ -65,7 +65,7 @@ jobs:
         run: |
           set -euo pipefail
           case "$ORG" in
-            prod)       SF_AUTH_URL="${{ secrets.PROD_AUTH_URL }}" ;
+            prod)       SF_AUTH_URL="${{ secrets.PROD_AUTH_URL }}" ;;
             preprod)    SF_AUTH_URL="${{ secrets.PREPROD_AUTH_URL }}" ;;
             dev)        SF_AUTH_URL="${{ secrets.DEV_AUTH_URL }}" ;;
             uat)        SF_AUTH_URL="${{ secrets.UAT_AUTH_URL }}" ;;
