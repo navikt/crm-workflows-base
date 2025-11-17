@@ -145,7 +145,7 @@ jobs:
 
   create-release:
     name: Create release
-    needs: [create-package, validate-in-sit]
+    needs: [create-package]
     runs-on: ubuntu-latest
     permissions:
       contents: write # Needed to create releases
@@ -239,7 +239,7 @@ jobs:
   validate-in-sit:
     if: ${{ github.ref_name == github.event.repository.default_branch }}
     name: Install in SIT Sandbox
-    needs: [create-package]
+    needs: [create-release]
     uses: navikt/crm-workflows-base/.github/workflows/deploy.yml@main
     with:
       package-id: ${{ needs.create-package.outputs.package-id }}
