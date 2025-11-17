@@ -143,20 +143,6 @@ jobs:
           echo "version-number=$versionNumber" >> $GITHUB_OUTPUT
           echo "code-coverage=$codeCoverage" >> $GITHUB_OUTPUT
 
-  validate-in-sit:
-    name: Install in SIT Sandbox
-    needs: [create-package]
-    uses: navikt/crm-workflows-base/.github/workflows/deploy.yml@main
-    with:
-      package-id: ${{ needs.create-package.outputs.package-id }}
-      org: sit
-      metadata-path: ${{ inputs.metadata-path }}
-    permissions:
-      contents: read
-    secrets:
-      SIT_AUTH_URL: ${{ secrets.SIT_AUTH_URL }}
-      PACKAGE_KEY: ${{ secrets.PACKAGE_KEY }}
-
   create-release:
     name: Create release
     needs: [create-package, validate-in-sit]
@@ -200,38 +186,38 @@ jobs:
             version+="+${BRANCH_NAME}"
           fi
 
-          packageInstallationText="Package Installation (SIT Sandbox)"
+          # packageInstallationText="Package Installation (SIT Sandbox)"
 
-          if [ "$PACKAGE_INSTALLATION_RESULT" == "success" ]; then
-            packageInstallationText="✅ $packageInstallationText"
-          elif [ "$PACKAGE_INSTALLATION_RESULT" == "failure" ]; then
-            packageInstallationText="❌ $packageInstallationText"
-          elif [ "$PACKAGE_INSTALLATION_RESULT" == "skipped" ]; then
-            packageInstallationText="⚠️ $packageInstallationText - Skipped"
-          elif [ "$PACKAGE_INSTALLATION_RESULT" == "cancelled" ]; then
-            packageInstallationText="⚠️ $packageInstallationText - Cancelled"
-          else
-            packageInstallationText="❓ $packageInstallationText - Unknown Result"
-          fi
+          # if [ "$PACKAGE_INSTALLATION_RESULT" == "success" ]; then
+          #   packageInstallationText="✅ $packageInstallationText"
+          # elif [ "$PACKAGE_INSTALLATION_RESULT" == "failure" ]; then
+          #   packageInstallationText="❌ $packageInstallationText"
+          # elif [ "$PACKAGE_INSTALLATION_RESULT" == "skipped" ]; then
+          #   packageInstallationText="⚠️ $packageInstallationText - Skipped"
+          # elif [ "$PACKAGE_INSTALLATION_RESULT" == "cancelled" ]; then
+          #   packageInstallationText="⚠️ $packageInstallationText - Cancelled"
+          # else
+          #   packageInstallationText="❓ $packageInstallationText - Unknown Result"
+          # fi
 
-          metadataDeployText="Metadata Deployment (SIT Sandbox)"
+          # metadataDeployText="Metadata Deployment (SIT Sandbox)"
 
-          if [ "$METADATA_DEPLOYMENT_RESULT" == "success" ]; then
-            metadataDeployText="✅ $metadataDeployText"
-          elif [ "$METADATA_DEPLOYMENT_RESULT" == "failure" ]; then
-            metadataDeployText="❌ $metadataDeployText"
-          elif [ "$METADATA_DEPLOYMENT_RESULT" == "skipped" ]; then
-            metadataDeployText="⚠️ $metadataDeployText - Skipped"
-          elif [ "$METADATA_DEPLOYMENT_RESULT" == "cancelled" ]; then
-            metadataDeployText="⚠️ $metadataDeployText - Cancelled"
-          else
-            metadataDeployText="❓ $packageInstallationText - Unknown Result"
-          fi
+          # if [ "$METADATA_DEPLOYMENT_RESULT" == "success" ]; then
+          #   metadataDeployText="✅ $metadataDeployText"
+          # elif [ "$METADATA_DEPLOYMENT_RESULT" == "failure" ]; then
+          #   metadataDeployText="❌ $metadataDeployText"
+          # elif [ "$METADATA_DEPLOYMENT_RESULT" == "skipped" ]; then
+          #   metadataDeployText="⚠️ $metadataDeployText - Skipped"
+          # elif [ "$METADATA_DEPLOYMENT_RESULT" == "cancelled" ]; then
+          #   metadataDeployText="⚠️ $metadataDeployText - Cancelled"
+          # else
+          #   metadataDeployText="❓ $packageInstallationText - Unknown Result"
+          # fi
 
           echo "tag-name=v${version}" >> $GITHUB_OUTPUT
           echo "release-name=$version" >> $GITHUB_OUTPUT
-          echo "metadata-deploy-text=$metadataDeployText" >> $GITHUB_OUTPUT
-          echo "package-installation-text=$packageInstallationText" >> $GITHUB_OUTPUT
+          # echo "metadata-deploy-text=$metadataDeployText" >> $GITHUB_OUTPUT
+          # echo "package-installation-text=$packageInstallationText" >> $GITHUB_OUTPUT
 
       # create github release
       - name: Create Release
@@ -246,8 +232,21 @@ jobs:
             **Code Coverage**: ${{ needs.create-package.outputs.code-coverage }}%
             **Author**: ${{ github.actor }}
             ✅ Package Creation
-            ${{ steps.release-variables.outputs.package-installation-text }}
-            ${{ steps.release-variables.outputs.metadata-deploy-text }}
           draft: false
           prerelease: true
           generate_release_notes: true
+
+  validate-in-sit:
+    if: ${{ github.ref_name == github.event.repository.default_branch }}
+    name: Install in SIT Sandbox
+    needs: [create-package]
+    uses: navikt/crm-workflows-base/.github/workflows/deploy.yml@main
+    with:
+      package-id: ${{ needs.create-package.outputs.package-id }}
+      org: sit
+      metadata-path: ${{ inputs.metadata-path }}
+    permissions:
+      contents: read
+    secrets:
+      SIT_AUTH_URL: ${{ secrets.SIT_AUTH_URL }}
+      PACKAGE_KEY: ${{ secrets.PACKAGE_KEY }}
