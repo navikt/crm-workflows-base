@@ -25,7 +25,6 @@ on:
         description: "Description for the package version"
         required: false
         type: string
-
       wait:
         description: "Wait time for package creation (minutes)"
         required: false
@@ -38,6 +37,9 @@ on:
         required: true
       PACKAGE_KEY:
         required: false
+concurrency:
+  group: create-package-version-${{ github.ref_name }}
+  cancel-in-progress: false
 permissions: {}
 jobs:
   create-package:
@@ -89,6 +91,7 @@ jobs:
           BRANCH_NAME: ${{ github.ref_name }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           PACKAGE_VERSION_DESCRIPTION: ${{ inputs.version-description }}
+          PACKAGE_KEY: ${{ secrets.PACKAGE_KEY }}
         run: |
           set -euo pipefail
 
@@ -118,32 +121,45 @@ jobs:
 
           if [ "$INSTALLATION_KEY_BYPASS" = true ]; then
             command+=("--installation-key-bypass")
+          else
+            if [ -z "$PACKAGE_KEY" ]; then
+              echo "::error title=Missing PACKAGE_KEY secret.::PACKAGE_KEY secret is required when installation key bypass is not enabled.";
+              exit 1;
+            fi
+            command+=( "--installation-key" "$PACKAGE_KEY" )
+          fi
+
+          # Log command safely (mask secret if added)
+          if [ "$INSTALLATION_KEY_BYPASS" = true ]; then
             echo "Command to execute: ${command[*]}"
           else
-            echo "Command to execute: ${command[*]}"
-            
-            echo "Installation key provided."
-            command+=( "--installation-key" "${{ secrets.PACKAGE_KEY }}" )
+            # Replace the last element (the key) with a placeholder for logging
+            logged_command=("${command[@]}")
+            logged_command[-1]="***SECRET***"
+            echo "Command to execute: ${logged_command[*]}"
           fi
 
           "${command[@]}" 1> output.json 2> stderr.log || {
-            echo "::error title=Package version creation failed.::See stderr.log for details."
+            MESSAGE=$(jq -r '.message // "Unknown error"' output.json 2>/dev/null || echo "Unknown error")
+            echo "::error title=Package version creation failed.::$MESSAGE"
             exit 1
           }
 
-          STATUS=$(jq -r '.status' output.json)
-
-          if [ "$STATUS" = "0" ]; then
-            echo "✅ Package version created successfully."
-          else
-            MESSAGE=$(jq -r '.message // "Unknown error"' output.json)
-            echo "::error title=Package installation failed.::$MESSAGE"
-            exit 1
-          fi
+          echo "✅ Package version created successfully."
 
           packageId=$(jq -r '.result.SubscriberPackageVersionId' output.json)
           versionNumber=$(jq -r '.result.VersionNumber' output.json)
-          codeCoverage=$(jq -r '.result.CodeCoverage // 0' )
+
+          if [ "$CREATE_ALPHA_PACKAGE" = true ]; then
+            codeCoverage="N/A"
+          else
+            codeCoverage=$(jq -r '.result.CodeCoverage // empty' output.json)%
+            if [ -z "$codeCoverage" ]; then
+              codeCoverage="0"
+            fi
+            codeCoverage="${codeCoverage}%"
+          fi
+
           echo "package-id=$packageId" >> $GITHUB_OUTPUT
           echo "version-number=$versionNumber" >> $GITHUB_OUTPUT
           echo "code-coverage=$codeCoverage" >> $GITHUB_OUTPUT
@@ -173,15 +189,25 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Generate changelog
+        continue-on-error: true
+        id: changelog
+        uses: metcalfc/changelog-generator@3f82cef08fe5dcf57c591fe165e70e1d5032e15a
+        with:
+          mytoken: ${{ secrets.GITHUB_TOKEN }}
+
       # set release variables
       - name: Set release variables
         id: release-variables
         env:
           VERSION_NUMBER: ${{ needs.create-package.outputs.version-number }}
           CREATE_ALPHA_PACKAGE: ${{ inputs.create-alpha-package }}
-          INSTALLATION_KEY_BYPASS: ${{ inputs.installation-key-bypass }}
           BRANCH_NAME: ${{ github.ref_name }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          PACKAGE_ID: ${{ needs.create-package.outputs.package-id }}
+          CODE_COVERAGE: ${{ needs.create-package.outputs.code-coverage }}
+          AUTHOR: ${{ github.actor }}
+          CHANGE_LOG: ${{ steps.changelog.outputs.changelog }}
         run: |
           set -euo pipefail
 
@@ -203,11 +229,14 @@ jobs:
           echo "tag-name=v${version}" >> $GITHUB_OUTPUT
           echo "release-name=$version" >> $GITHUB_OUTPUT
 
-      - name: Generate changelog
-        id: changelog
-        uses: metcalfc/changelog-generator@3f82cef08fe5dcf57c591fe165e70e1d5032e15a
-        with:
-          mytoken: ${{ secrets.GITHUB_TOKEN }}
+          releaseBody=$(printf "**Version**: %s\n**Package ID**: %s\n**Code Coverage**: %s\n**Author**: %s\n\n## Changelog\n%s\n" \
+            "$VERSION_NUMBER" \
+            "$PACKAGE_ID" \
+            "$CODE_COVERAGE" \
+            "$AUTHOR" \
+            "$CHANGE_LOG")
+
+          echo "release-body=$releaseBody" >> $GITHUB_OUTPUT
 
       - name: Create Release
         uses: softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe
@@ -215,17 +244,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ steps.release-variables.outputs.tag-name }}
           name: ${{ steps.release-variables.outputs.release-name }}
-          body: |
-            **Version**: ${{ needs.create-package.outputs.version-number }}
-            **Package ID**: ${{ needs.create-package.outputs.package-id }}
-            **Code Coverage**: ${{ needs.create-package.outputs.code-coverage }}%
-            **Author**: ${{ github.actor }}
-
-            ## Changelog
-            ${{ steps.changelog.outputs.changelog }}
+          body: ${{ steps.release-variables.outputs.release-body }}
           draft: false
           prerelease: true
-          generate_release_notes: true
 
   validate-in-sit:
     if: ${{ github.ref_name == github.event.repository.default_branch }}
