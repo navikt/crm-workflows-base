@@ -162,8 +162,6 @@ jobs:
         id: release-variables
         env:
           VERSION_NUMBER: ${{ needs.create-package.outputs.version-number }}
-          PACKAGE_INSTALLATION_RESULT: ${{ needs.validate-in-sit.outputs.package-installation-result }}
-          METADATA_DEPLOYMENT_RESULT: ${{ needs.validate-in-sit.outputs.metadata-deployment-result }}
           CREATE_ALPHA_PACKAGE: ${{ inputs.create-alpha-package }}
           INSTALLATION_KEY_BYPASS: ${{ inputs.installation-key-bypass }}
           BRANCH_NAME: ${{ github.ref_name }}
@@ -186,38 +184,8 @@ jobs:
             version+="+${BRANCH_NAME}"
           fi
 
-          # packageInstallationText="Package Installation (SIT Sandbox)"
-
-          # if [ "$PACKAGE_INSTALLATION_RESULT" == "success" ]; then
-          #   packageInstallationText="✅ $packageInstallationText"
-          # elif [ "$PACKAGE_INSTALLATION_RESULT" == "failure" ]; then
-          #   packageInstallationText="❌ $packageInstallationText"
-          # elif [ "$PACKAGE_INSTALLATION_RESULT" == "skipped" ]; then
-          #   packageInstallationText="⚠️ $packageInstallationText - Skipped"
-          # elif [ "$PACKAGE_INSTALLATION_RESULT" == "cancelled" ]; then
-          #   packageInstallationText="⚠️ $packageInstallationText - Cancelled"
-          # else
-          #   packageInstallationText="❓ $packageInstallationText - Unknown Result"
-          # fi
-
-          # metadataDeployText="Metadata Deployment (SIT Sandbox)"
-
-          # if [ "$METADATA_DEPLOYMENT_RESULT" == "success" ]; then
-          #   metadataDeployText="✅ $metadataDeployText"
-          # elif [ "$METADATA_DEPLOYMENT_RESULT" == "failure" ]; then
-          #   metadataDeployText="❌ $metadataDeployText"
-          # elif [ "$METADATA_DEPLOYMENT_RESULT" == "skipped" ]; then
-          #   metadataDeployText="⚠️ $metadataDeployText - Skipped"
-          # elif [ "$METADATA_DEPLOYMENT_RESULT" == "cancelled" ]; then
-          #   metadataDeployText="⚠️ $metadataDeployText - Cancelled"
-          # else
-          #   metadataDeployText="❓ $packageInstallationText - Unknown Result"
-          # fi
-
           echo "tag-name=v${version}" >> $GITHUB_OUTPUT
           echo "release-name=$version" >> $GITHUB_OUTPUT
-          # echo "metadata-deploy-text=$metadataDeployText" >> $GITHUB_OUTPUT
-          # echo "package-installation-text=$packageInstallationText" >> $GITHUB_OUTPUT
 
       # create github release
       - name: Create Release
