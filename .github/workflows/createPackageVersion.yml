@@ -229,12 +229,14 @@ jobs:
           echo "tag-name=v${version}" >> $GITHUB_OUTPUT
           echo "release-name=$version" >> $GITHUB_OUTPUT
 
-          releaseBody=$(printf "Version: %s\nPackage ID: %s\nCode Coverage: %s\nAuthor: %s\n\n## Changelog\n%s\n" \
+          echo "release-body<<EOF" >> $GITHUB_OUTPUT
+          printf "Version: %s\nPackage ID: %s\nCode Coverage: %s\nAuthor: %s\n\n## Changelog\n%s\n" \
             "$VERSION_NUMBER" \
             "$PACKAGE_ID" \
             "$CODE_COVERAGE" \
             "$AUTHOR" \
-            "$CHANGE_LOG")
+            "$CHANGE_LOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
           echo "release-body=$releaseBody" >> $GITHUB_OUTPUT
 
