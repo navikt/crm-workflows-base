@@ -187,7 +187,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-          persist-credentials: false
+          persist-credentials: true
 
       - name: Generate changelog
         continue-on-error: true
@@ -229,7 +229,7 @@ jobs:
           echo "tag-name=v${version}" >> $GITHUB_OUTPUT
           echo "release-name=$version" >> $GITHUB_OUTPUT
 
-          releaseBody=$(printf "**Version**: %s\n**Package ID**: %s\n**Code Coverage**: %s\n**Author**: %s\n\n## Changelog\n%s\n" \
+          releaseBody=$(printf "Version: %s\nPackage ID: %s\nCode Coverage: %s\nAuthor: %s\n\n## Changelog\n%s\n" \
             "$VERSION_NUMBER" \
             "$PACKAGE_ID" \
             "$CODE_COVERAGE" \
