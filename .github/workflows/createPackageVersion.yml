@@ -116,7 +116,7 @@ jobs:
           fi
 
           if [ -n "$PACKAGE_VERSION_DESCRIPTION" ]; then
-            command+=("--description" "$PACKAGE_VERSION_DESCRIPTION")
+            command+=("--version-description" "$PACKAGE_VERSION_DESCRIPTION")
           fi
 
           if [ "$INSTALLATION_KEY_BYPASS" = true ]; then
