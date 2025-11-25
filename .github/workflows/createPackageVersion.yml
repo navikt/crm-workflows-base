@@ -153,7 +153,7 @@ jobs:
           if [ "$CREATE_ALPHA_PACKAGE" = true ]; then
             codeCoverage="N/A"
           else
-            codeCoverage=$(jq -r '.result.CodeCoverage // empty' output.json)%
+            codeCoverage=$(jq -r '.result.CodeCoverage // empty' output.json)
             if [ -z "$codeCoverage" ]; then
               codeCoverage="0"
             fi
