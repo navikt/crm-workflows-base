@@ -217,7 +217,7 @@ jobs:
           versionNumber="$major.$minor.$patch"
           prereleaseTag="beta"
 
-          if [ "$CREATE_ALPHA_PACKAGE" = "true" ]; then
+          if [ "$CREATE_ALPHA_PACKAGE" = true ]; then
             prereleaseTag="alpha"
           fi
 
