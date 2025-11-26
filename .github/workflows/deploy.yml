@@ -109,7 +109,7 @@ jobs:
           fetch-depth: 1
 
       # Deploy metadata
-      - uses: navikt/sf-gha-deploy-metadata@a6d136bade9f4377eaf682ecdf5f5cb195abf5f3
+      - uses: navikt/sf-gha-deploy-metadata@accafcc1b6ffbb479e2e4d4f45146590fc59adab
         id: deploy-metadata
         if: ${{ inputs.metadata-path != '' }}
         with:
