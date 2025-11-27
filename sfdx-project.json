@@ -70,7 +70,7 @@
         },
         {
           "package": "crm-shared-user-notification",
-          "versionNumber": "0.25.0.1"
+          "versionNumber": "0.26.0.7"
         },
         {
           "package": "crm-thread-view",
@@ -94,7 +94,7 @@
         },
         {
           "package": "crm-henvendelse",
-          "versionNumber": "0.191.0.7"
+          "versionNumber": "0.192.0.1"
         },
         {
           "package": "henvendelse-migrator",
