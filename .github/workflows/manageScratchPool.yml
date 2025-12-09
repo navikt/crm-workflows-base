@@ -52,7 +52,7 @@ on:
         required: true
       CRM_PACKAGE_KEY:
         required: false
-
+permissions: {}
 env:
   DEV_HUB_ALIAS: dev-hub
   DISABLE_SF_METRICS_PUSH: ${{ vars.DISABLE_SF_METRICS_PUSH || 'false' }}
