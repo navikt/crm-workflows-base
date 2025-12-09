@@ -6,10 +6,14 @@ on:
         description: "Org (prod, preprod, dev, uat, sit)"
         required: true
         type: string
-      communityname:
+      community-name:
         description: "Name of the experience site to publish"
         required: true
         type: string
+permissions: {}
+concurrency:
+  group: "${{ github.workflow }}-${{ inputs.org }}-${{ inputs.community-name }}"
+  cancel-in-progress: false
 jobs:
   deploy-package:
     name: Publish community
@@ -20,29 +24,21 @@ jobs:
       # Set SF Auth URL
       - name: Set SF Auth URL
         id: auth-url
+        shell: bash
         run: |
-          if [ ${{ inputs.org }} == "prod" ];then
-            echo "target=$(echo ${{ secrets.CRM_PROD_SFDX_URL }})" >> $GITHUB_ENV
-            echo "'prod' was set"
-          elif [ ${{ inputs.org }} == "preprod" ];then
-            echo "target=$(echo ${{ secrets.CRM_PREPROD_SFDX_URL }})" >> $GITHUB_ENV
-            echo "'preprod' was set"
-          elif [ ${{ inputs.org }} == "dev" ];then
-            echo "target=$(echo ${{ secrets.DEV_SFDX_URL }})" >> $GITHUB_ENV
-            echo "'dev' was set"
-          elif [ ${{ inputs.org }} == "crm-uat" ];then
-            echo "target=$(echo ${{ secrets.CRM_UAT_SFDX_URL }})" >> $GITHUB_ENV
-            echo "'crm-uat' was set"  
-          elif [ ${{ inputs.org }} == "uat" ];then
-            echo "target=$(echo ${{ secrets.UAT_SFDX_URL }})" >> $GITHUB_ENV
-            echo "'uat' was set"
-          elif [ ${{ inputs.org }} == "sit" ];then
-            echo "target=$(echo ${{ secrets.CRM_SIT_SFDX_URL }})" >> $GITHUB_ENV
-            echo "'sit' was set"
-          else
-            echo "target=$(echo ${{ inputs.org }})" >> $GITHUB_ENV
-            echo "input org was set to input"
-          fi
+          set -euo pipefail
+          case "$ORG" in
+            prod)       SF_AUTH_URL="${{ secrets.PROD_AUTH_URL }}" ;;
+            preprod)    SF_AUTH_URL="${{ secrets.PREPROD_AUTH_URL }}" ;;
+            dev)        SF_AUTH_URL="${{ secrets.DEV_AUTH_URL }}" ;;
+            uat)        SF_AUTH_URL="${{ secrets.UAT_AUTH_URL }}" ;;
+            sit)        SF_AUTH_URL="${{ secrets.SIT_AUTH_URL }}" ;;
+            *)          SF_AUTH_URL="$ORG" ;;
+          esac
+          echo "Auth URL set for $ORG"
+          echo "SF_AUTH_URL=$SF_AUTH_URL" >> "$GITHUB_ENV"
+        env:
+          ORG: "${{ inputs.org }}"
 
       # Install SF
       - name: Install SF
@@ -52,11 +48,13 @@ jobs:
       - name: Authorize SF
         uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
         with:
-          auth-url: ${{ env.target }}
+          auth-url: ${{ env.SF_AUTH_URL }}
           alias: targetOrg
           setDefaultUsername: true
           setDefaultDevhubUsername: false
 
       - name: Publish
         run: |
-          sf community publish --name ${{ inputs.communityname }}
+          sf community publish --name "$COMMUNITY_NAME" --target-org targetOrg --json
+        env:
+          COMMUNITY_NAME: ${{ inputs.community-name }}
