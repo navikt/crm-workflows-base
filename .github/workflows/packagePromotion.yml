@@ -2,53 +2,66 @@ name: "Promote Package"
 on:
   workflow_call:
     inputs:
-      packageId:
-        description: "Package ID"
+      package-version-id:
+        description: "Package version ID"
         required: true
         type: string
-      comment:
-        description: "Release Comment"
+    secrets:
+      COMMIT_TOKEN:
         required: true
-        type: string
-jobs:
-  debug:
-    name: Debug Information
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print input values
-        run: |
-          echo "Package ID: ${{ github.event.inputs.packageId }}"
-          echo "Initiator: ${{ github.actor }}"
-          echo "Comment: ${{ github.event.inputs.comment }}"
+      PROD_AUTH_URL:
+        required: true
+      PREPROD_AUTH_URL:
+        required: true
+      UAT_AUTH_URL:
+        required: true
+      PACKAGE_KEY:
+        required: false
 
+permissions: {}
+concurrency:
+  group: on-workflow-call-${{ github.workflow }}-${{ inputs.package-version-id }}
+  cancel-in-progress: false
+jobs:
   install-package-preprod:
-    name: Validate install in PREPROD
-    uses: navikt/crm-workflows-base/.github/workflows/deployPackage.yml@master
+    name: Install in PREPROD
+    uses: navikt/crm-workflows-base/.github/workflows/deploy.yml@main
+    permissions:
+      contents: read
     with:
-      packageId: ${{ github.event.inputs.packageId  }}
+      package-id: ${{ inputs.package-version-id  }}
       org: preprod
-      unpackagable: ./force-app/unpackagable-with-auto-deploy
-    secrets: inherit
+      metadata-path: ./force-app/unpackagable-with-auto-deploy
+    secrets:
+      PREPROD_AUTH_URL: ${{ secrets.PREPROD_AUTH_URL }}
+      PACKAGE_KEY: ${{ secrets.PACKAGE_KEY }}
 
   install-package-uat:
     name: Install package in UAT
-    uses: navikt/crm-workflows-base/.github/workflows/deployPackage.yml@master
+    uses: navikt/crm-workflows-base/.github/workflows/deploy.yml@main
+    permissions:
+      contents: read
     with:
-      packageId: ${{ github.event.inputs.packageId  }}
+      package-id: ${{ inputs.package-version-id  }}
       org: crm-uat
-      unpackagable: ./force-app/unpackagable-with-auto-deploy
-    secrets: inherit
+      metadata-path: ./force-app/unpackagable-with-auto-deploy
+    secrets:
+      UAT_AUTH_URL: ${{ secrets.UAT_AUTH_URL }}
+      PACKAGE_KEY: ${{ secrets.PACKAGE_KEY }}
 
   promote-package:
     name: Promote Package
     needs: [install-package-preprod]
     runs-on: ubuntu-latest
+    outputs:
+      package-version: ${{ steps.get-package-version-info.outputs.packageVersion }}
+      package-name: ${{ steps.get-package-version-info.outputs.packageName }}
     permissions:
       contents: read
     steps:
       # Checkout source code
-      - name: Checkout source code from master
-        uses: actions/checkout@v4
+      - name: Checkout source code
+        uses: actions/checkout@v6.0.1
         with:
           persist-credentials: false
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
@@ -58,125 +71,120 @@ jobs:
         uses: navikt/sf-gha-install-sf-cli@3f1abbc990b03fb544e80169920fea2e94946d1a
 
       # Authenticate prod
-      - name: Authorize PROD
+      - name: Authorize Dev Hub
         uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
         with:
-          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          auth-url: ${{ secrets.PROD_AUTH_URL }}
           alias: prod
           setDefaultUsername: true
           setDefaultDevhubUsername: true
 
-      # Promote package
-      - name: Promote package
-        run: sf package version promote --package ${{ github.event.inputs.packageId }} --no-prompt
+      - name: Get Package Version Info
+        id: get-package-version-info
+        run: |
+          set -euo pipefail
 
-  push-new-version-number-to-master:
-    name: Push new version number to master
+          sf package version report --package "$PACKAGE_VERSION_ID" --json > packageVersionReport.json
+
+          validationSkipped=$(jq -r '.result.ValidationSkipped' packageVersionReport.json)
+
+          if [ "$validationSkipped" = "true" ]; then
+            echo "::error title=Cannot promote.::Package version $PACKAGE_VERSION_ID has skipped validation. Promotion is not allowed. Please create a new package version with validation."
+            exit 1
+          fi
+
+          packageVersion=$(jq -r '.result.Version' packageVersionReport.json)
+          packageId=$(jq -r '.result.Package2Id' packageVersionReport.json)
+          packageName=$(jq --arg pkgId "$packageId" -r '.packageAliases | to_entries[] | select(.value == $pkgId).key' sfdx-project.json)
+
+          if [ -z "$packageName" ]; then
+            echo "::error::Could not find package name for ID $packageId"
+            exit 1
+          fi
+
+          echo "packageVersion=$packageVersion" >> $GITHUB_OUTPUT
+          echo "packageName=$packageName" >> $GITHUB_OUTPUT
+          echo "::notice::Promoting $packageName version $packageVersion"
+        env:
+          PACKAGE_VERSION_ID: ${{ inputs.package-version-id }}
+
+      - name: Promote package
+        id: promote-package
+        run: |
+          sf package version promote --package "$PACKAGE_VERSION_ID" --no-prompt
+          echo "::notice::Successfully promoted package version $PACKAGE_VERSION_ID"
+        env:
+          PACKAGE_VERSION_ID: ${{ inputs.package-version-id }}
+
+  push-new-version-number-to-default-branch:
+    name: Push new version number to default branch
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # Needed to push changes to repo
     needs: promote-package
     steps:
       # Checkout source code
-      - name: Checkout source code from master
-        uses: actions/checkout@v4
+      - name: Checkout source code
+        uses: actions/checkout@v6.0.1
         with:
+          token: ${{ secrets.COMMIT_TOKEN }}
           persist-credentials: false
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
       # Update version number
       - name: Update version number
         id: packaging-updater
-        uses: navikt/crm-workflows-base/.github/actions/packageMinorVersionUpdater@master
+        uses: navikt/sf-gha-bump-patch-version@8a99077e6dc9eaecad81800aebbacc55e5884382
+        with:
+          package_names: ${{ needs.promote-package.outputs.package-name }}
 
       # Create commit message by extracting the latest version number from sfdx-project.json
       - name: Build commit message
         id: build-commit-message
         run: |
-          echo "message=(CI) Updated to new version number $(cat sfdx-project.json | jq '.packageDirectories | map(select(.package != null))[0].versionNumber' -r | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
+          echo "message=:robot: Updated set $PACKAGE_NAME to version $VERSION_NUMBER" >> $GITHUB_OUTPUT
           cat sfdx-project.json
+        env:
+          PACKAGE_NAME: ${{ needs.promote-package.outputs.package-name }}
+          VERSION_NUMBER: ${{ steps.packaging-updater.outputs.new_version_number }}
 
-      # The main branch is protected
-      - name: Create new branch and pull request for updated package version ID
-        id: cpr
-        uses: peter-evans/create-pull-request@v7
+      - name: Commit and Push changes
+        uses: navikt/sf-gha-commit-files@7fe8a81a34a1d9a791e6b53b8bc9d7267d7a2340
         with:
-          title: "Added new package version ID"
-          commit-message: ${{steps.build-commit-message.outputs.message}}
-          branch: "auto/package-version-update"
+          commitMessage: ${{steps.build-commit-message.outputs.message}}
+          token: ${{ secrets.COMMIT_TOKEN }}
+          files: sfdx-project.json
 
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      # Merge pull request
-      - name: Merge pull request
-        uses: juliangruber/merge-pull-request-action@v1.3.1
-        with:
-          # ! USES CUSTOM PAT TO INITIATE STATUS CHECKS (SEE "Require status checks to pass before merging" IN BRANCHES SETTINGS IN REPO)
-          github-token: ${{ secrets.CRM_DEPLOYMENT_PAT }}
-          number: ${{ steps.cpr.outputs.pull-request-number }}
-          method: squash
-
-  create-release:
-    name: Create GitHub Release
+  set-release-to-released:
+    name: Set package version to released
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     needs: promote-package
+    permissions:
+      contents: write # Needed to update releases
     steps:
-      # Checkout source code
-      - name: Checkout source code from master
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true # ! set to true to be able to checkout correctly
-          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
-
-      # Install SF
-      - name: Install SF
-        uses: navikt/sf-gha-install-sf-cli@3f1abbc990b03fb544e80169920fea2e94946d1a
-
-      # Authenticate prod
-      - name: Authorize PROD
-        uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
-        with:
-          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
-          alias: prod
-          setDefaultUsername: true
-          setDefaultDevhubUsername: true
-
-      # Set release variables
-      - name: Set release fields
-        id: release-fields
+      - name: Set release to released
         run: |
-          echo "tagName=v$(cat sfdx-project.json | jq '.packageDirectories | map(select(.package != null))[0].versionNumber' -r | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
-          echo "releaseName=$(cat sfdx-project.json | jq '.packageDirectories | map(select(.package != null))[0].versionNumber' -r | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
-          echo "bodyVersion=$(cat sfdx-project.json | jq '.packageDirectories | map(select(.package != null))[0].versionNumber' -r | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
-          echo "codeCoverage=$( sf package version report --package ${{ github.event.inputs.packageId }} --json | jq '.result.CodeCoverage.apexCodeCoveragePercentage' -r )" >> $GITHUB_OUTPUT
+          set -euo pipefail
 
-      # Generate changelog from commits
-      - name: Generate changelog
-        id: changelog
-        uses: metcalfc/changelog-generator@v4.1.0
-        with:
-          mytoken: ${{ secrets.GITHUB_TOKEN }}
+          release_id=$(gh api --silent \
+            repos/"$REPOSITORY"/releases/tags/"$TAG_NAME" \
+            --jq '.id')
 
-      # create github release
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: ${{steps.release-fields.outputs.tagName}}
-          name: ${{steps.release-fields.outputs.releaseName}}
-          body: |
-            **Version**: ${{ steps.release-fields.outputs.bodyVersion }}
-            **Package ID**: ${{ github.event.inputs.packageId }}
-            **Code Coverage**: ${{ steps.release-fields.outputs.codeCoverage }}%
+          if [ -z "$release_id" ]; then
+            echo "::error title=Release not found.::Could not find a release with tag name $TAG_NAME"
+            exit 1
+          fi
 
-            **Author**: ${{ github.actor }}
-            **Comment**: ${{ github.event.inputs.comment }}
+          gh api --silent \
+          -X PATCH \
+          -H "Accept: application/vnd.github+json" \
+          repos/"$REPOSITORY"/releases/"$release_id" \
+          -f prerelease=false \
+          -f name="$TAG_NAME" \
+          -f make_latest=true
 
-            ## Changelog
-
-            ${{ steps.changelog.outputs.changelog }}
-          draft: false
-          prerelease: false
+          echo "::notice::Release $TAG_NAME set to released"
+        env:
+          REPOSITORY: ${{ github.repository }}
+          TAG_NAME: v${{ needs.promote-package.outputs.package-version }}
+          GH_TOKEN: ${{ secrets.COMMIT_TOKEN }}
