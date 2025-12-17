@@ -23,8 +23,9 @@ on:
 permissions:
   contents: read
 jobs:
-  validate:
-    name: Validate
+  validate_against_pool:
+    name: Validate against pool
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp:39.8.0-17204768834' }}
     timeout-minutes: 720 #Set to Maximum Time out
