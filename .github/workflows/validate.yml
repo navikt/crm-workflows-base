@@ -54,7 +54,7 @@ jobs:
           set-default-devhub-username: true
       - name: Generate package keys
         id: generate-package-keys
-        uses: navikt/sf-gha-create-package-key-pairs@83f02e28530d86a83741a9516085aef943ea41ff
+        uses: navikt/sf-gha-create-package-key-pairs@3b8c64c8b296aa9eba46e35f9880c6920833c9e3
         with:
           sfdx-project-path: sfdx-project.json
           package-key: ${{ secrets.PACKAGE_KEY }}
