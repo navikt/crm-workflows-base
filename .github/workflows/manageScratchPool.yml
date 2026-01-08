@@ -146,7 +146,7 @@ jobs:
           deleteJobType: ${{ matrix.pool.deleteJobType }}
           isCiPool: ${{ inputs.is-ci-pool }}
       - name: Create Pool
-        uses: navikt/sf-gha-prepare-pool@a87f3fd5df0a107834604ecd1404c7037013456b
+        uses: navikt/sf-gha-prepare-pool@af192a3d4d12646bab6f7cd54fa2931f4aedd5db1
         with:
           dev-hub: ${{ env.DEV_HUB_ALIAS }}
           sfdx-project-path: ./sfdx-project.json
@@ -164,10 +164,12 @@ jobs:
 
       - name: "Publish logs"
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ steps.setPoolTag.outputs.pool-tag && format('create-pool-logs-{0}', steps.setPoolTag.outputs.pool-tag) || 'create-pool-logs' }}
-          path: .sfpowerscripts/logs
+          path: |
+            sf_err.log
+            .sfpowerscripts/logs
           if-no-files-found: ignore
           retention-days: 7
   cleanup:
