@@ -46,7 +46,7 @@
         },
         {
           "package": "crm-platform-access-control",
-          "versionNumber": "0.169.0.1"
+          "versionNumber": "0.170.0.4"
         },
         {
           "package": "crm-platform-reporting",
@@ -86,7 +86,7 @@
         },
         {
           "package": "crm-platform-oppgave",
-          "versionNumber": "0.67.0.1"
+          "versionNumber": "0.68.0.1"
         },
         {
           "package": "crm-sf-saf",
