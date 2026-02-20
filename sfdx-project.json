@@ -14,19 +14,19 @@
         },
         {
           "package": "platform-data-model",
-          "versionNumber": "0.1.2.1"
+          "versionNumber": "0.1.33.1"
         },
         {
           "package": "custom-metadata-dao",
-          "versionNumber": "0.1.2.1"
+          "versionNumber": "0.1.33.1"
         },
         {
           "package": "custom-permission-helper",
-          "versionNumber": "0.1.2.1"
+          "versionNumber": "0.1.33.1"
         },
         {
           "package": "feature-toggle",
-          "versionNumber": "0.1.3.1"
+          "versionNumber": "0.1.34.1"
         },
         {
           "package": "crm-platform-email-scheduling",
@@ -38,7 +38,7 @@
         },
         {
           "package": "crm-platform-base",
-          "versionNumber": "0.297.0.1"
+          "versionNumber": "0.298.0.1"
         },
         {
           "package": "crm-platform-admin",
