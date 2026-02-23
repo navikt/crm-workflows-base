@@ -14,19 +14,19 @@
         },
         {
           "package": "platform-data-model",
-          "versionNumber": "0.1.33.1"
+          "versionNumber": "0.1.35.2"
         },
         {
           "package": "custom-metadata-dao",
-          "versionNumber": "0.1.33.1"
+          "versionNumber": "0.1.35.2"
         },
         {
           "package": "custom-permission-helper",
-          "versionNumber": "0.1.33.1"
+          "versionNumber": "0.1.35.2"
         },
         {
           "package": "feature-toggle",
-          "versionNumber": "0.1.34.1"
+          "versionNumber": "0.1.36.2"
         },
         {
           "package": "crm-platform-email-scheduling",
