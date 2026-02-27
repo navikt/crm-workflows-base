@@ -33,7 +33,7 @@ jobs:
       DEV_HUB_ALIAS: devhub
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
