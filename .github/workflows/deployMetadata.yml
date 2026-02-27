@@ -72,7 +72,7 @@ jobs:
 
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Deploy unpackagable content
       - name: Deploy unpackagable content
