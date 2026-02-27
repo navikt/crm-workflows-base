@@ -104,7 +104,7 @@ jobs:
         pool: ${{ fromJson(needs.prepareMatrixRun.outputs.matrix-json).pools }}
     permissions:
       contents: read
-      packages: read
+      packages: read # Required to be able to download packages from GHCR and install them in Scratch org
     env:
       CLEAR_POOLS: ${{ inputs.clear-pools }}
 
@@ -123,6 +123,14 @@ jobs:
           auth-url: ${{ secrets.DEV_HUB_SFDX_URL }}
           setDefaultDevhubUsername: true
           alias: ${{ env.DEV_HUB_ALIAS }}
+
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: "@navikt"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set pool tag
         id: setPoolTag
@@ -164,7 +172,7 @@ jobs:
 
       - name: "Publish logs"
         if: ${{ always() }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f #v6.1.0
         with:
           name: ${{ steps.setPoolTag.outputs.pool-tag && format('create-pool-logs-{0}', steps.setPoolTag.outputs.pool-tag) || 'create-pool-logs' }}
           path: |
@@ -205,7 +213,7 @@ jobs:
 
       - name: "Publish logs"
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f #v6.0.0
         with:
           name: cleanup-logs
           path: .sfpowerscripts/logs
