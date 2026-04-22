@@ -29,7 +29,9 @@ on:
       PLATFORM_TOKEN_APP_PRIVATE_KEY:
         required: true
 
-permissions: {}
+permissions:
+  contents: write # Required for creating and pushing commits
+  pull-requests: write # Required for creating pull requests
 
 concurrency:
   group: sync-workflows-${{ github.workflow }}-${{ inputs.ref }}
