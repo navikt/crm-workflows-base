@@ -1,0 +1,107 @@
+name: Sync Workflows
+description: "Sync workflow files from navikt/crm-workflows-base to this repository. This workflow is intended to be called by other workflows in the platform repository when workflow files are updated."
+on:
+  workflow_call:
+    inputs:
+      branch_name:
+        description: "Branch name for the update PR"
+        required: false
+        type: string
+        default: "platform/sync-workflows"
+      pull_request_title:
+        description: "Title for the update PR"
+        required: false
+        type: string
+        default: "Sync github workflow files navikt/crm-workflows-base"
+      commit_mesage:
+        description: "Optional commit message"
+        required: false
+        type: string
+        default: "chore(workflows): Sync workflow files from navikt/crm-workflows-base"
+      ref:
+        description: "Git ref (branch, tag, or commit) to sync from the platform repo"
+        required: false
+        type: string
+        default: "main"
+    secrets:
+      TOKEN:
+        required: true
+
+permissions: {}
+
+concurrency:
+  group: sync-workflows-${{ github.workflow }}-${{ inputs.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync Workflow Files
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required for creating and pushing commits
+      pull-requests: write # Required for creating pull requests
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          token: ${{ secrets.TOKEN }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Checkout platform repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: navikt/crm-workflows-base
+          path: platform-source
+          ref: ${{ inputs.ref }}
+          sparse-checkout: |
+            .github/dependabot.yml
+            .github/workflows/automergeDependabot.yml
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - name: Sync selected files
+        id: sync-files
+        env:
+          TARGET_FILES: >-
+            .github/dependabot.yml
+            .github/workflows/automergeDependabot.yml
+        run: |
+          install -D platform-source/.github/dependabot.yml .github/dependabot.yml
+          install -D platform-source/.github/workflows/automergeDependabot.yml .github/workflows/automergeDependabot.yml
+          rm -rf platform-source
+
+          changed_files=""
+          for f in ${TARGET_FILES}; do
+            if ! git diff --ignore-all-space --quiet -- "$f"; then
+              changed_files="$changed_files\n- \`$f\`"
+            fi
+          done
+
+          if [ -z "$changed_files" ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          printf "changed_files=%b" "$changed_files" >> "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request
+        if: steps.sync-files.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.TOKEN }}
+          commit-message: "${{ inputs.commit_mesage }}"
+          title: "${{ inputs.pull_request_title }}"
+          body: |
+            Sync workflow files from [navikt/crm-workflows-base](https://github.com/navikt/crm-workflows-base).
+
+            **Changed files:**
+            ${{ steps.sync-files.outputs.changed_files }}
+
+            ---
+            🤖 This PR was created automatically by the [Sync Workflows](https://github.com/navikt/crm-workflows-base) workflow.
+          branch: ${{ inputs.branch_name }}
+          delete-branch: true
+          sign-commits: true
+          labels: dependencies
