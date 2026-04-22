@@ -91,7 +91,11 @@ jobs:
           fi
 
           echo "has_changes=true" >> "$GITHUB_OUTPUT"
-          printf "changed_files=%b" "$changed_files" >> "$GITHUB_OUTPUT"
+          {
+            echo "changed_files<<EOF"
+            printf '%b\n' "$changed_files"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create Pull Request
         if: steps.sync-files.outputs.has_changes == 'true'
