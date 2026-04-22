@@ -24,7 +24,9 @@ on:
         type: string
         default: "main"
     secrets:
-      TOKEN:
+      PLATFORM_TOKEN_APP_ID:
+        required: true
+      PLATFORM_TOKEN_APP_PRIVATE_KEY:
         required: true
 
 permissions: {}
@@ -41,10 +43,15 @@ jobs:
       contents: write # Required for creating and pushing commits
       pull-requests: write # Required for creating pull requests
     steps:
+      - uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        id: app-token
+        with:
+          app-id: ${{ secrets.PLATFORM_TOKEN_APP_ID }}
+          private-key: ${{ secrets.PLATFORM_TOKEN_APP_PRIVATE_KEY }}
       - name: Checkout target repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          token: ${{ secrets.TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
           persist-credentials: false
 
@@ -90,7 +97,7 @@ jobs:
         if: steps.sync-files.outputs.has_changes == 'true'
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
-          token: ${{ secrets.TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
           commit-message: "${{ inputs.commit_mesage }}"
           title: "${{ inputs.pull_request_title }}"
           body: |
