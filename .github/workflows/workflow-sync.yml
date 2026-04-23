@@ -1,5 +1,4 @@
 name: Sync Workflows
-description: "Sync workflow files from navikt/crm-workflows-base to this repository. This workflow is intended to be called by other workflows in the platform repository when workflow files are updated."
 on:
   workflow_call:
     inputs:
@@ -13,7 +12,7 @@ on:
         required: false
         type: string
         default: "Sync github workflow files navikt/crm-workflows-base"
-      commit_mesage:
+      commit_message:
         description: "Optional commit message"
         required: false
         type: string
@@ -29,9 +28,7 @@ on:
       PLATFORM_TOKEN_APP_PRIVATE_KEY:
         required: true
 
-permissions:
-  contents: write # Required for creating and pushing commits
-  pull-requests: write # Required for creating pull requests
+permissions: {}
 
 concurrency:
   group: sync-workflows-${{ github.workflow }}-${{ inputs.ref }}
@@ -41,20 +38,24 @@ jobs:
   sync:
     name: Sync Workflow Files
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
-      contents: write # Required for creating and pushing commits
-      pull-requests: write # Required for creating pull requests
+      contents: read # Required for checking out the repository
+      pull-requests: read # Required for checking existing pull requests
     steps:
       - uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
         id: app-token
         with:
           app-id: ${{ secrets.PLATFORM_TOKEN_APP_ID }}
           private-key: ${{ secrets.PLATFORM_TOKEN_APP_PRIVATE_KEY }}
+          # Explicitly request only what we need
+          permission-contents: write # Required for pushing changes to the repository
+          permission-pull-requests: write # Required for creating pull requests
+
       - name: Checkout target repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           token: ${{ steps.app-token.outputs.token }}
-          fetch-depth: 0
           persist-credentials: false
 
       - name: Checkout platform repo
@@ -81,7 +82,8 @@ jobs:
           rm -rf platform-source
 
           changed_files=""
-          for f in ${TARGET_FILES}; do
+          read -ra files <<< "${TARGET_FILES}"
+          for f in "${files[@]}"; do
             if ! git diff --ignore-all-space --quiet -- "$f"; then
               changed_files="$changed_files\n- \`$f\`"
             fi
@@ -104,7 +106,7 @@ jobs:
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           token: ${{ steps.app-token.outputs.token }}
-          commit-message: "${{ inputs.commit_mesage }}"
+          commit-message: "${{ inputs.commit_message }}"
           title: "${{ inputs.pull_request_title }}"
           body: |
             Sync workflow files from [navikt/crm-workflows-base](https://github.com/navikt/crm-workflows-base).

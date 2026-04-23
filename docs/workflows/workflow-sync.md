@@ -29,19 +29,20 @@ If changes are detected, creates or updates a pull request using the configured 
 
 - `branch_name` Optional. Branch name for the update PR. Default: `platform/sync-workflows`
 - `pull_request_title` Optional. Title for the update PR. Default: `Sync github workflow files navikt/crm-workflows-base`
-- `commit_mesage` Optional. Commit message for the sync commit. Default: `chore(workflows): Sync workflow files from navikt/crm-workflows-base`
+- `commit_message` Optional. Commit message for the sync commit. Default: `chore(workflows): Sync workflow files from navikt/crm-workflows-base`
 - `ref` Optional. Git ref (branch, tag, or commit) to sync from. Default: `main`
 
 ## Secrets
 
-- `TOKEN` Required. Token used for checkout and PR creation.
+- `PLATFORM_TOKEN_APP_ID` Required. GitHub App ID used to generate a scoped token.
+- `PLATFORM_TOKEN_APP_PRIVATE_KEY` Required. Private key for the GitHub App.
 
 ## Permissions
 
-The workflow requires these job-level permissions:
+The GITHUB_TOKEN requires minimal read-only permissions at the job level. Write access for pushing changes and creating pull requests is handled by the GitHub App token generated at runtime:
 
-- `contents: write`
-- `pull-requests: write`
+- `contents: read`
+- `pull-requests: read`
 
 ## Usage
 
@@ -50,10 +51,11 @@ uses: navikt/crm-workflows-base/.github/workflows/workflow-sync.yml@<sha/version
 with:
   branch_name: platform/sync-workflows
   pull_request_title: Sync github workflow files navikt/crm-workflows-base
-  commit_mesage: chore(workflows): Sync workflow files from navikt/crm-workflows-base
+  commit_message: chore(workflows): Sync workflow files from navikt/crm-workflows-base
   ref: main
 secrets:
-  TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PLATFORM_TOKEN_APP_ID: ${{ secrets.PLATFORM_TOKEN_APP_ID }}
+  PLATFORM_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PLATFORM_TOKEN_APP_PRIVATE_KEY }}
 ```
 
 ## Full Example
@@ -72,25 +74,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  get-token:
-    name: Get GitHub App Token
-    runs-on: ubuntu-latest
-    outputs:
-      token: ${{ steps.app-token.outputs.token }}
-    steps:
-      - uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859
-        id: app-token
-        with:
-          app-id: ${{ vars.PLATFORM_TOKEN_APP_ID }}
-          private-key: ${{ secrets.PLATFORM_TOKEN_APP_PRIVATE_KEY }}
-
   sync-workflows:
     name: Sync Workflow Files
-    needs: get-token
     uses: navikt/crm-workflows-base/.github/workflows/workflow-sync.yml@<sha/version>
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
+      pull-requests: read
     secrets:
-      TOKEN: ${{ needs.get-token.outputs.token }}
+      PLATFORM_TOKEN_APP_ID: ${{ secrets.PLATFORM_TOKEN_APP_ID }}
+      PLATFORM_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PLATFORM_TOKEN_APP_PRIVATE_KEY }}
 ```
