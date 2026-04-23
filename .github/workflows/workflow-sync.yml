@@ -51,6 +51,7 @@ jobs:
           # Explicitly request only what we need
           permission-contents: write # Required for pushing changes to the repository
           permission-pull-requests: write # Required for creating pull requests
+          permission-workflows: write # Required for creating/updating workflow files
 
       - name: Checkout target repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
