@@ -118,5 +118,4 @@ jobs:
             🤖 This PR was created automatically by the [Sync Workflows](https://github.com/navikt/crm-workflows-base) workflow.
           branch: ${{ inputs.branch_name }}
           delete-branch: true
-          sign-commits: true
           labels: dependencies
