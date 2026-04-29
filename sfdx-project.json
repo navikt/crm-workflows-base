@@ -17,6 +17,10 @@
           "versionNumber": "0.1.47.1"
         },
         {
+          "package": "record-type-cache",
+          "versionNumber": "0.1.2.LATEST"
+        },
+        {
           "package": "custom-metadata-dao",
           "versionNumber": "0.1.47.1"
         },
