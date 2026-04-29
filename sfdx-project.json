@@ -110,6 +110,7 @@
   "packageAliases": {
     "sf-external-force-di": "0HoQC000000052v0AA",
     "platform-data-model": "0HoKB00000000010AA",
+    "record-type-cache": "0HoQC000000063p0AA",
     "custom-metadata-dao": "0HoKB000000000B0AQ",
     "custom-permission-helper": "0HoKB000000000f0AA",
     "feature-toggle": "0HoKB000000000V0AQ",
