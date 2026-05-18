@@ -95,7 +95,12 @@ jobs:
         run: |
           set -euo pipefail
 
-          packageName=$(jq -r '.packageDirectories[0].package' sfdx-project.json)
+          packageName=$(jq -r '[.packageDirectories[] | select(.package != null)][0].package' sfdx-project.json)
+
+          if [ -z "$packageName" ] || [ "$packageName" = "null" ]; then
+            echo "::error title=No package found.::Could not find a packageDirectory with a 'package' field in sfdx-project.json"
+            exit 1
+          fi
 
           command=("sf" "package" "version" "create" \
             "--target-dev-hub" "$DEV_HUB_ALIAS" \
