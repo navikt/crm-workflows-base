@@ -90,7 +90,7 @@
         },
         {
           "package": "crm-platform-oppgave",
-          "versionNumber": "0.73.0.3"
+          "versionNumber": "0.74.0.13"
         },
         {
           "package": "crm-sf-saf",
@@ -98,7 +98,7 @@
         },
         {
           "package": "crm-henvendelse",
-          "versionNumber": "0.202.0.3"
+          "versionNumber": "0.203.0.3"
         },
         {
           "package": "henvendelse-migrator",
