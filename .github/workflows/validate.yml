@@ -17,7 +17,7 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Install SF
       - name: Install SF
@@ -214,7 +214,7 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Install SF
       - name: Install SF
@@ -255,7 +255,7 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Install SF
       - name: Install SF
@@ -263,7 +263,7 @@ jobs:
 
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: sfdx-auth-url
 
@@ -315,12 +315,12 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Download tests
       - name: Download tests
         if: ${{ needs.run-tests.outputs.hasTestClasses }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: apex-tests
           path: ./tests/apex
@@ -394,7 +394,7 @@ jobs:
     steps:
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Install SF
       - name: Install SF
@@ -411,7 +411,7 @@ jobs:
 
       # Download SCRATCH_ORG_SFDX_AUTH_URL.txt
       - name: Download SCRATCH_ORG_SFDX_AUTH_URL.txt
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: sfdx-auth-url
 
