@@ -98,7 +98,7 @@
         },
         {
           "package": "crm-henvendelse",
-          "versionNumber": "0.203.0.3"
+          "versionNumber": "0.205.0.1"
         },
         {
           "package": "henvendelse-migrator",
