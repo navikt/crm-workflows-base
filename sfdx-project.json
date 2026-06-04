@@ -62,7 +62,7 @@
         },
         {
           "package": "crm-platform-integration",
-          "versionNumber": "0.171.0.2"
+          "versionNumber": "0.172.0.1"
         },
         {
           "package": "crm-community-base",
@@ -90,7 +90,7 @@
         },
         {
           "package": "crm-platform-oppgave",
-          "versionNumber": "0.78.0.1"
+          "versionNumber": "0.79.0.1"
         },
         {
           "package": "crm-sf-saf",
