@@ -191,6 +191,9 @@ jobs:
       # Checkout source code
       - name: Checkout source code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       # set release variables
       - name: Set release fields
