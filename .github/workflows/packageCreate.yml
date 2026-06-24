@@ -217,6 +217,7 @@ jobs:
         uses: metcalfc/changelog-generator@v4.1.0
         with:
           mytoken: ${{ secrets.GITHUB_TOKEN }}
+          fetch: false
 
       # create github release
       - name: Create Release
