@@ -12,14 +12,16 @@ jobs:
   setup:
     name: Setup
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # Install SF
       - name: Install SF
@@ -210,14 +212,16 @@ jobs:
     name: Compile Metadata
     needs: setup
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # Install SF
       - name: Install SF
@@ -251,16 +255,18 @@ jobs:
     name: Run Apex Tests
     needs: compile
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     outputs:
       hasTestClasses: ${{ steps.test-classes-in-repo.outputs.classes }}
     steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # Install SF
       - name: Install SF
@@ -315,14 +321,16 @@ jobs:
     name: Validate 85% Code Coverage
     needs: run-tests
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # Download tests
       - name: Download tests
@@ -401,9 +409,12 @@ jobs:
     permissions:
       contents: read
     steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
       # Checkout source code
       - name: Checkout source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # Install SF
       - name: Install SF
