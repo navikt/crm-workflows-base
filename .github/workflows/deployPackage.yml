@@ -29,8 +29,6 @@ jobs:
   deploy-package:
     name: Deploy Package
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     outputs:
@@ -67,6 +65,10 @@ jobs:
             echo "input org was set to input"
           fi
 
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
       # Install SF
       - name: Install SF
         uses: navikt/crm-workflows-base/.github/actions/installSF@master
@@ -97,7 +99,7 @@ jobs:
 
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Deploy unpackagable content
       - name: Deploy unpackagable content

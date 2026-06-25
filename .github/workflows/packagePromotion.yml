@@ -45,12 +45,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
@@ -78,13 +80,11 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     needs: promote-package
     steps:
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
@@ -131,15 +131,17 @@ jobs:
   create-release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: write
     needs: promote-package
     steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
       # Checkout source code
       - name: Checkout source code from master
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: true # ! set to true to be able to checkout correctly
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
@@ -169,13 +171,13 @@ jobs:
       # Generate changelog from commits
       - name: Generate changelog
         id: changelog
-        uses: metcalfc/changelog-generator@v4.1.0
+        uses: metcalfc/changelog-generator@v4
         with:
           mytoken: ${{ secrets.GITHUB_TOKEN }}
 
       # create github release
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{steps.release-fields.outputs.tagName}}
