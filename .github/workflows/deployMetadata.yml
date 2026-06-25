@@ -21,8 +21,6 @@ jobs:
   deploy-metadata:
     name: Deploy metadata
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     outputs:
@@ -58,6 +56,10 @@ jobs:
             echo "target=$(echo ${{ inputs.org }})" >> $GITHUB_ENV
             echo "input org was set to input"
           fi
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
 
       # Install SF
       - name: Install SF
@@ -100,8 +102,6 @@ jobs:
     name: Report deploy
     needs: [deploy-metadata]
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
       # Report Status
       - name: Report Metadata Install Status
