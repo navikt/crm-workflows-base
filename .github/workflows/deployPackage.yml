@@ -73,12 +73,12 @@ jobs:
 
       # Authorize SF
       - name: Authorize SF
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        uses: navikt/sf-gha-authenticateOrg@main
         with:
           auth-url: ${{ env.target }}
           alias: targetOrg
-          setDefaultUsername: true
-          setDefaultDevhubUsername: false
+          set-default-username: true
+          set-default-devhub-username: false
 
       # Install package in target org
       - name: Install package in target org

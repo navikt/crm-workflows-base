@@ -12,6 +12,8 @@ jobs:
   setup:
     name: Setup
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     steps:
@@ -25,12 +27,12 @@ jobs:
 
       # Authenticate dev hub
       - name: Authenticate Dev Hub
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        uses: navikt/sf-gha-authenticateOrg@main
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: prod
-          setDefaultUsername: true
-          setDefaultDevhubUsername: true
+          set-default-username: true
+          set-default-devhub-username: true
 
       # Create scratch org
       - name: Create scratch org

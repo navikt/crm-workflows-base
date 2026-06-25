@@ -61,12 +61,12 @@ jobs:
 
       # Authenticate prod
       - name: Authorize PROD
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        uses: navikt/sf-gha-authenticateOrg@main
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: prod
-          setDefaultUsername: true
-          setDefaultDevhubUsername: true
+          set-default-username: true
+          set-default-devhub-username: true
 
       # Promote package
       - name: Promote package
@@ -150,12 +150,12 @@ jobs:
 
       # Authenticate prod
       - name: Authorize PROD
-        uses: navikt/crm-workflows-base/.github/actions/authenticateOrg@master
+        uses: navikt/sf-gha-authenticateOrg@main
         with:
           auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           alias: prod
-          setDefaultUsername: true
-          setDefaultDevhubUsername: true
+          set-default-username: true
+          set-default-devhub-username: true
 
       # Set release variables
       - name: Set release fields
