@@ -92,6 +92,7 @@ jobs:
     env:
       CLEAR_POOLS: ${{ inputs.clear-pools }}
       DEV_HUB_ALIAS: dev-hub
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
       - name: "Checkout code"
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683

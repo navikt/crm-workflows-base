@@ -8,6 +8,8 @@ jobs:
   create-package:
     name: Create Package
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     outputs:

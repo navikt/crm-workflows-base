@@ -45,6 +45,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
       # Checkout source code
       - name: Checkout source code from master
@@ -76,6 +78,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     needs: promote-package
     steps:
       # Checkout source code
@@ -127,6 +131,8 @@ jobs:
   create-release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: write
     needs: promote-package

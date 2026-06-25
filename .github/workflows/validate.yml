@@ -55,9 +55,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-      
+
           : "${CRM_PACKAGE_KEY:=${{ secrets.CRM_PACKAGE_KEY }}}"
-      
+
           # 1) Collect dependency aliases across ALL packageDirectories, preserving order of appearance
           mapfile -t deps_in_order < <(
             jq -r '
@@ -66,7 +66,7 @@ jobs:
               | .package
             ' sfdx-project.json
           )
-          
+
           # Deduplicate while preserving first occurrence order
           declare -A _seen=()
           ordered_aliases=()
@@ -77,19 +77,19 @@ jobs:
               ordered_aliases+=("$a")
             fi
           done
-          
+
           if ((${#ordered_aliases[@]} == 0)); then
             echo "No packages to install (no dependencies found under any packageDirectories)."
             exit 0
           fi
-          
+
           echo "Dependency aliases to install (ordered): ${ordered_aliases[*]}"
-          
+
           # Iterate in declared order
           for alias in "${ordered_aliases[@]}"; do
             echo "----"
             echo "Processing: $alias"
-      
+
             # Resolve packageId from packageAliases
             packageId=$(jq -r --arg alias "$alias" '.packageAliases[$alias] // empty' sfdx-project.json)
             if [[ -z "$packageId" ]]; then
@@ -97,7 +97,7 @@ jobs:
               continue
             fi
             echo "packageId: $packageId"
-      
+
             # Resolve requested versionNumber from matching dependency (first match wins if defined multiple places)
             versionNumber=$(jq -r --arg alias "$alias" '
               first(
@@ -107,13 +107,13 @@ jobs:
                 | .versionNumber
               ) // empty
             ' sfdx-project.json)
-      
+
             if [[ -z "$versionNumber" ]]; then
               echo "WARN: No versionNumber configured for '$alias' in dependencies. Skipping."
               continue
             fi
             echo "versionNumber (requested): $versionNumber"
-      
+
             # 2) List available versions (robust against warnings/ANSI/BOM in stdout)
             clean_json() {
               # strip ANSI, strip BOM, start from first {, stop after last }
@@ -156,7 +156,7 @@ jobs:
             then
               echo "ERROR: Failed to parse JSON for $alias (see sf_warn.log)"; cat sf_warn.log >&2; exit 3
             fi
-      
+
             # 3) Pick exact match OR prefix match when versionNumber ends with LATEST
             # Strip a trailing 'LATEST' when present for prefix matching
             subscriberPackageVersionId=$(
@@ -174,21 +174,21 @@ jobs:
                 end
               ' subscriberPackageVersionList.json
             )
-      
+
             if [[ "$subscriberPackageVersionId" == "NO_RESULT" || -z "$subscriberPackageVersionId" ]]; then
               echo "ERROR: Could not find a matching version for '$alias' ($versionNumber). Skipping."
               continue
             fi
             echo "SubscriberPackageVersionId (selected): $subscriberPackageVersionId"
-      
+
             # Decide if this alias gets the installation key:
             # - packageKeyConfig[alias] == false  => NO key
             # - anything else (missing/true)      => USE key (if provided)
             use_key=$(jq -r --arg alias "$alias" '((.packageKeyConfig // {})[$alias] != false) | tostring' sfdx-project.json)
             echo "use_key (per packageKeyConfig): $use_key"
-      
+
             args=(sf package install --target-org scratch-org --package "$subscriberPackageVersionId" --no-prompt --wait 15 --publish-wait 10)
-      
+
             if [[ "$use_key" == "true" ]]; then
               if [[ -n "${CRM_PACKAGE_KEY:-}" ]]; then
                 echo "::add-mask::$CRM_PACKAGE_KEY"
@@ -199,16 +199,17 @@ jobs:
             else
               echo "packageKeyConfig[$alias] == false → installing WITHOUT key."
             fi
-      
+
             echo "Installing: ${args[*]}"
             "${args[@]}"
           done
-
 
   compile:
     name: Compile Metadata
     needs: setup
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     steps:
@@ -248,6 +249,8 @@ jobs:
     name: Run Apex Tests
     needs: compile
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     outputs:
@@ -310,6 +313,8 @@ jobs:
     name: Validate 85% Code Coverage
     needs: run-tests
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     steps:
@@ -389,6 +394,8 @@ jobs:
     needs: [setup, compile, run-tests, check-code-coverage]
     if: always()
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     permissions:
       contents: read
     steps:
