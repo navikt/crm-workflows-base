@@ -109,8 +109,10 @@ jobs:
       CLEAR_POOLS: ${{ inputs.clear-pools }}
 
     steps:
-      - name: Turn on metrics
-        run: export SFPOWERSCRIPTS_STATSD=true
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.16.0
+          
       - name: "Checkout code"
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
@@ -164,12 +166,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required to be able to download packages from GHCR in SFP
 
-      - name: Push logged metrics
-        if: ${{ always() && hashFiles('.sfpowerscripts/logs/metrics.log') != '' }}
-        uses: navikt/sf-gha-push-statsd-metrics@781c41a6726b54ec3ee13bfc1e3d4c51e6326da8
-        with:
-          metricsKey: ${{ secrets.METRICS_KEY }}
-
       - name: "Publish logs"
         if: ${{ always() }}
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f #v6.1.0
@@ -187,6 +183,9 @@ jobs:
     runs-on: ubuntu-latest
     container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp:39.8.0-17204768834' }}
     steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.16.0
       - name: "Authenticate Dev Hub"
         uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
         with:
@@ -199,17 +198,6 @@ jobs:
           devhub: ${{ env.DEV_HUB_ALIAS }}
           deleteJobType: orphans
           isCiPool: false
-
-      - name: Genereate Pool Metrics
-        run: |
-          export SFPOWERSCRIPTS_STATSD=true
-          sfp pool metrics publish --targetdevhubusername "$DEV_HUB_ALIAS"
-
-      - name: Push logged metrics
-        if: ${{ always() && hashFiles('.sfpowerscripts/logs/metrics.log') != '' }}
-        uses: navikt/sf-gha-push-statsd-metrics@781c41a6726b54ec3ee13bfc1e3d4c51e6326da8
-        with:
-          metricsKey: ${{ secrets.METRICS_KEY }}
 
       - name: "Publish logs"
         if: ${{ always() }}
