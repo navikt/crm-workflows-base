@@ -48,7 +48,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.16.0
 
       # Checkout source code
       - name: Checkout source code from master
@@ -137,7 +137,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.16.0
 
       # Checkout source code
       - name: Checkout source code from master
