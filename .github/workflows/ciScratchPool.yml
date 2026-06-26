@@ -40,6 +40,10 @@ jobs:
       TARGET_ORG_ALIAS: dev-hub
 
     steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.16.0
+          
       # Install SF
       - name: Install SF
         uses: navikt/sf-gha-install-sf-cli@3f1abbc990b03fb544e80169920fea2e94946d1a
