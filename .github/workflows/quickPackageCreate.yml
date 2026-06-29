@@ -15,6 +15,10 @@ jobs:
       packageId: ${{ steps.package-version-create.outputs.packageId }}
       alphaVersionNumber: ${{ steps.package-version-create.outputs.alphaVersionNumber }}
     steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.16.0
+          
       # Checkout source code
       - name: Checkout source code
         uses: actions/checkout@v4
