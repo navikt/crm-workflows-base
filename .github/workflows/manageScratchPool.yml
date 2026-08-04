@@ -109,7 +109,7 @@ jobs:
       CLEAR_POOLS: ${{ inputs.clear-pools }}
 
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24.16.0
           
@@ -126,7 +126,7 @@ jobs:
           setDefaultDevhubUsername: true
           alias: ${{ env.DEV_HUB_ALIAS }}
 
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com
@@ -183,7 +183,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp:39.8.0-17204768834' }}
     steps:
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24.16.0
       - name: "Authenticate Dev Hub"
