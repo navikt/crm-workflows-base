@@ -86,7 +86,7 @@ jobs:
       - name: Install package in target org
         id: installPackage
         run: |
-          sf package install --package ${{ inputs.packageId }} --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --wait 10 --publish-wait 10 --no-prompt --json | tee output.json
+          sf package install --package ${{ inputs.packageId }} --installation-key ${{ secrets.CRM_PACKAGE_KEY }} --upgrade-type DeprecateOnly --wait 10 --publish-wait 10 --no-prompt --json | tee output.json
           echo "installOutput=$(jq '.message' output.json)" >> $GITHUB_OUTPUT
           if [[ $(jq '.status' output.json) == 0 ]]; then
             echo "successfullyInstalled=true" >> $GITHUB_OUTPUT
