@@ -139,7 +139,7 @@ jobs:
       - name: Commit and create Pull Request
         if: steps.upgrade-tools.outputs.upgrade-available == 'true'
         env:
-          GH_TOKEN: ${{ secrets.token || github.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BASE_BRANCH: ${{ inputs.base-branch }}
           BRANCH: ${{ inputs.branch }}
           TITLE: ${{ inputs.title }}
