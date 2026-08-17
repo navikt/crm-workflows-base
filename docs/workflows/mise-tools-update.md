@@ -1,6 +1,6 @@
 # Update mise Tools
 
-This reusable workflow checks the tools declared in `mise.toml` for updates. When updates are available, it runs `mise upgrade --bump` and creates or updates a pull request with the changed `mise.toml` and optional `mise.lock`.
+This reusable workflow checks the tools declared in `mise.toml` for updates. When updates are available, it runs `mise upgrade` and creates or updates a pull request with the changed `mise.toml` and optional `mise.lock`.
 
 ## Steps
 
@@ -18,7 +18,7 @@ Checks out the configured base branch and prepares the update branch:
 
 ### Upgrade Tools
 
-Runs `mise upgrade --dry-run-code` to check for updates. When updates are available, runs `mise upgrade --bump` to update `mise.toml` and, when enabled, `mise.lock`.
+Runs `mise upgrade --dry-run-code` to check for updates. When updates are available, runs `mise upgrade` to update `mise.toml` and, when enabled, `mise.lock`.
 
 ### Commit and Create Pull Request
 
@@ -30,12 +30,13 @@ Commits configuration changes and pushes the update branch with an exact force-w
 - `branch` Optional. Branch for the update pull request. Default: `chore/mise-tools-update`.
 - `commit-message` Optional. Commit message for the update. Default: `chore(mise): update tool versions`.
 - `title` Optional. Pull request title. Default: `chore(mise): update tool versions`.
+- `PLATFORM_TOKEN_APP_ID` Required. GitHub App client ID used to generate the installation token.
 
 ## Secrets
 
-- `token` Optional. Token used to check out, push branches, and create pull requests. When omitted, the workflow uses `github.token`.
+- `PLATFORM_TOKEN_APP_PRIVATE_KEY` Required. Private key for the GitHub App used to generate the installation token.
 
-A supplied token should be a least-privilege GitHub App token or fine-grained personal access token with `contents: write` and `pull-requests: write` access.
+The GitHub App installation must have `contents: write` and `pull-requests: write` access to the target repository.
 
 ## Permissions
 
@@ -77,8 +78,12 @@ with:
   # Type: string
   # Default: chore(mise): update tool versions
   title: chore(mise): update tool versions
+  # Required: true
+  # Type: string
+  # GitHub App client ID
+  PLATFORM_TOKEN_APP_ID: ${{ vars.PLATFORM_TOKEN_APP_ID }}
 secrets:
-  token: ${{ secrets.GITHUB_TOKEN }}
+  PLATFORM_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PLATFORM_TOKEN_APP_PRIVATE_KEY }}
 ```
 
 ## Full Example
@@ -100,9 +105,11 @@ concurrency:
 jobs:
   update-mise-tools:
     uses: navikt/crm-workflows-base/.github/workflows/mise-tools-update.yml@<sha/version>
+    with:
+      PLATFORM_TOKEN_APP_ID: ${{ vars.PLATFORM_TOKEN_APP_ID }}
     permissions:
       contents: write
       pull-requests: write
     secrets:
-      token: ${{ secrets.GITHUB_TOKEN }}
+      PLATFORM_TOKEN_APP_PRIVATE_KEY: ${{ secrets.PLATFORM_TOKEN_APP_PRIVATE_KEY }}
 ```
