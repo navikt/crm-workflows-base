@@ -81,8 +81,6 @@ jobs:
           BRANCH: ${{ inputs.branch }}
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git fetch origin "refs/heads/$BASE_BRANCH:refs/remotes/origin/$BASE_BRANCH"
 
           remote_branch_sha="$(git ls-remote --heads origin "refs/heads/$BRANCH" | awk '{print $1}')"
@@ -98,15 +96,11 @@ jobs:
               echo "Open pull request exists but branch '$BRANCH' does not" >&2
               exit 1
             fi
-
-            git fetch origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
-            git switch --create "$BRANCH" --track "origin/$BRANCH"
-            git rebase "origin/$BASE_BRANCH"
-          else
-            git switch --force-create "$BRANCH" "origin/$BASE_BRANCH"
           fi
 
+          git switch --force-create "$BRANCH" "origin/$BASE_BRANCH"
           echo "remote-branch-sha=$remote_branch_sha" >> "$GITHUB_OUTPUT"
+          echo "existing-pr=$existing_pr" >> "$GITHUB_OUTPUT"
 
       - uses: jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654 # v4.2.4
         with:
@@ -127,16 +121,23 @@ jobs:
               echo "No upgrades available" >> "$GITHUB_STEP_SUMMARY"
               ;;
             1)
+              mise upgrade
+
+              if [ -z "$(git status --short -- mise.toml mise.lock)" ]; then
+                echo "upgrade-available=false" >> "$GITHUB_OUTPUT"
+                echo "mise reported an update but no configuration files changed" >> "$GITHUB_STEP_SUMMARY"
+                exit 0
+              fi
+
               echo "upgrade-available=true" >> "$GITHUB_OUTPUT"
               echo "Upgrades available" >> "$GITHUB_STEP_SUMMARY"
-              mise upgrade
               ;;
             *)
               exit "$status"
               ;;
           esac
 
-      - name: Commit and create Pull Request
+      - name: Commit changes and create Pull Request
         if: steps.upgrade-tools.outputs.upgrade-available == 'true'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -145,34 +146,47 @@ jobs:
           TITLE: ${{ inputs.title }}
           COMMIT_MESSAGE: ${{ inputs.commit-message }}
           PREVIOUS_BRANCH_SHA: ${{ steps.prepare-branch.outputs.remote-branch-sha }}
+          EXISTING_PR: ${{ steps.prepare-branch.outputs.existing-pr }}
         run: |
           set -euo pipefail
-          git add mise.toml
-          test ! -e mise.lock || git add mise.lock
 
-          if git diff --cached --quiet; then
-            echo "mise reported an update but no configuration files changed" >> "$GITHUB_STEP_SUMMARY"
-            exit 0
+          if [ -n "$PREVIOUS_BRANCH_SHA" ]; then
+            git push \
+              "--force-with-lease=refs/heads/$BRANCH:$PREVIOUS_BRANCH_SHA" \
+              origin "HEAD:refs/heads/$BRANCH"
+          else
+            git push origin "HEAD:refs/heads/$BRANCH"
           fi
 
-          git commit -m "$COMMIT_MESSAGE"
-          git push \
-            "--force-with-lease=refs/heads/$BRANCH:$PREVIOUS_BRANCH_SHA" \
-            origin "HEAD:refs/heads/$BRANCH"
+          expected_head_oid="$(git rev-parse HEAD)"
+          additions="$(jq -n --arg path mise.toml --rawfile contents mise.toml \
+            '[{path: $path, contents: ($contents | @base64)}]')"
+          deletions='[]'
 
-          existing_pr="$(gh pr list \
-            --head "$BRANCH" \
-            --base "$BASE_BRANCH" \
-            --state open \
-            --json url \
-            --jq '.[0].url')"
+          if [ -f mise.lock ]; then
+            additions="$(jq --arg path mise.lock --rawfile contents mise.lock \
+              '. + [{path: $path, contents: ($contents | @base64)}]' <<< "$additions")"
+          elif git cat-file -e HEAD:mise.lock 2>/dev/null; then
+            deletions='[{"path":"mise.lock"}]'
+          fi
 
-          if [ -z "$existing_pr" ]; then
+          jq -n \
+            --arg query 'mutation($repository: String!, $branch: String!, $expectedHeadOid: GitObjectID!, $message: String!, $additions: [FileAddition!]!, $deletions: [FileDeletion!]!) { createCommitOnBranch(input: {branch: {repositoryNameWithOwner: $repository, branchName: $branch}, expectedHeadOid: $expectedHeadOid, message: {headline: $message}, fileChanges: {additions: $additions, deletions: $deletions}}) { commit { oid url } } }' \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --arg branch "$BRANCH" \
+            --arg expectedHeadOid "$expected_head_oid" \
+            --arg message "$COMMIT_MESSAGE" \
+            --argjson additions "$additions" \
+            --argjson deletions "$deletions" \
+            '{query: $query, variables: {repository: $repository, branch: $branch, expectedHeadOid: $expectedHeadOid, message: $message, additions: $additions, deletions: $deletions}}' \
+            | gh api graphql --input - --jq '.data.createCommitOnBranch.commit.url'
+
+          if [ -z "$EXISTING_PR" ]; then
             gh pr create \
               --title "$TITLE" \
               --body "Automated update of tools declared in \`mise.toml\`.\nReview the changes and merge when ready." \
               --base "$BASE_BRANCH" \
               --head "$BRANCH"
           else
-            echo "Updated existing PR: $existing_pr"
+            echo "Updated existing PR: $EXISTING_PR"
           fi
