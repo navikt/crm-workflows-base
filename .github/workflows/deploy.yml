@@ -58,25 +58,6 @@ jobs:
       package-installation-result: ${{ steps.set-output.outputs.package-installation-result }}
       metadata-deployment-result: ${{ steps.set-output.outputs.metadata-deployment-result }}
     steps:
-      # Set SF Auth URL
-      - name: Set SF Auth URL
-        id: auth-url
-        shell: bash
-        run: |
-          set -euo pipefail
-          case "$ORG" in
-            prod)       SF_AUTH_URL="${{ secrets.PROD_AUTH_URL }}" ;;
-            preprod)    SF_AUTH_URL="${{ secrets.PREPROD_AUTH_URL }}" ;;
-            dev)        SF_AUTH_URL="${{ secrets.DEV_AUTH_URL }}" ;;
-            uat)        SF_AUTH_URL="${{ secrets.UAT_AUTH_URL }}" ;;
-            sit)        SF_AUTH_URL="${{ secrets.SIT_AUTH_URL }}" ;;
-            *)          SF_AUTH_URL="$ORG" ;;
-          esac
-          echo "Auth URL set for $ORG"
-          echo "SF_AUTH_URL=$SF_AUTH_URL" >> "$GITHUB_ENV"
-        env:
-          ORG: "${{ inputs.org }}"
-
       # Install SF
       - name: Install SF
         uses: navikt/sf-gha-install-sf-cli@3f1abbc990b03fb544e80169920fea2e94946d1a
@@ -85,7 +66,7 @@ jobs:
       - name: Authorize SF
         uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
         with:
-          auth-url: ${{ env.SF_AUTH_URL }}
+          auth-url: ${{ inputs.org == 'prod' && secrets.PROD_AUTH_URL || inputs.org == 'preprod' && secrets.PREPROD_AUTH_URL || inputs.org == 'dev' && secrets.DEV_AUTH_URL || inputs.org == 'uat' && secrets.UAT_AUTH_URL || secrets.SIT_AUTH_URL }}
           alias: ${{ env.TARGET_ORG }}
           setDefaultUsername: true
           setDefaultDevhubUsername: false
