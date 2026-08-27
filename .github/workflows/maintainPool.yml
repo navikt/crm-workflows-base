@@ -33,6 +33,7 @@ jobs:
         run: |
           npm config set registry https://registry.npmjs.org
           npm config set @navikt:registry https://npm.pkg.github.com
+          npm config set //npm.pkg.github.com/:_authToken "$NODE_AUTH_TOKEN"
           mkdir -p "$HOME/.config/sf"
           printf '%s\n' '["@navikt/sf-cli-plugin-pool"]' > "$HOME/.config/sf/unsignedPluginAllowList.json"  
           sf plugins install @navikt/sf-cli-plugin-pool@1.0.0
@@ -40,7 +41,7 @@ jobs:
       - name: "Authenticate Dev Hub"
         uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
         with:
-          auth-url: ${{ secrets.DEV_HUB_SFDX_URL }}
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
           setDefaultDevhubUsername: true
           alias: ${{ env.DEV_HUB_ALIAS }}
 
