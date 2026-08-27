@@ -32,7 +32,10 @@ jobs:
         uses: navikt/sf-gha-install-sf-cli@3f1abbc990b03fb544e80169920fea2e94946d1a
 
       - name: Install pool plugin
-        run: sf plugins install @navikt/sf-cli-plugin-pool@1.0.0
+        run: |
+          mkdir -p "$HOME/.config/sf"
+          printf '%s\n' '["@navikt/sf-cli-plugin-pool"]' > "$HOME/.config/sf/unsignedPluginAllowList.json"  
+          sf plugins install @navikt/sf-cli-plugin-pool@1.0.0
         env:
           SF_NPM_REGISTRY: https://npm.pkg.github.com
 
