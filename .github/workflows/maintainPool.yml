@@ -58,7 +58,9 @@ jobs:
 
       - name: Prepare Pool
         run: |
-          $PACKAGE_KEYS | \
+          echo "::add-mask::$PACKAGE_KEYS"
+
+          printf '%s\n' "$PACKAGE_KEYS" | \
           sf pool prepare \
           --target-dev-hub $DEV_HUB_ALIAS \
           --config-file "./config/pool-config.json" \
