@@ -58,7 +58,7 @@ jobs:
         run: |
           $PACKAGE_KEYS | \
           sf pool prepare \
-          -o $DEV_HUB_ALIA \
+          -o $DEV_HUB_ALIAS \
           -f "./config/pool-config.json" \
           --package-keys-stdin
         env:
