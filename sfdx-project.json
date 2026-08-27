@@ -54,7 +54,7 @@
         },
         {
           "package": "crm-platform-reporting",
-          "versionNumber": "0.46.0.1"
+          "versionNumber": "0.47.0.2"
         },
         {
           "package": "crm-henvendelse-base",
