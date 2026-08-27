@@ -60,8 +60,8 @@ jobs:
         run: |
           $PACKAGE_KEYS | \
           sf pool prepare \
-          -o $DEV_HUB_ALIAS \
-          -f "./config/pool-config.json" \
+          --target-dev-hub $DEV_HUB_ALIAS \
+          --config-file "./config/pool-config.json" \
           --package-keys-stdin
         env:
           DEV_HUB_ALIAS: ${{ env.DEV_HUB_ALIAS }}
