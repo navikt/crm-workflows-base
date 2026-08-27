@@ -1,0 +1,66 @@
+name: Maintain Scratch Pools
+
+on:
+  workflow_dispatch:
+concurrency:
+  group: maintain-scratch-pools
+  cancel-in-progress: false
+permissions: {}
+env:
+  DEV_HUB_ALIAS: dev-hub
+  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+jobs:
+  fillPools:
+    name: Fill Scratch Pools
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Read access to the repository
+      packages: read # Required to be able to download pool plugin from GitHub Packages
+    steps:
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.16.0
+          registry-url: https://npm.pkg.github.com
+          scope: "@navikt"
+
+      - name: "Checkout code"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Install SF
+        uses: navikt/sf-gha-install-sf-cli@3f1abbc990b03fb544e80169920fea2e94946d1a
+
+      - name: Install pool plugin
+        run: sf plugins install @navikt/sf-cli-pool@1.0.0
+        env:
+          SF_NPM_REGISTRY: https://npm.pkg.github.com
+
+      - name: "Authenticate Dev Hub"
+        uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
+        with:
+          auth-url: ${{ secrets.DEV_HUB_SFDX_URL }}
+          setDefaultDevhubUsername: true
+          alias: ${{ env.DEV_HUB_ALIAS }}
+
+      - uses: navikt/sf-gha-create-package-key-pairs@b48478b1ba87064e71f7e7b4abcc98dbd1c9b206
+        id: createPackageKeyPairs
+        with:
+          sfdx-project-path: "./sfdx-project.json"
+          package-key: ${{ secrets.CRM_PACKAGE_KEY }}
+          devhub-alias: ${{ env.DEV_HUB_ALIAS }}
+          json: "true"
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: Prepare Pool
+        run: |
+          $PACKAGE_KEYS | \
+          sf pool prepare \
+          -o $DEV_HUB_ALIA \
+          -f "./config/pool-config.json" \
+          --package-keys-stdin
+        env:
+          DEV_HUB_ALIAS: ${{ env.DEV_HUB_ALIAS }}
+          PACKAGE_KEYS: ${{ steps.createPackageKeyPairs.outputs.package-keys }}
