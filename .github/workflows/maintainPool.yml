@@ -36,8 +36,6 @@ jobs:
           mkdir -p "$HOME/.config/sf"
           printf '%s\n' '["@navikt/sf-cli-plugin-pool"]' > "$HOME/.config/sf/unsignedPluginAllowList.json"  
           sf plugins install @navikt/sf-cli-plugin-pool@1.0.0
-        env:
-          SF_NPM_REGISTRY: https://npm.pkg.github.com
 
       - name: "Authenticate Dev Hub"
         uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
