@@ -2,7 +2,7 @@
   "pools": [
     {
       "tag": "dev-test",
-      "count": 2,
+      "count": 1,
       "definitionFilePath": "config/project-scratch-def.json",
       "retryCount": 3,
       "expirationDays": 1
