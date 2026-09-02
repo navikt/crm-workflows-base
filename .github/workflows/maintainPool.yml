@@ -15,67 +15,8 @@ env:
   DEV_HUB_ALIAS: dev-hub
   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
-  clean-pools:
-    name: Clean Scratch Pools
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.clean-pools == 'true' }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          fetch-depth: 1
-          persist-credentials: false
-
-      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
-        with:
-          cache: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: echo "STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
-      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
-
-      - run: pnpm install --frozen-lockfile
-
-      - name: Install pool plugin
-        run: |
-          npm config set registry https://registry.npmjs.org
-          npm config set @navikt:registry https://npm.pkg.github.com
-          npm config set //npm.pkg.github.com/:_authToken "$NODE_AUTH_TOKEN"
-          mkdir -p "$HOME/.config/sf"
-          printf '%s\n' '["@navikt/sf-cli-plugin-pool"]' > "$HOME/.config/sf/unsignedPluginAllowList.json"  
-          sf plugins install @navikt/sf-cli-plugin-pool@1.0.0
-
-      - name: "Authenticate Dev Hub"
-        uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
-        with:
-          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
-          setDefaultDevhubUsername: true
-          alias: ${{ env.DEV_HUB_ALIAS }}
-
-      - name: Clear Pool
-        if: ${{ github.event.inputs.clean-pools == 'true' }}
-        run: |
-          sf pool clean \
-          --target-dev-hub $DEV_HUB_ALIAS \
-          --status Failed \
-          --status Available \
-          --pool-tag dev-test
-        env:
-          DEV_HUB_ALIAS: ${{ env.DEV_HUB_ALIAS }}
   fill-pools:
     name: Fill Scratch Pools
-    needs: clean-pools
     runs-on: ubuntu-latest
     permissions:
       contents: read # Read access to the repository
