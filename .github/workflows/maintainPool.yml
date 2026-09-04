@@ -15,8 +15,61 @@ env:
   DEV_HUB_ALIAS: dev-hub
   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
+  update-package-dependencies:
+    name: Update Package Dependencies
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Need write access to update package dependencies
+    steps:
+      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        id: app-token
+        with:
+          client-id: ${{ vars.PLATFORM_TOKEN_APP_ID }}
+          private-key: ${{ secrets.PLATFORM_TOKEN_APP_PRIVATE_KEY }}
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          cache: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+      - run: pnpm install --frozen-lockfile
+
+      - name: "Authenticate Dev Hub"
+        uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
+        with:
+          auth-url: ${{ secrets.CRM_PROD_SFDX_URL }}
+          setDefaultDevhubUsername: true
+          alias: ${{ env.DEV_HUB_ALIAS }}
+
+      - name: Update sfdx-project.json dependencies
+        uses: navikt/sf-gha-update-sfdx-project-dependencies@1a644c3aeb569394ed71ddc889b1f08d4bed6117
+        id: update-dependencies
+        with:
+          target-org: ${{ env.DEV_HUB_ALIAS }}
+          sfdx-project-path: sfdx-project.json
+
+      - name: Commit changes
+        uses: navikt/sf-gha-commit-files@216c5afbc28f2122a1385838e65bceb88af7a1c1
+        if: ${{ steps.update-dependencies.outputs.updated == 'true' }}
+        with:
+          files: sfdx-project.json
+          commitMessage: Update package versions for impacted packages
+          token: ${{ steps.app-token.outputs.token }}
   fill-pools:
     name: Fill Scratch Pools
+    needs: update-package-dependencies
     runs-on: ubuntu-latest
     permissions:
       contents: read # Read access to the repository
