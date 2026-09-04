@@ -50,7 +50,7 @@ jobs:
           npm config set //npm.pkg.github.com/:_authToken "$NODE_AUTH_TOKEN"
           mkdir -p "$HOME/.config/sf"
           printf '%s\n' '["@navikt/sf-cli-plugin-pool"]' > "$HOME/.config/sf/unsignedPluginAllowList.json"  
-          sf plugins install @navikt/sf-cli-plugin-pool@1.0.0
+          sf plugins install @navikt/sf-cli-plugin-pool@latest
 
       - name: "Authenticate Dev Hub"
         uses: navikt/sf-gha-authenticateOrg@da2f995ee865e05111574719abfc5ba12b459f0c
