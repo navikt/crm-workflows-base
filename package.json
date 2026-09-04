@@ -11,8 +11,8 @@
   "devDependencies": {
     "@prettier/plugin-xml": "^3.4.2",
     "husky": "^9.1.7",
-    "lint-staged": "^17.0.7",
-    "prettier": "3.8.4"
+    "lint-staged": "^17.4.1",
+    "prettier": "3.9.6"
   },
   "lint-staged": {
     "**/*.{css,html,js,json,md,xml,yaml,yml}": [
