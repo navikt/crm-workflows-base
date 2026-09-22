@@ -58,7 +58,7 @@
         },
         {
           "package": "crm-henvendelse-base",
-          "versionNumber": "0.40.0.3"
+          "versionNumber": "0.41.0.1"
         },
         {
           "package": "crm-platform-integration",
@@ -94,7 +94,7 @@
         },
         {
           "package": "crm-sf-saf",
-          "versionNumber": "0.42.0.1"
+          "versionNumber": "0.44.0.1"
         },
         {
           "package": "crm-henvendelse",
