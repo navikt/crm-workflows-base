@@ -12,7 +12,7 @@
     "@prettier/plugin-xml": "^3.4.2",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
-    "prettier": "3.9.7"
+    "prettier": "3.9.8"
   },
   "lint-staged": {
     "**/*.{css,html,js,json,md,xml,yaml,yml}": [
