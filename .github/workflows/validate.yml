@@ -2,24 +2,18 @@ name: "Validate"
 on:
   workflow_call:
     inputs:
-      sfp-version:
-        description: The version of SFP to use
-        required: false
+      pool-tag:
+        description: The tag of the pool to validate against
+        required: true
         type: string
-        default: 39.8.0-17204768834
-      ref:
-        description: The git ref to checkout
-        required: false
-        type: string
-      base-ref:
-        description: The base git ref to compare changes against (used for PRs)
-        required: false
+        default: test-ci
+      package-id:
+        description: The ID of the package to install from the pool
+        required: true
         type: string
     secrets:
       PACKAGE_KEY:
         required: false
-      DEV_HUB_SFDX_URL:
-        required: true
 permissions:
   contents: read
 jobs:
@@ -27,8 +21,6 @@ jobs:
     name: Validate against pool
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
-    container: ${{ inputs.sfp-version && format('ghcr.io/flxbl-io/sfp:{0}', inputs.sfp-version) || 'ghcr.io/flxbl-io/sfp:39.8.0-17204768834' }}
-    timeout-minutes: 720 #Set to Maximum Time out
     env:
       DEV_HUB_ALIAS: devhub
     steps:
@@ -36,7 +28,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+          fetch-depth: 1 # otherwise, you will failed to push refs to dest repo
 
       - name: Delete unpackagable
         run: |
@@ -44,52 +36,69 @@ jobs:
           rm -rf **/unpackagable-with-auto-deploy
           rm -rf **/scratch-org
 
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          cache: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+      - run: pnpm install --frozen-lockfile
+
+      - name: Install pool plugin
+        run: |
+          npm config set registry https://registry.npmjs.org
+          npm config set @navikt:registry https://npm.pkg.github.com
+          npm config set //npm.pkg.github.com/:_authToken "$NODE_AUTH_TOKEN"
+          mkdir -p "$HOME/.config/sf"
+          printf '%s\n' '["@navikt/sf-cli-plugin-pool"]' > "$HOME/.config/sf/unsignedPluginAllowList.json"  
+          sf plugins install @navikt/sf-cli-plugin-pool@latest
+
       # Authenticate dev hub
       - name: Authenticate Dev Hub
         uses: navikt/sf-gha-authenticateOrg@bb934753f101b4e30086e42c8e7db642ffe05b07
         with:
           auth-url: ${{ secrets.DEV_HUB_SFDX_URL }}
           alias: ${{ env.DEV_HUB_ALIAS }}
-          set-default-username: true
+          set-default-username: false
           set-default-devhub-username: true
-      - name: Generate package keys
-        id: generate-package-keys
-        uses: navikt/sf-gha-create-package-key-pairs@3b8c64c8b296aa9eba46e35f9880c6920833c9e3
-        with:
-          sfdx-project-path: sfdx-project.json
-          package-key: ${{ secrets.PACKAGE_KEY }}
 
-      - name: Validate metadata
-        shell: bash
+      - name: Fetch from pool
         run: |
-          args=(sfp validate pool --pools ci -v "$DEV_HUB_ALIAS" --coveragepercent 85 --disableartifactupdate  --deletescratchorg --tag "$GITHUB_REPO")
-          if [ -n "$SFP_PACKAGE_KEY_PAIRS" ]; then
-            args+=(--keys "$SFP_PACKAGE_KEY_PAIRS")
-          fi
+          echo "Fetching from pool..."
+          sf pool fetch --alias ciScratch --set-default --pool-tag test-ci --target-dev-hub ${{ env.DEV_HUB_ALIAS }}
 
-          if [ -n "$REF" ]; then
-            args+=(--ref "$REF")
-          fi
-
-          if [ -n "$BASE_REF" ]; then
-            args+=(--baseRef "$BASE_REF")
-          fi
-
-          echo "Running: ${args[*]}"
-          "${args[@]}"
-        env:
-          SFP_PACKAGE_KEY_PAIRS: ${{ steps.generate-package-keys.outputs.package-keys }}
-          REF: ${{ inputs.ref }}
-          BASE_REF: ${{ inputs.base-ref }}
-          GITHUB_REPO: ${{ github.repository }}
-
-      - name: Upload logs
-        if: ${{ always() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - id: test-run
+        uses: navikt/sf-gha-run-tests@5b52b3354c7f598f36c76a63ff4c091907846257
         with:
-          name: logs
-          path: |
-            .sfpowerscripts/logs
-            .testresults
+          target-org: ciScratch
+          required-code-coverage: 85
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 #7.0.2
+        with:
+          name: salesforce-test-results
+          path: test-run/
           if-no-files-found: ignore
-          retention-days: 7
+
+      - name: Verify test results
+        run: |
+          if [ "${{ steps.test-run.outputs.is-test-success }}" != "true" ]; then
+            echo "Tests failed"
+            exit 1
+          fi
+
+          if [ "${{ steps.test-run.outputs.is-code-covered }}" != "true" ]; then
+            echo "Code coverage requirement not met"
+            exit 1
+          fi
+
+      - name: Cleanup
+        run: |
+          sf org delete --target-org ciScratch --no-prompt
