@@ -8,8 +8,8 @@ importers:
   .:
     dependencies:
       "@salesforce/cli":
-        specifier: 2.155.7
-        version: 2.155.7
+        specifier: 2.156.5
+        version: 2.156.5
 
 packages:
   "@alcalzone/ansi-tokenize@0.3.1":
@@ -375,10 +375,10 @@ packages:
       }
     engines: { node: ">=18.0.0" }
 
-  "@jsforce/jsforce-node@3.10.29":
+  "@jsforce/jsforce-node@3.12.0":
     resolution:
       {
-        integrity: sha512-N3TRPYGSrhEQuAJbxvOo/L4Zz12fhBG8og99SaYER2+3tVw8HeXcf7NlNCn56jbhPIaj8iHpQK+AE+xW1s3KNQ==,
+        integrity: sha512-c13YUjHhXg7+oTK4g1loStb/psJ0Xy5TP6mQbtRgr4R5mOe9AmPcmHBSbxsn90Enep3J4/omt20AvMkhhtDFSw==,
       }
     engines: { node: ">=22" }
 
@@ -476,87 +476,87 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/multi-stage-output@1.0.6":
+  "@oclif/multi-stage-output@1.0.7":
     resolution:
       {
-        integrity: sha512-jGBYe7ECZlFZ9IJkJ4TdZrklYLITM5P2V4VgeVivbCrVo7kr6VGBczyXqFiN/NrbOGy7gmD7teMDLpawwag6Tw==,
+        integrity: sha512-Gda4WM7xZ7cjPMN0Ps4boDyzgfiWM3PRbbaJh+dNtJwW0RfrTB4dpX9YIdTtMg4wwQ60ITWgP5UdZmcG+/TKaQ==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/plugin-autocomplete@4.0.4":
+  "@oclif/plugin-autocomplete@4.0.5":
     resolution:
       {
-        integrity: sha512-EBdHkB+UE2E7YEM60LiVAK+ZVNRT+1epCkez1LIAJIfCMazhGJCzTNt75hOZHLfH0cZP48zs6FrZ45yzwfZbFw==,
+        integrity: sha512-ER75a4JepZNT6MOkiUttjnSv+4yiVfKd1giksQi1T7ZXxP9pTj0KWaHqehH/iFhOzzoeig8+t8/BPnJmcbFpzg==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/plugin-commands@5.0.4":
+  "@oclif/plugin-commands@5.0.5":
     resolution:
       {
-        integrity: sha512-TdVzEBgUZOatdGQbB+FwjD2MxUDjPS8hUUQlU3mIn7J/yjjI8pjIRXp7oV4A/JHE2uRqgwO80q548j2INCykXg==,
+        integrity: sha512-2ve4490h15NF+mY64Ft9+hZD974bt7nFsF+54W/kpls4k4n0i7gNjNYZEQMNCFacX9IKCcjChC2WGbovBdvW8w==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/plugin-help@7.0.4":
+  "@oclif/plugin-help@7.0.5":
     resolution:
       {
-        integrity: sha512-i3AKiJrHF8y/Hj/1QfNBVaE4N9sOlodA/CFq8Lv998BZAHe/uBwgqL94FvaZenj/3REyl01stptAUp/AQjpfOw==,
+        integrity: sha512-yhDWRNRRgCPXmmlNQoqlVMF75M/6MkLWiSYsxSyCCG3o1cn8NW5pmAzU71LwN/7SVUyqm1ou0y51pQ2CScVvkQ==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/plugin-not-found@4.0.4":
+  "@oclif/plugin-not-found@4.0.5":
     resolution:
       {
-        integrity: sha512-fPtsm8xrKTotTl4yQn5pem74iHXbXM6XYPCtU9bMPQEKuyUD//gllE1eGLX5OOOKTV8XJIf3MwAbGtTqCAAPdw==,
+        integrity: sha512-wLx7RfkIRN4jZ5uGLfPcwzbsO7GgaNlP8feLsbedyWxk6LYJTHzkTjYVZ6VYisBtShayKdB7oJZ3SZZhQKUKww==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/plugin-plugins@7.0.7":
+  "@oclif/plugin-plugins@7.0.10":
     resolution:
       {
-        integrity: sha512-PxAtZh+3OaXGNBme9qGw/+ICpcQFqbDtQomZqKn54yDaduUzlGp7tpkSSG/HqsiRoIKCVvfWZbJz1gt8QUh8Rw==,
+        integrity: sha512-BamuFshuCUja8Qcv39QryOwGMLEFazMjSUsdnp1XQOHz+/ngmopuDULWwQfE8xkHnmjrn+OytoTsFS0zgBJuHA==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/plugin-search@2.0.0":
+  "@oclif/plugin-search@2.0.5":
     resolution:
       {
-        integrity: sha512-RDAeladtvJSs+nzFWMkg+kl4eNnR7KNUJM5brymGK/7N7e0RcnDPVYzGqQJcIEzNmbzoHwDHioDwwoer+yLM+g==,
+        integrity: sha512-8sH54hXmOECxCykBcb7BG3dQ85EjrSC5ZAvW/L4VedD0rlQW6n7uTa/piq5LLyYSDTEPb5Q2QWo3DSM/hcI+5g==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/plugin-update@5.0.4":
+  "@oclif/plugin-update@5.0.6":
     resolution:
       {
-        integrity: sha512-zWMzFkbqF5X41mTJi150IBbX6q7iQe9XMqEolKjckI6bqdCcmu2LMRj74N77NSkOXMLtSa4VnPv+DEE7kHLG7g==,
+        integrity: sha512-ByYCoM47WLf8jMlN9rsiVlxi3h5xgJE+wLl9ohh2Iqyk507KA8Ij1fyiVJT1mzEd4gFEl+xyozfjxb+YKCoUpw==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/plugin-version@3.0.5":
+  "@oclif/plugin-version@3.0.6":
     resolution:
       {
-        integrity: sha512-QAZyyZm1QKoYfKRQUW5+zXK/FxNxoazze3/XkPmTVYpHmsBxeDPNz4PCrGZ2xIRQngxNCbUflT/b+gAcgm/mZQ==,
+        integrity: sha512-yL9gK9H8vb1dcl/7DtIOkdz7mvqogD7TLbBcvA/Ygx7n6xFipD9pxnEhMg4tGuT/aZLjyDN4Vd3NVuQ98+GsTw==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/plugin-warn-if-update-available@4.0.3":
+  "@oclif/plugin-warn-if-update-available@4.0.4":
     resolution:
       {
-        integrity: sha512-M11GUdHKOoSAguv7eBBgtgUVuvaH5nlIlZA1kvOmSIpjrDQEvZwWBjKcyXb0icNnxdGbpaItILAOkKqVHz/ptw==,
+        integrity: sha512-Q/cslxPr4nfnF1r8nTemNV6Ds+yojZE7QL2g/DPRKAKlYWm/7oOejrEvGyCNHoskDLcgwtcRbelfL3xtJ172Qw==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/plugin-which@4.0.4":
+  "@oclif/plugin-which@4.0.5":
     resolution:
       {
-        integrity: sha512-0/0Sx3Mb3TCV2Uy3B7w6rq+ifEWu1qxNsXF66Xy9zCVDfAOUU4ParIhLnJF4DOIdjlip9aZJSNUGsGBXTe54yQ==,
+        integrity: sha512-K4mbZmHKbtNZiJOFdkycfFyWvPr4xEll+Q/jgpjEpZnwzzPUdxtNbtHwowP2TQXWOV7MOyTJ5eeSPyIOrSf4bA==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/table@1.0.5":
+  "@oclif/table@1.0.6":
     resolution:
       {
-        integrity: sha512-6+czHxLf6sEFob8e0h+4bXCpG3LqoMOb7u8rRxc/XM0vGNHnodp/pHPOz6kzVvzjebHevX21bnuVB0vr1JeVHQ==,
+        integrity: sha512-EdCDgMfc8346oMYoMN+mKLTlTrm/eEOe1MPQLNsXFO0v+UCKq4mzavbN+8wqP5aotpt8NCMNlqR7Emz9WRsYyA==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -625,6 +625,7 @@ packages:
         integrity: sha512-jVPgBbH1gCy2Lb7X0AVQ8XAfgg0pJ4nvl8/IiQA6nxOsPvS+0zMJaFSs2ltXe0J6C8dqjcnpyqINDJmU30+uOg==,
       }
     engines: { node: ">=14" }
+    deprecated: Use @opentelemetry/sdk-trace package
     peerDependencies:
       "@opentelemetry/api": ">=1.0.0 <1.10.0"
 
@@ -634,6 +635,7 @@ packages:
         integrity: sha512-JOERgZCxRM06FEJ5kEWxlSRChah6MmXDx3KwCruqEv/iEyLkTokCSemf2y1w8oIHtfrr8EVTpzebq/31vn2Cpg==,
       }
     engines: { node: ^18.19.0 || >=20.6.0 }
+    deprecated: Use @opentelemetry/sdk-trace package
     peerDependencies:
       "@opentelemetry/api": ">=1.3.0 <1.10.0"
 
@@ -643,6 +645,7 @@ packages:
         integrity: sha512-y0hCzbnBHScmioF0drJOyaPk1sQf2wwbIuy3rWlM0Fcx8mLfPDvFsQ7tJ+zMm8yAqI06rSlFKkL7ZpcrFOqAdQ==,
       }
     engines: { node: ^18.19.0 || >=20.6.0 }
+    deprecated: Use @opentelemetry/sdk-trace package
     peerDependencies:
       "@opentelemetry/api": ">=1.0.0 <1.10.0"
 
@@ -770,18 +773,18 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/cli@2.155.7":
+  "@salesforce/cli@2.156.5":
     resolution:
       {
-        integrity: sha512-e4KcRHnY8qONROi/TjMBqvxvGPGDH3XfaFkMf+sjJSF2TV9lVqJPof3rOzwObaWLMN+pzf0phJ0hPL2J/exlZw==,
+        integrity: sha512-/pW1pPrRa3Inu/02sgbhMvp917+B9r9eU+zKf4cg7CWu+rsLesaenxEmuxH/9Qux19xz45xGAnNyaQ6ETz9Kdg==,
       }
     engines: { node: ">=22.0.0" }
     hasBin: true
 
-  "@salesforce/core@9.3.6":
+  "@salesforce/core@9.4.0":
     resolution:
       {
-        integrity: sha512-2LuJVv8b4Yf3o8hKXQXZHfhP8LpyKQL5YRncPzVvE1AwLvbwabzLHc2NrELt2t+vpXiD3UURbP8KVMDjJn1KaA==,
+        integrity: sha512-KkIvdJ6hafOctC6yxY2XLKJguXHAve3VCvHM0yJA2FxBjEQnqV0nMc0qppFSybSsSI5biJvf6HYOpzFtCsHLYQ==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -799,59 +802,59 @@ packages:
       }
     engines: { node: ">=20" }
 
-  "@salesforce/packaging@5.0.20":
+  "@salesforce/packaging@5.0.21":
     resolution:
       {
-        integrity: sha512-nkVfGmeQ4x+4N/4PE+Ep9U2FKMY6yDirGEwRAFCrQspo7LmmQAFiIpItr4PRjRH7ZKshVGHCxOwIw0vYEe/VYw==,
+        integrity: sha512-Pfd+uWZOBsevlnyIxong9WlPKgIp3rn+WumMSi+aBzIk+Tjdxjv5eFLEm+fvPtAAPmcIbckX7sQirl8dfiuIcQ==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-agent@2.2.2":
+  "@salesforce/plugin-agent@2.2.3":
     resolution:
       {
-        integrity: sha512-2yK68jFkc98EJUdHBu+C1u8ZMkSRo4ifqqobSUiu0uWc2y4E3E6DV4dj7IKkxXpqQ8W06Dhrz/6KG5JKSQNZiw==,
+        integrity: sha512-Yb8VCIxaYSBKL6M2rv9zetbxiFMGVT7P/bPx6x6U2Hd/2BnQPjPl5HROkwtg27iTaxn2baevdClDy0zjFamL7A==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-apex@4.4.3":
+  "@salesforce/plugin-apex@4.4.4":
     resolution:
       {
-        integrity: sha512-pOf75oP+vFyyCt6rUVURUIWiQjIB3HgBnpurFTNPyQBDG55qWffmw6RA83rL4yC30bOv3HdempoNX03SlVuGOw==,
+        integrity: sha512-jkjlb1A6xbV7zQrbz9xnlFe0BRUaR5R0JdCi6sHOZ94+P/IXsep0RE2AvB1i5/wVBis0C+c7QnpRhoKEvBbThg==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-api@2.0.17":
+  "@salesforce/plugin-api@2.0.19":
     resolution:
       {
-        integrity: sha512-IHd0sS5p4dyrP99VfNnwcstuvuentLeRECVNCnmWz72EascP+mbu8xZ/YEWqbxy1KyzncCJQYHV3GVYRJ/aPRQ==,
+        integrity: sha512-socE2WX9RV/JZFO4ThuYvjD4aG8Lm0Cb9Gr02p9YVmMrtJYHW6la0Y87DptHMaJ1jCVSnInpAIP+HIRbiFYXEA==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-auth@5.0.16":
+  "@salesforce/plugin-auth@6.0.0":
     resolution:
       {
-        integrity: sha512-zsjx+9yayevMXWtQnU6+KF1S4z41qW7estaVZEfvD3FWDMdnOkVjWkWcd0qW3283LlobtAIs9ja4oRJ17Ua9MQ==,
+        integrity: sha512-rzeF6WbtP4V0mYAsvz9pcOYVc8NKEEeg4eHQkR5lFYiAq0BWAuKAA4p4oh6DbsvOxJFiNxo06T3YrR9AV2asRQ==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-data@5.1.16":
+  "@salesforce/plugin-data@5.1.19":
     resolution:
       {
-        integrity: sha512-uWUZCWuEAeVU8nH0jG9ppBb375trXKhylOF+zHN0adrruVYk8aTQBWmTna7WPZVB3PI0Gt0IClp1K4TE/adQug==,
+        integrity: sha512-LOBGIyH27jsqCUTHjAkDiTdI9R2dt+5iLlOw7YdwwjkF2Ds0fTqLndIIBbyoz0t0//UcbuL/C8OVgRmh0tOYSA==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-deploy-retrieve@4.2.14":
+  "@salesforce/plugin-deploy-retrieve@4.2.18":
     resolution:
       {
-        integrity: sha512-i8tNYxOh9xrJQW8v+0RS5qeLzs8u4z+XlqQ50NX8lW8HHvfI1S7ihwLoZ5IOyEwhpZjvhaQAn61xGjy86lpZlg==,
+        integrity: sha512-nBVxUR8i0aVHbBd6lAkQO3nblsmWzql8kG43mc7/IjnTSZcDZKhtJ0dDji1JiHsfjwcsPTf8AqZPFjXPn1Nanw==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-info@4.0.16":
+  "@salesforce/plugin-info@4.0.18":
     resolution:
       {
-        integrity: sha512-Qgsx/9XTXcbclFXpxW5UZSvQnHRqsqNz+3r9XktaK/XSEkXvh5GDgrn5O73qxir7gYOG8F42XzS0qk+DiDLNHg==,
+        integrity: sha512-4ykrOYvjyKzxpYc+il8C1v8yKYvLwR4PSKr5nmDS9IA6sdx3f9V7+UWgJa/n5ZGx8VGLa9y7eYGDMQANIamcQA==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -862,17 +865,17 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-marketplace@2.0.17":
+  "@salesforce/plugin-marketplace@2.0.18":
     resolution:
       {
-        integrity: sha512-m6QM9cmhEN4WO4FUJKEoVLG+6oxom0XQ1ZUAmDs7rRx0yJg/ZFaDlDPgo4hVNshWpCSaOF5L2e2PXjQzIdEJ4w==,
+        integrity: sha512-N/8s4796ndns4MpQqtF22Rwu0YYNQCWU/GrnlAPwglSvfhOm7FyhI+TZ7ogvzHLH/SVNtJ5SEC3KylG33gfDtw==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-org@6.0.26":
+  "@salesforce/plugin-org@7.0.2":
     resolution:
       {
-        integrity: sha512-Mgz6u+jPo7zoxu4huYi2KVUD9FxSWugh7SBKh3ADzVdaqHTCKvH4fIivPUktox20/C2mYH2EHAN7jjpWF/jDsQ==,
+        integrity: sha512-I0hguFCTFDs0SXu2QwY8X2DT/+KvCLn0WAPkDHK8li2tnB/nVlQCpcr80PTiJqYIFUEo/9OiMWXWkB5B74PMrg==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -890,46 +893,46 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-settings@3.0.14":
+  "@salesforce/plugin-settings@3.0.16":
     resolution:
       {
-        integrity: sha512-zQ8IoI1QN9ynZSbyRn7o1ruFvPVLms6ixOl7yP/1hML3+A/2RyQWhzV2x+ki9BhS9NBITHUN5hcvK3dGx/qbzg==,
+        integrity: sha512-BD1i0WPQTiYgTMOVdiftqD4Mi5yXOClRGaUbUP6+DklMO0dV0WT5AFdaxojpV4zNsMPgKw/DxXdpIQM6NwvoIA==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-sobject@2.0.12":
+  "@salesforce/plugin-sobject@2.0.13":
     resolution:
       {
-        integrity: sha512-23Tq5riW+p7ErFGguvgyHB/M3xcwGlyUqyYLJ73VuJ0dHuwflhQL46emSJm98amiL76O5Izia/4p9OytxSjuWg==,
+        integrity: sha512-Q3lIVgILKCxDUdKgMyiIwnZfSeDFeTXDdCa5IfN0aQxNL9RotznY+LlKV7eTaU3JpSqG6eUk6B074AjEIVYX5Q==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-telemetry@4.2.0":
+  "@salesforce/plugin-telemetry@4.2.1":
     resolution:
       {
-        integrity: sha512-3GeJipucQ+eEo4REKTa6JlCwJgHW0HsfHeifJ8+SyAd1te/BbA6S+OYtVZLhaC0kO5OXPpxKLJvGufjRr1xF0g==,
+        integrity: sha512-XPSsCFWID9fvWH/+NJEyLW8SVOYhOGzikykVImzEeH+uNHWq3FAJfbj2GeWZmZHUR4AeRxoUcD0tauWe1cpUsg==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-templates@57.4.6":
+  "@salesforce/plugin-templates@57.4.8":
     resolution:
       {
-        integrity: sha512-vmdkziXfki46dOTxsfNXnZX24CzdHkawToNX//dedixfaOh33bgmuyogmp8AoGX2+0oQ6rFDoMr6IMQ78hLD8g==,
+        integrity: sha512-Nz+MTAyuvXIpC0FI3S1jxx+cqTg3EK1gebjwr6YgkldkGuCKMaUxNF4bvAx0R+0TV4SbUIEfZv79d8bYR+2jCA==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-trust@4.0.20":
+  "@salesforce/plugin-trust@4.0.23":
     resolution:
       {
-        integrity: sha512-42/Au0fyM1ZulyfeGT7yIJLRfebN1aCyISteYBNNtR69ZtTHbK0aKmhst6fVV27hhfNNKP8xHYu6j/QtmzF5SQ==,
+        integrity: sha512-uLF0fWj+z0Ekk0RCB9ZQJzeUEo6VHDu3tqp4mOZxKIgw+p/8xFhP3VeaE/L9eC1TdKD6e9AWMW8XnyVi5M5XBQ==,
       }
     engines: { node: ">=22.0.0" }
     hasBin: true
 
-  "@salesforce/plugin-user@5.0.11":
+  "@salesforce/plugin-user@6.0.3":
     resolution:
       {
-        integrity: sha512-d8gh1KTm4/iVxEhIUvlinscZEVDYuDEJF1GC09l8QsGDkorc0xPLIMA6Kg5eOAAGeC8H+AYkzLXwgekhx9VSEA==,
+        integrity: sha512-3v9GirPAn75Q02kcQgH9U64x+2lMu8mO56eKCZA8NEJJnjRjq/G+7cIvLo/vPSGutUBy9EHcYyN0CV/td/UAWw==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -947,10 +950,10 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/source-deploy-retrieve@13.4.6":
+  "@salesforce/source-deploy-retrieve@13.6.0":
     resolution:
       {
-        integrity: sha512-ZZWGkV+r86Sr2MY1jf+GI7YsQGI7BLW8Zm5B9J0htSxH6G4GQxNYKXlKpjbPcRROZXW063SBclmwkeGxxhQ5tQ==,
+        integrity: sha512-9Y3XxBpqh+u5aK7d8YdK9lfmMqjvARJjvcoWQoltXXE4TkrZlMK1eYsjTwcTGsktrazEXjlFldetrXn+K05w8Q==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -961,10 +964,10 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/telemetry@7.1.8":
+  "@salesforce/telemetry@7.1.9":
     resolution:
       {
-        integrity: sha512-1+Mwm476PGuklVFpzQuOKH4G/8Lo55Vu/3OJdbaI8wIMdanY+shSEaJMMTUbWPiCk396Ujg8w3V6ZFwxfmPWYQ==,
+        integrity: sha512-qDdkpOc8Zt6RN+domJfO706v+Jl2lgSkp7F+wWOdixvyr+jnAjXFzQ19yKR/6rZIq7X3u4NGCkxqDmGlcyqV4A==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -2703,10 +2706,10 @@ packages:
       }
     engines: { node: ">=18" }
 
-  isomorphic-git@1.44.2:
+  isomorphic-git@1.44.3:
     resolution:
       {
-        integrity: sha512-RORfhiNxaHRkGXvTiIW1SU6ngH/jW7UnKndvIToGxrGja7s317CUcZ5chENyinnyCPz7Z4vAefA75Ty1Zsyc8w==,
+        integrity: sha512-xlEIMsVUrMfOR25F4jWB9He9s/rUHWsgfJJJ3zpdwFssv9X2QfoIUyYH9CEFok9yk2tx2UDipj2gJ+KVvV/qGA==,
       }
     engines: { node: ">=14.17" }
     hasBin: true
@@ -2822,10 +2825,10 @@ packages:
         integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==,
       }
 
-  lilconfig@3.1.3:
+  lilconfig@3.1.4:
     resolution:
       {
-        integrity: sha512-/vlFKAoH5Cgt3Ie+JLhRbwOsCQePABiU3tJ1egGvyQ+33R/vcwM2Zl2QR/LzjsBeItPt3oSVXapn+m4nQDvpzw==,
+        integrity: sha512-zJZyBmQhArDRefuWTypZxwDpFDIYmrj8ypSBvwGD5P13Y95s6DjzKgu4DVdGbeQa5PDEsAOCAPNk4X+QOR006w==,
       }
     engines: { node: ">=14" }
 
@@ -3205,10 +3208,10 @@ packages:
       }
     engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
 
-  npm@11.21.0:
+  npm@11.21.1:
     resolution:
       {
-        integrity: sha512-Zov8KhamNneiLdELtj5YALtNmJW4L4fCLTzjfpzXG2w6MSHcf0UxgdlK5uloCuksWT+7mGUU7wi79cO6RqivPg==,
+        integrity: sha512-YTzL6QBEJXyHcTu0JiUc7RKMp+mzlJtl7rGLmERaXUQeFHIMc9atdr6G9M9C8vDWbv40epoTQAzNL2/PtZVDhQ==,
       }
     engines: { node: ^20.17.0 || >=22.9.0 }
     hasBin: true
@@ -3231,10 +3234,10 @@ packages:
         integrity: sha512-HwbCh3tUUVDE9nj/YIuDE76Kf5rRptTlS0ju5yQ9nWaLXNEFGhxOHqDZbivhtpTfwzWAYk6BYhRZqp+M2v1LBQ==,
       }
 
-  o11y_schema@264.149.0:
+  o11y_schema@264.150.0:
     resolution:
       {
-        integrity: sha512-bAk59lp8O39LSgtd9dYe0OfsFe6iae2Xc60GQ1jLO022/WFNVe2BYElHpLPY0cvuYNEpz0W/o7dqpCWgTAsWIw==,
+        integrity: sha512-0Ja72j7HePjdua/fuieMYEtjm3JFUGqV2+9RUCjS6br91ZG2ACy7lpwIjtdrrgf0IjqSSI/G3GSo3dsjRNf9IA==,
       }
 
   object-hash@3.0.0:
@@ -3577,10 +3580,10 @@ packages:
     peerDependencies:
       react: ^19.2.0
 
-  react@19.3.0:
+  react@19.3.1:
     resolution:
       {
-        integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==,
+        integrity: sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==,
       }
     engines: { node: ">=0.10.0" }
 
@@ -4164,17 +4167,10 @@ packages:
         integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==,
       }
 
-  undici@7.30.0:
+  undici@8.12.3:
     resolution:
       {
-        integrity: sha512-dkrQXeHSaoamnItlYbmzG0wFYrM0ZwDxCIg0A7aKjTyyhh9svRzCNFEzV+Vm05/yehjCzjDZ31KXfGEjYSztDQ==,
-      }
-    engines: { node: ">=20.18.1" }
-
-  undici@8.11.2:
-    resolution:
-      {
-        integrity: sha512-u4UB2/IrKdU6lFxumHmmo1a3fCQO5tzQllRorfoRS63txhrB7xTpSn1PftwC4qEHkOaqP95fCWW4lJzwErwzhQ==,
+        integrity: sha512-+fdndUTwBP86cVjihTp21hZHo7d6oj1c/47XPA3lL8mM0XHs+C4EkcjmgRsFnFk2f/UONGDy9ItBItmXsLOQHw==,
       }
     engines: { node: ">=22.19.0" }
 
@@ -4693,7 +4689,7 @@ snapshots:
     dependencies:
       minipass: 7.1.3
 
-  "@jsforce/jsforce-node@3.10.29":
+  "@jsforce/jsforce-node@3.12.0":
     dependencies:
       "@sindresorhus/is": 4.6.0
       base64url: 3.0.1
@@ -4703,7 +4699,7 @@ snapshots:
       faye: 1.4.3
       form-data: 4.0.6
       multistream: 3.1.0
-      undici: 8.11.2
+      undici: 8.12.3
       xml2js: 0.6.2
 
   "@jsonjoy.com/base64@1.1.2(tslib@2.8.1)":
@@ -4768,7 +4764,7 @@ snapshots:
       ejs: 6.0.1
       get-package-type: 0.1.0
       indent-string: 4.0.0
-      lilconfig: 3.1.3
+      lilconfig: 3.1.4
       minimatch: 10.2.6
       semver: 7.8.5
       string-width: 4.2.3
@@ -4779,21 +4775,21 @@ snapshots:
       wrap-ansi: 7.0.0
       wsl-utils: 0.4.0
 
-  "@oclif/multi-stage-output@1.0.6":
+  "@oclif/multi-stage-output@1.0.7":
     dependencies:
       "@oclif/core": 5.1.8
       "@types/react": 19.3.0
       cli-spinners: 2.9.2
       figures: 6.1.0
-      ink: 7.1.1(@types/react@19.3.0)(react@19.3.0)
-      react: 19.3.0
+      ink: 7.1.1(@types/react@19.3.0)(react@19.3.1)
+      react: 19.3.1
       wrap-ansi: 9.0.2
     transitivePeerDependencies:
       - bufferutil
       - react-devtools-core
       - utf-8-validate
 
-  "@oclif/plugin-autocomplete@4.0.4":
+  "@oclif/plugin-autocomplete@4.0.5":
     dependencies:
       "@oclif/core": 5.1.8
       ansis: 3.17.0
@@ -4802,10 +4798,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@oclif/plugin-commands@5.0.4":
+  "@oclif/plugin-commands@5.0.5":
     dependencies:
       "@oclif/core": 5.1.8
-      "@oclif/table": 1.0.5
+      "@oclif/table": 1.0.6
       lodash: 4.18.1
       object-treeify: 4.0.1
     transitivePeerDependencies:
@@ -4813,11 +4809,11 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@oclif/plugin-help@7.0.4":
+  "@oclif/plugin-help@7.0.5":
     dependencies:
       "@oclif/core": 5.1.8
 
-  "@oclif/plugin-not-found@4.0.4":
+  "@oclif/plugin-not-found@4.0.5":
     dependencies:
       "@inquirer/prompts": 7.10.1
       "@oclif/core": 5.1.8
@@ -4826,12 +4822,12 @@ snapshots:
     transitivePeerDependencies:
       - "@types/node"
 
-  "@oclif/plugin-plugins@7.0.7":
+  "@oclif/plugin-plugins@7.0.10":
     dependencies:
       "@oclif/core": 5.1.8
       ansis: 3.17.0
       debug: 4.4.3
-      npm: 11.21.0
+      npm: 11.21.1
       npm-package-arg: 11.0.3
       npm-run-path: 5.3.0
       object-treeify: 4.0.1
@@ -4842,17 +4838,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@oclif/plugin-search@2.0.0":
+  "@oclif/plugin-search@2.0.5":
     dependencies:
       "@oclif/core": 5.1.8
       ansi-escapes: 7.3.0
       inquirer-autocomplete-standalone: 0.8.1
 
-  "@oclif/plugin-update@5.0.4":
+  "@oclif/plugin-update@5.0.6":
     dependencies:
       "@inquirer/select": 2.5.0
       "@oclif/core": 5.1.8
-      "@oclif/table": 1.0.5
+      "@oclif/table": 1.0.6
       ansis: 3.17.0
       debug: 4.4.3
       filesize: 6.4.0
@@ -4866,13 +4862,13 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@oclif/plugin-version@3.0.5":
+  "@oclif/plugin-version@3.0.6":
     dependencies:
       "@oclif/core": 5.1.8
       ansis: 3.17.0
       which: 4.0.0
 
-  "@oclif/plugin-warn-if-update-available@4.0.3":
+  "@oclif/plugin-warn-if-update-available@4.0.4":
     dependencies:
       "@oclif/core": 5.1.8
       ansis: 3.17.0
@@ -4883,20 +4879,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@oclif/plugin-which@4.0.4":
+  "@oclif/plugin-which@4.0.5":
     dependencies:
       "@oclif/core": 5.1.8
       ansis: 3.17.0
 
-  "@oclif/table@1.0.5":
+  "@oclif/table@1.0.6":
     dependencies:
       "@types/react": 19.3.0
       change-case: 5.4.4
       cli-truncate: 4.0.0
-      ink: 7.1.1(@types/react@19.3.0)(react@19.3.0)
+      ink: 7.1.1(@types/react@19.3.0)(react@19.3.1)
       natural-orderby: 3.0.2
       object-hash: 3.0.0
-      react: 19.3.0
+      react: 19.3.1
       string-width: 8.3.0
       strip-ansi: 7.2.0
       wrap-ansi: 9.0.2
@@ -5012,9 +5008,9 @@ snapshots:
 
   "@salesforce/agents@2.3.1":
     dependencies:
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
-      "@salesforce/source-deploy-retrieve": 13.4.6
+      "@salesforce/source-deploy-retrieve": 13.6.0
       "@salesforce/types": 1.8.0
       fast-xml-parser: 5.11.2
       yaml: 2.9.1
@@ -5023,7 +5019,7 @@ snapshots:
 
   "@salesforce/apex-node@9.1.2":
     dependencies:
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@types/istanbul-reports": 3.0.4
       fast-glob: 3.3.3
@@ -5033,40 +5029,40 @@ snapshots:
       istanbul-reports: 3.2.0
       json-stream-stringify: 3.1.7
 
-  "@salesforce/cli@2.155.7":
+  "@salesforce/cli@2.156.5":
     dependencies:
       "@inquirer/select": 2.5.0
       "@oclif/core": 5.1.8
-      "@oclif/plugin-autocomplete": 4.0.4
-      "@oclif/plugin-commands": 5.0.4
-      "@oclif/plugin-help": 7.0.4
-      "@oclif/plugin-not-found": 4.0.4
-      "@oclif/plugin-plugins": 7.0.7
-      "@oclif/plugin-search": 2.0.0
-      "@oclif/plugin-update": 5.0.4
-      "@oclif/plugin-version": 3.0.5
-      "@oclif/plugin-warn-if-update-available": 4.0.3
-      "@oclif/plugin-which": 4.0.4
-      "@salesforce/core": 9.3.6
+      "@oclif/plugin-autocomplete": 4.0.5
+      "@oclif/plugin-commands": 5.0.5
+      "@oclif/plugin-help": 7.0.5
+      "@oclif/plugin-not-found": 4.0.5
+      "@oclif/plugin-plugins": 7.0.10
+      "@oclif/plugin-search": 2.0.5
+      "@oclif/plugin-update": 5.0.6
+      "@oclif/plugin-version": 3.0.6
+      "@oclif/plugin-warn-if-update-available": 4.0.4
+      "@oclif/plugin-which": 4.0.5
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
-      "@salesforce/plugin-agent": 2.2.2
-      "@salesforce/plugin-apex": 4.4.3
-      "@salesforce/plugin-api": 2.0.17
-      "@salesforce/plugin-auth": 5.0.16
-      "@salesforce/plugin-data": 5.1.16
-      "@salesforce/plugin-deploy-retrieve": 4.2.14
-      "@salesforce/plugin-info": 4.0.16
+      "@salesforce/plugin-agent": 2.2.3
+      "@salesforce/plugin-apex": 4.4.4
+      "@salesforce/plugin-api": 2.0.19
+      "@salesforce/plugin-auth": 6.0.0
+      "@salesforce/plugin-data": 5.1.19
+      "@salesforce/plugin-deploy-retrieve": 4.2.18
+      "@salesforce/plugin-info": 4.0.18
       "@salesforce/plugin-limits": 4.0.6
-      "@salesforce/plugin-marketplace": 2.0.17
-      "@salesforce/plugin-org": 6.0.26
+      "@salesforce/plugin-marketplace": 2.0.18
+      "@salesforce/plugin-org": 7.0.2
       "@salesforce/plugin-packaging": 3.0.14
       "@salesforce/plugin-schema": 4.0.12
-      "@salesforce/plugin-settings": 3.0.14
-      "@salesforce/plugin-sobject": 2.0.12
-      "@salesforce/plugin-telemetry": 4.2.0
-      "@salesforce/plugin-templates": 57.4.6
-      "@salesforce/plugin-trust": 4.0.20
-      "@salesforce/plugin-user": 5.0.11
+      "@salesforce/plugin-settings": 3.0.16
+      "@salesforce/plugin-sobject": 2.0.13
+      "@salesforce/plugin-telemetry": 4.2.1
+      "@salesforce/plugin-templates": 57.4.8
+      "@salesforce/plugin-trust": 4.0.23
+      "@salesforce/plugin-user": 6.0.3
       "@salesforce/sf-plugins-core": 13.0.7
       ansis: 3.17.0
     transitivePeerDependencies:
@@ -5078,9 +5074,9 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/core@9.3.6":
+  "@salesforce/core@9.4.0":
     dependencies:
-      "@jsforce/jsforce-node": 3.10.29
+      "@jsforce/jsforce-node": 3.12.0
       "@salesforce/kit": 4.0.1
       "@salesforce/ts-types": 3.2.2
       ajv: 8.20.0
@@ -5107,15 +5103,15 @@ snapshots:
   "@salesforce/o11y-reporter@1.11.0":
     dependencies:
       o11y: 266.25.0
-      o11y_schema: 264.149.0
+      o11y_schema: 264.150.0
 
-  "@salesforce/packaging@5.0.20":
+  "@salesforce/packaging@5.0.21":
     dependencies:
-      "@jsforce/jsforce-node": 3.10.29
-      "@salesforce/core": 9.3.6
+      "@jsforce/jsforce-node": 3.12.0
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/schemas": 1.10.3
-      "@salesforce/source-deploy-retrieve": 13.4.6
+      "@salesforce/source-deploy-retrieve": 13.6.0
       "@salesforce/ts-types": 3.2.2
       "@salesforce/types": 1.8.0
       fast-xml-parser: 5.11.2
@@ -5128,25 +5124,25 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@salesforce/plugin-agent@2.2.2":
+  "@salesforce/plugin-agent@2.2.3":
     dependencies:
       "@inquirer/core": 10.3.2
       "@inquirer/prompts": 7.10.1
       "@oclif/core": 5.1.8
-      "@oclif/multi-stage-output": 1.0.6
+      "@oclif/multi-stage-output": 1.0.7
       "@salesforce/agents": 2.3.1
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/sf-plugins-core": 13.0.7
-      "@salesforce/source-deploy-retrieve": 13.4.6
+      "@salesforce/source-deploy-retrieve": 13.6.0
       "@salesforce/types": 1.8.0
       ansis: 3.17.0
       fast-xml-parser: 5.11.2
       glob: 11.1.0
-      ink: 7.1.1(react@19.3.0)
-      ink-text-input: 6.0.0(ink@7.1.1(react@19.3.0))(react@19.3.0)
+      ink: 7.1.1(react@19.3.1)
+      ink-text-input: 6.0.0(ink@7.1.1(react@19.3.1))(react@19.3.1)
       inquirer-autocomplete-standalone: 0.8.1
-      react: 19.3.0
+      react: 19.3.1
       yaml: 2.9.1
     transitivePeerDependencies:
       - "@types/node"
@@ -5156,10 +5152,10 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-apex@4.4.3":
+  "@salesforce/plugin-apex@4.4.4":
     dependencies:
       "@salesforce/apex-node": 9.1.2
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/sf-plugins-core": 13.0.7
       ansis: 3.17.0
@@ -5169,10 +5165,10 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@salesforce/plugin-api@2.0.17":
+  "@salesforce/plugin-api@2.0.19":
     dependencies:
       "@oclif/core": 5.1.8
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/sf-plugins-core": 13.0.7
       "@salesforce/ts-types": 3.2.2
@@ -5187,14 +5183,14 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-auth@5.0.16":
+  "@salesforce/plugin-auth@6.0.0":
     dependencies:
       "@inquirer/checkbox": 2.5.0
       "@inquirer/select": 2.5.0
       "@oclif/core": 5.1.8
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
-      "@salesforce/plugin-info": 4.0.16
+      "@salesforce/plugin-info": 4.0.18
       "@salesforce/sf-plugins-core": 13.0.7
       "@salesforce/ts-types": 3.2.2
       open: 11.0.4
@@ -5206,11 +5202,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-data@5.1.16":
+  "@salesforce/plugin-data@5.1.19":
     dependencies:
-      "@jsforce/jsforce-node": 3.10.29
-      "@oclif/multi-stage-output": 1.0.6
-      "@salesforce/core": 9.3.6
+      "@jsforce/jsforce-node": 3.12.0
+      "@oclif/multi-stage-output": 1.0.7
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/sf-plugins-core": 13.0.7
       "@salesforce/ts-types": 3.2.2
@@ -5220,7 +5216,7 @@ snapshots:
       csv-stringify: 6.9.0
       form-data: 4.0.6
       terminal-link: 3.0.0
-      undici: 7.30.0
+      undici: 8.12.3
       zod: 4.6.7
     transitivePeerDependencies:
       - "@types/node"
@@ -5228,17 +5224,17 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@salesforce/plugin-deploy-retrieve@4.2.14":
+  "@salesforce/plugin-deploy-retrieve@4.2.18":
     dependencies:
       "@inquirer/prompts": 7.10.1
       "@oclif/core": 5.1.8
-      "@oclif/multi-stage-output": 1.0.6
+      "@oclif/multi-stage-output": 1.0.7
       "@salesforce/apex-node": 9.1.2
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
-      "@salesforce/plugin-info": 4.0.16
+      "@salesforce/plugin-info": 4.0.18
       "@salesforce/sf-plugins-core": 13.0.7
-      "@salesforce/source-deploy-retrieve": 13.4.6
+      "@salesforce/source-deploy-retrieve": 13.6.0
       "@salesforce/source-tracking": 8.1.7
       "@salesforce/ts-types": 3.2.2
       ansis: 3.17.0
@@ -5250,12 +5246,12 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-info@4.0.16":
+  "@salesforce/plugin-info@4.0.18":
     dependencies:
       "@inquirer/prompts": 7.10.1
-      "@jsforce/jsforce-node": 3.10.29
+      "@jsforce/jsforce-node": 3.12.0
       "@oclif/core": 5.1.8
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/sf-plugins-core": 13.0.7
       got: 13.0.0
@@ -5274,7 +5270,7 @@ snapshots:
 
   "@salesforce/plugin-limits@4.0.6":
     dependencies:
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/sf-plugins-core": 13.0.7
     transitivePeerDependencies:
       - "@types/node"
@@ -5282,9 +5278,9 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@salesforce/plugin-marketplace@2.0.17":
+  "@salesforce/plugin-marketplace@2.0.18":
     dependencies:
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/sf-plugins-core": 13.0.7
       got: 13.0.0
@@ -5296,14 +5292,14 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-org@6.0.26":
+  "@salesforce/plugin-org@7.0.2":
     dependencies:
       "@oclif/core": 5.1.8
-      "@oclif/multi-stage-output": 1.0.6
-      "@salesforce/core": 9.3.6
+      "@oclif/multi-stage-output": 1.0.7
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/sf-plugins-core": 13.0.7
-      "@salesforce/source-deploy-retrieve": 13.4.6
+      "@salesforce/source-deploy-retrieve": 13.6.0
       "@salesforce/ts-types": 3.2.2
       ansis: 3.17.0
       change-case: 5.4.4
@@ -5320,9 +5316,9 @@ snapshots:
   "@salesforce/plugin-packaging@3.0.14":
     dependencies:
       "@oclif/core": 5.1.8
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
-      "@salesforce/packaging": 5.0.20
+      "@salesforce/packaging": 5.0.21
       "@salesforce/sf-plugins-core": 13.0.7
       "@salesforce/ts-types": 3.2.2
       chalk: 5.6.2
@@ -5336,7 +5332,7 @@ snapshots:
   "@salesforce/plugin-schema@4.0.12":
     dependencies:
       "@oclif/core": 5.1.8
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/sf-plugins-core": 13.0.7
     transitivePeerDependencies:
       - "@types/node"
@@ -5344,10 +5340,10 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@salesforce/plugin-settings@3.0.14":
+  "@salesforce/plugin-settings@3.0.16":
     dependencies:
       "@oclif/core": 5.1.8
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/sf-plugins-core": 13.0.7
       fast-levenshtein: 3.0.0
     transitivePeerDependencies:
@@ -5356,11 +5352,11 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@salesforce/plugin-sobject@2.0.12":
+  "@salesforce/plugin-sobject@2.0.13":
     dependencies:
       "@inquirer/prompts": 7.10.1
       "@oclif/core": 5.1.8
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/sf-plugins-core": 13.0.7
       fast-glob: 3.3.3
@@ -5372,13 +5368,13 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@salesforce/plugin-telemetry@4.2.0":
+  "@salesforce/plugin-telemetry@4.2.1":
     dependencies:
       "@oclif/core": 5.1.8
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/sf-plugins-core": 13.0.7
-      "@salesforce/telemetry": 7.1.8
+      "@salesforce/telemetry": 7.1.9
       "@salesforce/ts-types": 3.2.2
       debug: 4.4.3
     transitivePeerDependencies:
@@ -5389,9 +5385,9 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-templates@57.4.6":
+  "@salesforce/plugin-templates@57.4.8":
     dependencies:
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/sf-plugins-core": 13.0.7
       "@salesforce/templates": 66.17.2
     transitivePeerDependencies:
@@ -5400,16 +5396,16 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@salesforce/plugin-trust@4.0.20":
+  "@salesforce/plugin-trust@4.0.23":
     dependencies:
       "@oclif/core": 5.1.8
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
-      "@salesforce/plugin-info": 4.0.16
+      "@salesforce/plugin-info": 4.0.18
       "@salesforce/sf-plugins-core": 13.0.7
       cross-spawn: 7.0.6
       got: 13.0.0
-      npm: 11.21.0
+      npm: 11.21.1
       npm-run-path: 4.0.1
       proxy-agent: 6.5.0
       semver: 7.8.5
@@ -5421,9 +5417,9 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-user@5.0.11":
+  "@salesforce/plugin-user@6.0.3":
     dependencies:
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/sf-plugins-core": 13.0.7
       "@salesforce/ts-types": 3.2.2
@@ -5440,8 +5436,8 @@ snapshots:
       "@inquirer/confirm": 6.3.3
       "@inquirer/password": 5.2.3
       "@oclif/core": 5.1.8
-      "@oclif/table": 1.0.5
-      "@salesforce/core": 9.3.6
+      "@oclif/table": 1.0.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/ts-types": 3.2.2
       ansis: 3.17.0
@@ -5453,9 +5449,9 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@salesforce/source-deploy-retrieve@13.4.6":
+  "@salesforce/source-deploy-retrieve@13.6.0":
     dependencies:
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/ts-types": 3.2.2
       "@salesforce/types": 1.8.0
@@ -5474,20 +5470,20 @@ snapshots:
 
   "@salesforce/source-tracking@8.1.7":
     dependencies:
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
-      "@salesforce/source-deploy-retrieve": 13.4.6
+      "@salesforce/source-deploy-retrieve": 13.6.0
       "@salesforce/ts-types": 3.2.2
       fast-xml-parser: 5.11.2
       graceful-fs: 4.2.11
-      isomorphic-git: 1.44.2
+      isomorphic-git: 1.44.3
       ts-retry-promise: 0.8.1
     transitivePeerDependencies:
       - supports-color
 
-  "@salesforce/telemetry@7.1.8":
+  "@salesforce/telemetry@7.1.9":
     dependencies:
-      "@salesforce/core": 9.3.6
+      "@salesforce/core": 9.4.0
       "@salesforce/kit": 4.0.1
       "@salesforce/o11y-reporter": 1.11.0
       applicationinsights: 2.9.8
@@ -6388,14 +6384,14 @@ snapshots:
 
   ini@1.3.8: {}
 
-  ink-text-input@6.0.0(ink@7.1.1(react@19.3.0))(react@19.3.0):
+  ink-text-input@6.0.0(ink@7.1.1(react@19.3.1))(react@19.3.1):
     dependencies:
       chalk: 5.6.2
-      ink: 7.1.1(react@19.3.0)
-      react: 19.3.0
+      ink: 7.1.1(react@19.3.1)
+      react: 19.3.1
       type-fest: 4.41.0
 
-  ink@7.1.1(@types/react@19.3.0)(react@19.3.0):
+  ink@7.1.1(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       "@alcalzone/ansi-tokenize": 0.3.1
       "@types/react": 19.3.0
@@ -6411,8 +6407,8 @@ snapshots:
       indent-string: 5.0.0
       is-in-ci: 2.0.0
       patch-console: 2.0.0
-      react: 19.3.0
-      react-reconciler: 0.33.0(react@19.3.0)
+      react: 19.3.1
+      react-reconciler: 0.33.0(react@19.3.1)
       scheduler: 0.27.0
       signal-exit: 3.0.7
       slice-ansi: 9.0.1
@@ -6428,7 +6424,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  ink@7.1.1(react@19.3.0):
+  ink@7.1.1(react@19.3.1):
     dependencies:
       "@alcalzone/ansi-tokenize": 0.3.1
       ansi-escapes: 7.3.0
@@ -6443,8 +6439,8 @@ snapshots:
       indent-string: 5.0.0
       is-in-ci: 2.0.0
       patch-console: 2.0.0
-      react: 19.3.0
-      react-reconciler: 0.33.0(react@19.3.0)
+      react: 19.3.1
+      react-reconciler: 0.33.0(react@19.3.1)
       scheduler: 0.27.0
       signal-exit: 3.0.7
       slice-ansi: 9.0.1
@@ -6525,7 +6521,7 @@ snapshots:
 
   isexe@3.1.5: {}
 
-  isomorphic-git@1.44.2:
+  isomorphic-git@1.44.3:
     dependencies:
       async-lock: 1.4.1
       clean-git-ref: 2.0.1
@@ -6615,7 +6611,7 @@ snapshots:
     dependencies:
       immediate: 3.0.6
 
-  lilconfig@3.1.3: {}
+  lilconfig@3.1.4: {}
 
   lodash.includes@4.3.0: {}
 
@@ -6784,7 +6780,7 @@ snapshots:
     dependencies:
       path-key: 4.0.0
 
-  npm@11.21.0:
+  npm@11.21.1:
     bundledDependencies:
       - "@isaacs/string-locale-compare"
       - "@npmcli/arborist"
@@ -6862,7 +6858,7 @@ snapshots:
 
   o11y_schema@264.105.0: {}
 
-  o11y_schema@264.149.0: {}
+  o11y_schema@264.150.0: {}
 
   object-hash@3.0.0: {}
 
@@ -7072,12 +7068,12 @@ snapshots:
 
   quick-lru@5.1.1: {}
 
-  react-reconciler@0.33.0(react@19.3.0):
+  react-reconciler@0.33.0(react@19.3.1):
     dependencies:
-      react: 19.3.0
+      react: 19.3.1
       scheduler: 0.27.0
 
-  react@19.3.0: {}
+  react@19.3.1: {}
 
   readable-stream@2.3.8:
     dependencies:
@@ -7406,9 +7402,7 @@ snapshots:
 
   undici-types@6.21.0: {}
 
-  undici@7.30.0: {}
-
-  undici@8.11.2: {}
+  undici@8.12.3: {}
 
   upper-case-first@2.0.2:
     dependencies:
