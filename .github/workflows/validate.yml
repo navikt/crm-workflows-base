@@ -7,10 +7,6 @@ on:
         required: true
         type: string
         default: test-ci
-      package-id:
-        description: The ID of the package to install from the pool
-        required: true
-        type: string
     secrets:
       PACKAGE_KEY:
         required: false
