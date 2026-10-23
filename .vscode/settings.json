@@ -1,3 +1,4 @@
 {
-  "xml.preferences.showSchemaDocumentationType": "none"
+  "xml.preferences.showSchemaDocumentationType": "none",
+  "sarif-viewer.connectToGithubCodeScanning": "on"
 }

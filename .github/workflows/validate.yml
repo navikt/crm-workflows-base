@@ -80,7 +80,7 @@ jobs:
           POOL_TAG: ${{ inputs.pool-tag }}
 
       - id: test-run
-        uses: navikt/sf-gha-run-tests@5b52b3354c7f598f36c76a63ff4c091907846257
+        uses: navikt/sf-gha-run-tests@3674904c6a6cfeff887c5b70381e9bcb422a8aab
         with:
           target-org: ciScratch
           required-code-coverage: 85
