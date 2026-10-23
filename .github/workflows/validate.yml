@@ -10,6 +10,8 @@ on:
     secrets:
       PACKAGE_KEY:
         required: false
+      NODE_AUTH_TOKEN:
+        required: false
 permissions: {}
 jobs:
   validate_against_pool:
@@ -49,6 +51,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Install pool plugin
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN || github.token }}
         run: |
           npm config set registry https://registry.npmjs.org
           npm config set @navikt:registry https://npm.pkg.github.com
