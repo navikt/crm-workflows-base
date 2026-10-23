@@ -75,7 +75,9 @@ jobs:
       - name: Fetch from pool
         run: |
           echo "Fetching from pool..."
-          sf pool fetch --alias ciScratch --set-default --pool-tag test-ci --target-dev-hub ${{ env.DEV_HUB_ALIAS }}
+          sf pool fetch --alias ciScratch --set-default --pool-tag $POOL_TAG --target-dev-hub $DEV_HUB_ALIAS
+        env:
+          POOL_TAG: ${{ inputs.pool-tag }}
 
       - id: test-run
         uses: navikt/sf-gha-run-tests@5b52b3354c7f598f36c76a63ff4c091907846257
@@ -93,15 +95,18 @@ jobs:
 
       - name: Verify test results
         run: |
-          if [ "${{ steps.test-run.outputs.is-test-success }}" != "true" ]; then
+          if [ "$IS_TEST_SUCCESS" != "true" ]; then
             echo "Tests failed"
             exit 1
           fi
 
-          if [ "${{ steps.test-run.outputs.is-code-covered }}" != "true" ]; then
+          if [ "$IS_CODE_COVERED" != "true" ]; then
             echo "Code coverage requirement not met"
             exit 1
           fi
+        env:
+          IS_TEST_SUCCESS: ${{ steps.test-run.outputs.is-test-success }}
+          IS_CODE_COVERED: ${{ steps.test-run.outputs.is-code-covered }}
 
       - name: Cleanup
         run: |
