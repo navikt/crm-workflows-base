@@ -14,13 +14,15 @@ on:
     secrets:
       PACKAGE_KEY:
         required: false
-permissions:
-  contents: read
+permissions: {}
 jobs:
   validate_against_pool:
     name: Validate against pool
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Read access to repository contents
+      packages: read # Read access to packages (needed for installing the sf cli pool plugin)
     env:
       DEV_HUB_ALIAS: devhub
     steps:
