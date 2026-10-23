@@ -109,5 +109,4 @@ jobs:
           IS_CODE_COVERED: ${{ steps.test-run.outputs.is-code-covered }}
 
       - name: Cleanup
-        run: |
-          sf org delete --target-org ciScratch --no-prompt
+        run: sf org delete scratch --target-org ciScratch --no-prompt
