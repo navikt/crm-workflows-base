@@ -25,6 +25,7 @@ jobs:
       packages: read # Read access to packages (needed for installing the sf cli pool plugin)
     env:
       DEV_HUB_ALIAS: devhub
+      SCRATCH_ORG_ALIAS: ciScratch
     steps:
       - name: Checkout source code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -75,14 +76,14 @@ jobs:
       - name: Fetch from pool
         run: |
           echo "Fetching from pool..."
-          sf pool fetch --alias ciScratch --set-default --pool-tag $POOL_TAG --target-dev-hub $DEV_HUB_ALIAS
+          sf pool fetch --alias "$SCRATCH_ORG_ALIAS" --set-default --pool-tag $POOL_TAG --target-dev-hub $DEV_HUB_ALIAS
         env:
           POOL_TAG: ${{ inputs.pool-tag }}
 
       - id: test-run
         uses: navikt/sf-gha-run-tests@6c3f09222f39a88253ae18e9c01a7e2b997beb0a
         with:
-          target-org: ciScratch
+          target-org: ${{env.SCRATCH_ORG_ALIAS}}
           required-code-coverage: 85
 
       - name: Upload test results
@@ -109,4 +110,4 @@ jobs:
           IS_CODE_COVERED: ${{ steps.test-run.outputs.is-code-covered }}
 
       - name: Cleanup
-        run: sf org delete scratch --target-org ciScratch --no-prompt
+        run: sf org delete scratch --target-org "$SCRATCH_ORG_ALIAS" --no-prompt
