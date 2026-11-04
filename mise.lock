@@ -37,7 +37,7 @@ url = "https://nodejs.org/dist/v24.22.2/node-v24.22.2-win-x64.zip"
 
 [[tools."npm:@salesforce/cli"]]
 version = "2.158.3"
-aube = { path = ".mise/locks/npm-salesforce-cli/2.158.3~8ac329a8", digest = "sha256:77cb86cc65de267053d9aaaaffd24e13baed231c890587ab524b17b17fdc9ce0" }
+aube = { path = ".mise/locks/npm-salesforce-cli/2.158.3~8ac329a8", digest = "sha256:92623beccc278079c9f7cbf1164f5c7af4e8005cb8d0266f2549ce4a0b58e02d" }
 backend = "npm:@salesforce/cli"
 specifiers = ["2"]
 
