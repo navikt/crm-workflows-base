@@ -2,6 +2,6 @@
   "name": "mise-npm-install",
   "private": true,
   "dependencies": {
-    "@salesforce/cli": "2.157.6"
+    "@salesforce/cli": "2.158.3"
   }
 }
