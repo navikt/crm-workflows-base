@@ -36,8 +36,8 @@ checksum = "sha256:ca1bff5d8ead13c9f2ea404a176db46bd430704d5b5113734049fa365e779
 url = "https://nodejs.org/dist/v24.22.2/node-v24.22.2-win-x64.zip"
 
 [[tools."npm:@salesforce/cli"]]
-version = "2.157.6"
-aube = { path = ".mise/locks/npm-salesforce-cli/2.157.6~8ac329a8", digest = "sha256:bc2f0da91e10535469e86b53190b5150718b094ac28cd0bc22fdc3017fee8e39" }
+version = "2.158.3"
+aube = { path = ".mise/locks/npm-salesforce-cli/2.158.3~8ac329a8", digest = "sha256:77cb86cc65de267053d9aaaaffd24e13baed231c890587ab524b17b17fdc9ce0" }
 backend = "npm:@salesforce/cli"
 specifiers = ["2"]
 

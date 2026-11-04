@@ -8,8 +8,8 @@ importers:
   .:
     dependencies:
       "@salesforce/cli":
-        specifier: 2.157.6
-        version: 2.157.6(@types/node@22.20.5)(@types/react@19.3.0)(supports-color@8.1.1)
+        specifier: 2.158.3
+        version: 2.158.3(@types/node@22.20.5)(@types/react@19.3.0)(supports-color@8.1.1)
 
 packages:
   "@alcalzone/ansi-tokenize@0.3.1":
@@ -375,10 +375,10 @@ packages:
       }
     engines: { node: ">=18.0.0" }
 
-  "@jsforce/jsforce-node@3.12.0":
+  "@jsforce/jsforce-node@3.13.1":
     resolution:
       {
-        integrity: sha512-c13YUjHhXg7+oTK4g1loStb/psJ0Xy5TP6mQbtRgr4R5mOe9AmPcmHBSbxsn90Enep3J4/omt20AvMkhhtDFSw==,
+        integrity: sha512-vpHhwc+Wcufk9vARzL4oxYSzg8ndNButSn88D6pMImjns7/NTkwPZ9qQwD2F/P4c+A0lwTyDl4Alry0BMgFsTg==,
       }
     engines: { node: ">=22" }
 
@@ -448,10 +448,10 @@ packages:
         integrity: sha512-LsS/DjHr+uDM647Gru/cA8+J3a3HfhttwCKLyuoyN7yXTFCxKBtSgMQBvrW9yNPa2/zDRUNuGPaH5QUFoa4arQ==,
       }
 
-  "@oclif/core@5.1.9":
+  "@oclif/core@5.1.10":
     resolution:
       {
-        integrity: sha512-jZfN6pxHkgDpHD0dk4nhtaUtYdK39oZoWJCfmkpp7CUE+6mUZSb3WDrdBHnxI5n6CJIiWBrLchM7rBvuV0lRSA==,
+        integrity: sha512-iO+Ga2ve3x0QDeqKVvVEYbb+YPVV7A0rbliCO+ZcUdZ/5Sfv+kHz2G247ExAw5aSAEXn9gX6H4jjON2mcJivqw==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -469,10 +469,10 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@oclif/plugin-commands@5.0.6":
+  "@oclif/plugin-commands@5.0.8":
     resolution:
       {
-        integrity: sha512-OsYTRrw6KhlrdJtZlXFBUA7eGwxvM8q0oZL+c7xPOuBvxmgJ8e88y7JuRlT34v002z+nCNEV9i5fhFqCEIt/Ng==,
+        integrity: sha512-xLiGhqN0h5I9Rn4nmADqK3UrgdwIVzz6L/VS809IsMCZ1sf7I2kaee4Lx+9xI1ZgDTusbGIuJD49gQcvQ3nB8w==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -651,10 +651,10 @@ packages:
       }
     engines: { node: ">=14" }
 
-  "@opentelemetry/semantic-conventions@1.43.0":
+  "@opentelemetry/semantic-conventions@1.44.0":
     resolution:
       {
-        integrity: sha512-eSYWTm620tTk45EKSedaUL8MFYI8hW164hIXsgIHyxu3VobUB3fFCu5t0hQby6OoWRPsG1KkKUG2M5UadiLiVg==,
+        integrity: sha512-E3JkOlMBi3N8OGGkbl7tFyqk2MAS6/lySRZBK3Mu7AzjF1fT8oIChH9ChE48SUWzDn9Kdwta+G/p5LJ4xW4CLQ==,
       }
     engines: { node: ">=14" }
 
@@ -745,39 +745,39 @@ packages:
         integrity: sha512-b1UQwcEZ4yCnMCD8DAL1VlbvBJE9/IX4FTIp7BG1xYpf29SLazLSrqUkj4w7Y5y7cCVP6E5tcqqcI0xemPkHug==,
       }
 
-  "@salesforce/agents@2.3.2":
+  "@salesforce/agents@2.3.3":
     resolution:
       {
-        integrity: sha512-2RLmYjlJ6qHppC9A4nmyG0yCx6ir8IpE2xEe4h4PGAmlO/0XBl3A9aVT+MGMNaEDH1HDRrkQl+kZ5Q2d77zjiA==,
+        integrity: sha512-moionxUYXDGpeOInExfVQQwg+//raRRRnHLRelx8ryVrU2fjwrt7wHbombAH2LmrT/tFdkBWWDmSI/V5uPKTwA==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/apex-node@9.1.12":
+  "@salesforce/apex-node@9.1.13":
     resolution:
       {
-        integrity: sha512-IfMiyUBWFaQ49QlPXSoONwSQGuGuNkHycjPTVc5rpJRAUBm670A9fwqRCGRwNnc9gbIDWJ2Z3PVfSVFrnUWhwg==,
+        integrity: sha512-kYoBCmKv4godJQFMiJbOeh5QlLvIomU61EKq5JAZa+pTvcJu1zHDJWL5sfeMUqcAZQ04cCqOt2MWNG/HG6indA==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/cli@2.157.6":
+  "@salesforce/cli@2.158.3":
     resolution:
       {
-        integrity: sha512-AvUVWQy6DfWxJRUh9Lbc/v5E9wqQl1+2Bfg+iAlKTPJm9AO6+2pkwD+TkavzH1TWCXjbza8cZz4cBptxLnyR5g==,
+        integrity: sha512-yQD0R2QaWjFjlpOvbJNadtaoa5SP/Btt80Z5ymUbu2byr1h+VZ0f08NqE97RbfYoCO2mlIdMwRS/X90wTCS3iw==,
       }
     engines: { node: ">=22.0.0" }
     hasBin: true
 
-  "@salesforce/core@9.4.1":
+  "@salesforce/core@9.4.4":
     resolution:
       {
-        integrity: sha512-aE8llAP+uMyWGNB8+FCpkSOql4D9BA9RtrbdG/ha9luqHpWZugiUwNYx50R/GawJW5UGTsHUKHYrCF75muRodg==,
+        integrity: sha512-o7J/121I756oVf9+ZHLvZ06x8d3keK+Ix3Dln3k/UQzmhkp3gk1zp7PdDBq1CR87DFbQMYtftvIccYZHbO7jmg==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/kit@4.0.8":
+  "@salesforce/kit@4.0.9":
     resolution:
       {
-        integrity: sha512-buPp7lWQNK6f5S/vCXwcgclUPZlfRw66E1aXAY/Uy/qMPlaajS4xmo58HY7ge2zUfOjfwpH1b0GUV5cQ5D9EAw==,
+        integrity: sha512-51uNidO4FDPnAydHSG4LnUV8CGixpUJ5e++XZh3TCR6VFUidxKIQVRrIWIebcD9yLc13DMhkqt74ofZC3Fu1Kg==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -788,24 +788,24 @@ packages:
       }
     engines: { node: ">=20" }
 
-  "@salesforce/packaging@5.0.26":
+  "@salesforce/packaging@5.0.27":
     resolution:
       {
-        integrity: sha512-w8X/cRuDQn5liHdsrGo5pMa6RGX0O8kui/ehnfv/+QV1wOnUMT3kDj7Pq5DcWev9BOr7AL2dCD1okuWRNl2fsA==,
+        integrity: sha512-sFIqVXY7bxx+Q96sW5T9K902UO8HSNA9UDKhO+WqnMr0rKr1bl3/JjKyYMx8as6xi9TtaZiW7xfeQSc8a3Wb3w==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-agent@2.2.3":
+  "@salesforce/plugin-agent@2.2.4":
     resolution:
       {
-        integrity: sha512-Yb8VCIxaYSBKL6M2rv9zetbxiFMGVT7P/bPx6x6U2Hd/2BnQPjPl5HROkwtg27iTaxn2baevdClDy0zjFamL7A==,
+        integrity: sha512-Y+jQh1xAaTTTVjAc6BNvJZ//JtnK396OaZMT8jjEmRY0P3EJvFJ+iIYd9An2Hg9ehHSfeemrYzMQ3K8isHxDEA==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-apex@4.4.4":
+  "@salesforce/plugin-apex@4.4.6":
     resolution:
       {
-        integrity: sha512-jkjlb1A6xbV7zQrbz9xnlFe0BRUaR5R0JdCi6sHOZ94+P/IXsep0RE2AvB1i5/wVBis0C+c7QnpRhoKEvBbThg==,
+        integrity: sha512-wvpX1yNPmVTjiHGfJyjagPg34/+caB7Kic02SBLfcUiBc3LYpLlHSRs6mC78tsCD3hyBrhp7x7Ux9fQaoGrkNw==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -816,10 +816,10 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-auth@6.0.0":
+  "@salesforce/plugin-auth@6.0.4":
     resolution:
       {
-        integrity: sha512-rzeF6WbtP4V0mYAsvz9pcOYVc8NKEEeg4eHQkR5lFYiAq0BWAuKAA4p4oh6DbsvOxJFiNxo06T3YrR9AV2asRQ==,
+        integrity: sha512-8ODBa3atu2x6LE00Ifm0AcTFbkqK+RV21BRx2smYo1tA4uBj4IJtx7K3yqBXw34BzoEXv91biLahqUZHWezsKg==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -830,10 +830,10 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-deploy-retrieve@4.2.23":
+  "@salesforce/plugin-deploy-retrieve@4.2.26":
     resolution:
       {
-        integrity: sha512-ugzpdyl1f32xwa7LwwJ5MxbrjNsex4MQqWcntMtBBUSjGC1JBHN+ypXCmny7XUzuqxTYx1At6w2CPjwYXHf9eg==,
+        integrity: sha512-Rs1xgVptJF1bA9CSDDY0XTVTlaJnrBFTKuvcT/+i+h8S1mzL4KNIFl/qro17ku0zHgtlpNToAu8ax5qak2dF9g==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -858,10 +858,10 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-org@7.0.7":
+  "@salesforce/plugin-org@7.0.10":
     resolution:
       {
-        integrity: sha512-VxQeHU/4X37YVPKcPIo03Ut2q71bekaWpyJjzuRUV41IOedX6l6agcoedOOtCLDEuACuKyzKaQbqqBuj92DCAg==,
+        integrity: sha512-SyNtizxHP3n27DPXrOy7roFFE+V/f6iTXtDLE9NzpicgDaE+HuXyr9HNe8mCzjEuVsWpdbljoeu4hww8WUYb0g==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -886,10 +886,10 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-sobject@2.0.19":
+  "@salesforce/plugin-sobject@2.0.20":
     resolution:
       {
-        integrity: sha512-T9aNc5N5WVuxSqvCWFU73I/Ggt3hmMOdFT90BGw3+0VELVJRdSYTMWzSTYSPc14M2oQ/a8/TgiV+Kkcagd2iaw==,
+        integrity: sha512-gL/6CscuAnM3UMQ/3V9l/rTMkriZRRjniGsdQRwnYSaO148tRn9/vAfbcxzl57sRqdSjv5Pn44JymjRaIoB4YA==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -900,10 +900,10 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/plugin-templates@57.4.13":
+  "@salesforce/plugin-templates@57.5.0":
     resolution:
       {
-        integrity: sha512-gj1rtWpjbAuZfUBr6PDhI/LUBKJ6Q0QXVrQCKZ2cTM6jGUR7ic3xIrNsQsMg2+LgZIVdeUG+kOJwcqMIJv02oA==,
+        integrity: sha512-+Ta/C57m53GqAptBZOcBVcWdojvPOpq/vXsjZbizeQ24zRSH1difSapcwihIXISCR2V6Tkgb9l3TWMTLFUeFbA==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -915,10 +915,10 @@ packages:
     engines: { node: ">=22.0.0" }
     hasBin: true
 
-  "@salesforce/plugin-user@6.0.6":
+  "@salesforce/plugin-user@6.0.7":
     resolution:
       {
-        integrity: sha512-8Tg5XtU69fMP9zf1MEh25CwIvcmQg8ugF7cc1sxfGEm/y5vc+kQeKpTVltB71V2sAqnyStxigqPsv/vTly5XqA==,
+        integrity: sha512-hC8tyfVIeWbQiSRs5h5+ixoxCYr/8bo3mhv5Tgy4GRnjH8EZKNVH7Tp3TAGk7ZXHwilZwxbZnINO3tXfcMc0ng==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -936,31 +936,31 @@ packages:
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/source-deploy-retrieve@13.8.2":
+  "@salesforce/source-deploy-retrieve@13.10.0":
     resolution:
       {
-        integrity: sha512-iQLEgJdakB2Yy0zb+RJkmopPOJv2Wx23UouD0B/LqxE2Lp4mm3KqDzKSIAFK9ZNfCE9cV50hDeY6Puh5eIwpbA==,
+        integrity: sha512-wTZJRHwRLFGC1CVthoc8PsgwrzmYk/sjAbVAVzuKApEx/BVshbod6Ha8gmB0CRidU41LQIHGmKB+LRupdiGvrw==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/source-tracking@8.1.7":
+  "@salesforce/source-tracking@8.1.16":
     resolution:
       {
-        integrity: sha512-Fp9KjXtPe30XCxCQ23jMu5ZyWnXEvEv+rEwbNu6VFi+QypHQeBexG+xRnwFYNc6iky5p3X/hah43nYgZtnIjfQ==,
+        integrity: sha512-hl8KXvnbT6sBiy7QXbghAymbXDYlb8Q9BjBAVDuuERAEEWC2suHBI9tbrmlKH2pn+t+NcmtlqA93aFZzj9fX7w==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/telemetry@7.1.14":
+  "@salesforce/telemetry@7.1.17":
     resolution:
       {
-        integrity: sha512-KtJ995wwU5hXxhufNWQJ4/Y9DfZGvNkODwSgyKs1Nx+AHFLjM/JL5Gunuu91ZDR37QNCTnX++8ZYdxiitJAdnw==,
+        integrity: sha512-Nv3HURTI1SxUDHZBp+ODLpYR6fj+KRYYPtwDKxKPJfeTXnvfz783+y67B/YYVdFUqzAiIxuDQoQpVTF+s9h0Fw==,
       }
     engines: { node: ">=22.0.0" }
 
-  "@salesforce/templates@66.17.4":
+  "@salesforce/templates@66.17.5":
     resolution:
       {
-        integrity: sha512-WPC2GgZl02FKYICgVNGGPkD2gKaGTtnzz5Utbm2rjHomSyF48246q+GX4FcriZy+Gcii/kP/TTBmEiMWCoHi5Q==,
+        integrity: sha512-SV3l8UFUa4f2txyWFhytEU5E4LBc1MZ26e8W9005wkPk4QgBgSk/StNBuxMuvCMeVkCiLm8jIYEC+2X/Oqsk5w==,
       }
     engines: { node: ">=22.0.0" }
 
@@ -1168,10 +1168,10 @@ packages:
       }
     engines: { node: ">=8" }
 
-  ansi-regex@6.4.0:
+  ansi-regex@6.5.0:
     resolution:
       {
-        integrity: sha512-KzTVk2tCWAHtYrvvvaP8bJKJq2pVinhLcGEQdtLIYPbmNGNyYe8QwNaTUYQp2J7/vIsUKt5QCqAfUkYyG9DkOw==,
+        integrity: sha512-zhvbbbdt1kbw7EJ9OQoxmQcuaNR9P5kTj7e/YdmOSU10aHWbycofJxA6jKfoEy3vlLdctOF9ZHaxLtmSm998wQ==,
       }
     engines: { node: ">=12" }
 
@@ -1188,6 +1188,13 @@ packages:
         integrity: sha512-4Dj6M28JB+oAH8kFkTLUo+a2jwOFkuqb3yucU0CANcRRUbxS0cP0nZYCGjcc3BNXwRIsUVmDGgzawme7zvJHvg==,
       }
     engines: { node: ">=12" }
+
+  ansi-styles@7.0.0:
+    resolution:
+      {
+        integrity: sha512-kKvt3m4uwzqL0wlkPd09CmljPJGOZZ4D0fP65sqFSvPkMRKhNi+74MgIJ5QxE6SxqB4t4KyUFGg8+n5zjo6hew==,
+      }
+    engines: { node: ">=22" }
 
   ansicolors@0.3.2:
     resolution:
@@ -1531,10 +1538,10 @@ packages:
       }
     engines: { node: ">=18" }
 
-  cli-truncate@6.1.1:
+  cli-truncate@6.2.0:
     resolution:
       {
-        integrity: sha512-06p9vyLahLa4zkGcgsGxU6iEkSOiuI4fhCH6Emhe2lPAcoUv73n72DnODsnHA+5wwXGnV0n9M9/qOQJSjYhFhw==,
+        integrity: sha512-5uyZew3nYoDgyltqSI8OER6DuyecorYOSVDAXl9wQ9Y8Re/HaQ/5qP0HmTUOUQqmvtpB+mlsf1gG/FUS3U1gLQ==,
       }
     engines: { node: ">=22" }
 
@@ -1857,10 +1864,10 @@ packages:
       }
     engines: { node: ">= 0.4" }
 
-  es-toolkit@1.53.0:
+  es-toolkit@1.53.1:
     resolution:
       {
-        integrity: sha512-3+AYXp9fmJ/UhHBMYj2/U+RaUouMD90SzoItyDOB2Za7W6dB7fQApFGnZPl2MF6K8/Tv1koh1JyirSx/kju6Pw==,
+        integrity: sha512-VhMc6IXmexu8iYFfL2aaAww6IvJTdHlqBLruLoEUs33YD4IcP5DdZcLOybMsMmmLsiy1c8PsiLsrM0DdIuuRUA==,
       }
 
   escape-string-regexp@1.0.5:
@@ -2333,10 +2340,10 @@ packages:
       }
     engines: { node: ">=10.19.0" }
 
-  http2-wrapper@2.2.1:
+  http2-wrapper@2.2.4:
     resolution:
       {
-        integrity: sha512-V5nVw1PAOgfI3Lmeaj2Exmeg7fenjhRUgz1lPSezy1CuhPYbgQtbQj4jZfEAEMlaL+vupsvhjqCyjzob0yxsmQ==,
+        integrity: sha512-y5jx4isTOKEC5Hu1lswc+IxytGlqDmwF1qJtk9qIS8l1KVxuHO5g522UfmErt1H2pMcH/xq+KiFQUB8aVWIABA==,
       }
     engines: { node: ">=10.19.0" }
 
@@ -2570,10 +2577,10 @@ packages:
       }
     engines: { node: ">=18" }
 
-  isomorphic-git@1.44.5:
+  isomorphic-git@1.44.9:
     resolution:
       {
-        integrity: sha512-AfyS9v44yZJA8g5hfsHVy54onuMyn97b4qJJCJiPh8KcJAIo/11hiKaANwQO4lu0Z3MKFGIe/9Kuf3sTRj4FBg==,
+        integrity: sha512-9d0iA5pLPJwgm1d3L4XVdFj0frJd9DCX/1xqzDZ8D09eeSui24pluf8r+RJbHyVd2lfRPbyjhdJI+v6ead1RgA==,
       }
     engines: { node: ">=14.17" }
     hasBin: true
@@ -3060,10 +3067,10 @@ packages:
     engines: { node: ^20.17.0 || >=22.9.0 }
     hasBin: true
 
-  o11y@266.25.0:
+  o11y@266.26.0:
     resolution:
       {
-        integrity: sha512-VAMcJW+3pOQjf9pt/9dVC6O3dHlwMo1dDRk5GXO6r05I7FhNEnWBzkNLyBVebgVEaqohVSyl3du9GmgAginZNA==,
+        integrity: sha512-IYMXo4/BOm+jujyKgzx15+GDsRLxQ2It68eOsYo85Ng3tJ+OLhQO4U7ggTLaQQYYaH0q5sNI9okFinqxs6IN5w==,
       }
 
   o11y_schema@260.65.0:
@@ -3078,10 +3085,10 @@ packages:
         integrity: sha512-HwbCh3tUUVDE9nj/YIuDE76Kf5rRptTlS0ju5yQ9nWaLXNEFGhxOHqDZbivhtpTfwzWAYk6BYhRZqp+M2v1LBQ==,
       }
 
-  o11y_schema@264.153.0:
+  o11y_schema@264.155.0:
     resolution:
       {
-        integrity: sha512-+NjNH01uXc/7TuJvJLWvWFfF2pRmDYjOLBa9A7JnvZRFCJbaGpASat4a6oUbp4ZJrzq1a9T+GMkTe8OYHT+d0A==,
+        integrity: sha512-jnZX36uuzYszSMFsxMcp4XwKcoJeVLhZZAiRhErO++aIDmw3465ASgspEWK+2UYPv9IKw7PU4D1PGN82XhG0pw==,
       }
 
   object-hash@3.0.0:
@@ -3643,6 +3650,13 @@ packages:
         integrity: sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==,
       }
 
+  slice-ansi@10.0.0:
+    resolution:
+      {
+        integrity: sha512-2rOYDG420YH3p2PbRAu6LdYnGuMZldshqZS2qqFh/WEzAytVo7b8n1HhubLtRunvqjao74MmGfW4sY4ex0YvpQ==,
+      }
+    engines: { node: ">=22" }
+
   slice-ansi@5.0.0:
     resolution:
       {
@@ -3861,10 +3875,10 @@ packages:
       }
     engines: { node: ">=12.0.0" }
 
-  tldts-core@7.4.19:
+  tldts-core@7.4.20:
     resolution:
       {
-        integrity: sha512-goNXV6Ho9TIOfpJZanTd6CKG5DyYgYAL+k+22T0SLh8l6+KHIfBUPFuePuSZv05UttIaaLmI9tb7TmGIdK5AkQ==,
+        integrity: sha512-C630TWXZCZmLq0F2bW4QqwnaaxCQ/svpAqvJwnC4JvgEM5ohhBnGsEzTLSOXcN+xjz+kEaHS5uoWIw2klnqd0A==,
       }
 
   tldts@7.4.19:
@@ -3904,10 +3918,10 @@ packages:
       }
     engines: { node: ">=6" }
 
-  tslib@2.8.1:
+  tslib@2.9.1:
     resolution:
       {
-        integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==,
+        integrity: sha512-a4Ux9VKuIMHsOS7ENbEq6hK2ZGYIT27Rtl0E4eD9KqwxhKiQeMZE/9xb3IdYwWaSOyIBQLExhQgXDTYoiCxnWA==,
       }
 
   tunnel-agent@0.6.0:
@@ -4101,10 +4115,10 @@ packages:
         integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==,
       }
 
-  ws@8.22.0:
+  ws@8.22.1:
     resolution:
       {
-        integrity: sha512-Ydggc987+RO0AnWtZ/7Wq9FtNvcrL1b/RO0ud9mWjUPgDrsAAwQSF51sm2hm1XofbU/4jkpGEsLFsZZxU+1DOg==,
+        integrity: sha512-oyL6OPYme/CmiFvNuGzeoxCJ4nOrZE2O1FwM9MWM1AsGri6nLXB2pg+lNA8aLeXMSav0J6eIVS1j6vUPzUtK9g==,
       }
     engines: { node: ">=10.0.0" }
     peerDependencies:
@@ -4214,13 +4228,13 @@ snapshots:
 
   "@azure/abort-controller@2.2.0":
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   "@azure/core-auth@1.7.2(supports-color@8.1.1)":
     dependencies:
       "@azure/abort-controller": 2.2.0
       "@azure/core-util": 1.14.0(supports-color@8.1.1)
-      tslib: 2.8.1
+      tslib: 2.9.1
     transitivePeerDependencies:
       - supports-color
 
@@ -4233,26 +4247,26 @@ snapshots:
       "@azure/logger": 1.4.0(supports-color@8.1.1)
       http-proxy-agent: 7.0.2(supports-color@8.1.1)
       https-proxy-agent: 7.0.6(supports-color@8.1.1)
-      tslib: 2.8.1
+      tslib: 2.9.1
     transitivePeerDependencies:
       - supports-color
 
   "@azure/core-tracing@1.4.0":
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   "@azure/core-util@1.14.0(supports-color@8.1.1)":
     dependencies:
       "@azure/abort-controller": 2.2.0
       "@typespec/ts-http-runtime": 0.3.9(supports-color@8.1.1)
-      tslib: 2.8.1
+      tslib: 2.9.1
     transitivePeerDependencies:
       - supports-color
 
   "@azure/logger@1.4.0(supports-color@8.1.1)":
     dependencies:
       "@typespec/ts-http-runtime": 0.3.9(supports-color@8.1.1)
-      tslib: 2.8.1
+      tslib: 2.9.1
     transitivePeerDependencies:
       - supports-color
 
@@ -4264,7 +4278,7 @@ snapshots:
       "@opentelemetry/core": 2.12.0(@opentelemetry/api@1.9.1)
       "@opentelemetry/instrumentation": 0.211.0(@opentelemetry/api@1.10.0)(supports-color@8.1.1)
       "@opentelemetry/sdk-trace-web": 2.12.0(@opentelemetry/api@1.9.1)
-      tslib: 2.8.1
+      tslib: 2.9.1
     transitivePeerDependencies:
       - supports-color
 
@@ -4492,7 +4506,7 @@ snapshots:
     dependencies:
       minipass: 7.1.3
 
-  "@jsforce/jsforce-node@3.12.0":
+  "@jsforce/jsforce-node@3.13.1":
     dependencies:
       "@sindresorhus/is": 4.6.0
       base64url: 3.0.1
@@ -4505,47 +4519,47 @@ snapshots:
       undici: 8.12.3
       xml2js: 0.6.2
 
-  "@jsonjoy.com/base64@1.1.2(tslib@2.8.1)":
+  "@jsonjoy.com/base64@1.1.2(tslib@2.9.1)":
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
-  "@jsonjoy.com/buffers@1.2.1(tslib@2.8.1)":
+  "@jsonjoy.com/buffers@1.2.1(tslib@2.9.1)":
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
-  "@jsonjoy.com/codegen@1.0.0(tslib@2.8.1)":
+  "@jsonjoy.com/codegen@1.0.0(tslib@2.9.1)":
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
-  "@jsonjoy.com/json-pack@1.21.0(tslib@2.8.1)":
+  "@jsonjoy.com/json-pack@1.21.0(tslib@2.9.1)":
     dependencies:
-      "@jsonjoy.com/base64": 1.1.2(tslib@2.8.1)
-      "@jsonjoy.com/buffers": 1.2.1(tslib@2.8.1)
-      "@jsonjoy.com/codegen": 1.0.0(tslib@2.8.1)
-      "@jsonjoy.com/json-pointer": 1.0.2(tslib@2.8.1)
-      "@jsonjoy.com/util": 1.9.0(tslib@2.8.1)
+      "@jsonjoy.com/base64": 1.1.2(tslib@2.9.1)
+      "@jsonjoy.com/buffers": 1.2.1(tslib@2.9.1)
+      "@jsonjoy.com/codegen": 1.0.0(tslib@2.9.1)
+      "@jsonjoy.com/json-pointer": 1.0.2(tslib@2.9.1)
+      "@jsonjoy.com/util": 1.9.0(tslib@2.9.1)
       hyperdyperid: 1.2.0
-      thingies: 2.6.1(tslib@2.8.1)
-      tree-dump: 1.1.0(tslib@2.8.1)
-      tslib: 2.8.1
+      thingies: 2.6.1(tslib@2.9.1)
+      tree-dump: 1.1.0(tslib@2.9.1)
+      tslib: 2.9.1
 
-  "@jsonjoy.com/json-pointer@1.0.2(tslib@2.8.1)":
+  "@jsonjoy.com/json-pointer@1.0.2(tslib@2.9.1)":
     dependencies:
-      "@jsonjoy.com/codegen": 1.0.0(tslib@2.8.1)
-      "@jsonjoy.com/util": 1.9.0(tslib@2.8.1)
-      tslib: 2.8.1
+      "@jsonjoy.com/codegen": 1.0.0(tslib@2.9.1)
+      "@jsonjoy.com/util": 1.9.0(tslib@2.9.1)
+      tslib: 2.9.1
 
-  "@jsonjoy.com/util@1.9.0(tslib@2.8.1)":
+  "@jsonjoy.com/util@1.9.0(tslib@2.9.1)":
     dependencies:
-      "@jsonjoy.com/buffers": 1.2.1(tslib@2.8.1)
-      "@jsonjoy.com/codegen": 1.0.0(tslib@2.8.1)
-      tslib: 2.8.1
+      "@jsonjoy.com/buffers": 1.2.1(tslib@2.9.1)
+      "@jsonjoy.com/codegen": 1.0.0(tslib@2.9.1)
+      tslib: 2.9.1
 
   "@microsoft/applicationinsights-web-snippet@1.0.1": {}
 
   "@nodable/entities@3.1.0": {}
 
-  "@oclif/core@5.1.9":
+  "@oclif/core@5.1.10":
     dependencies:
       ansi-escapes: 4.3.2
       ansis: 3.17.0
@@ -4568,7 +4582,7 @@ snapshots:
 
   "@oclif/multi-stage-output@1.0.9":
     dependencies:
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       "@types/react": 19.3.0
       cli-spinners: 2.9.2
       figures: 6.1.0
@@ -4582,16 +4596,16 @@ snapshots:
 
   "@oclif/plugin-autocomplete@4.0.6(supports-color@8.1.1)":
     dependencies:
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       ansis: 3.17.0
       debug: 4.4.3(supports-color@8.1.1)
       ejs: 3.1.10
     transitivePeerDependencies:
       - supports-color
 
-  "@oclif/plugin-commands@5.0.6":
+  "@oclif/plugin-commands@5.0.8":
     dependencies:
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       "@oclif/table": 1.0.8
       lodash: 4.18.1
       object-treeify: 4.0.1
@@ -4602,12 +4616,12 @@ snapshots:
 
   "@oclif/plugin-help@7.0.6":
     dependencies:
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
 
   "@oclif/plugin-not-found@4.0.7(@types/node@22.20.5)":
     dependencies:
       "@inquirer/prompts": 7.10.1(@types/node@22.20.5)
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       ansis: 3.17.0
       fast-levenshtein: 3.0.0
     transitivePeerDependencies:
@@ -4615,7 +4629,7 @@ snapshots:
 
   "@oclif/plugin-plugins@7.0.13(supports-color@8.1.1)":
     dependencies:
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       ansis: 3.17.0
       debug: 4.4.3(supports-color@8.1.1)
       npm: 11.21.1
@@ -4631,14 +4645,14 @@ snapshots:
 
   "@oclif/plugin-search@2.0.9":
     dependencies:
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       ansi-escapes: 7.3.0
       inquirer-autocomplete-standalone: 0.8.1
 
   "@oclif/plugin-update@5.0.10(supports-color@8.1.1)":
     dependencies:
       "@inquirer/select": 2.5.0
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       "@oclif/table": 1.0.8
       ansis: 3.17.0
       debug: 4.4.3(supports-color@8.1.1)
@@ -4655,13 +4669,13 @@ snapshots:
 
   "@oclif/plugin-version@3.0.7":
     dependencies:
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       ansis: 3.17.0
       which: 4.0.0
 
   "@oclif/plugin-warn-if-update-available@4.0.5(supports-color@8.1.1)":
     dependencies:
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       ansis: 3.17.0
       debug: 4.4.3(supports-color@8.1.1)
       lodash: 4.18.1
@@ -4672,7 +4686,7 @@ snapshots:
 
   "@oclif/plugin-which@4.0.6":
     dependencies:
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       ansis: 3.17.0
 
   "@oclif/table@1.0.8":
@@ -4708,7 +4722,7 @@ snapshots:
   "@opentelemetry/core@2.12.0(@opentelemetry/api@1.9.1)":
     dependencies:
       "@opentelemetry/api": 1.9.1
-      "@opentelemetry/semantic-conventions": 1.43.0
+      "@opentelemetry/semantic-conventions": 1.44.0
 
   "@opentelemetry/instrumentation@0.211.0(@opentelemetry/api@1.10.0)(supports-color@8.1.1)":
     dependencies:
@@ -4729,7 +4743,7 @@ snapshots:
     dependencies:
       "@opentelemetry/api": 1.9.1
       "@opentelemetry/core": 2.12.0(@opentelemetry/api@1.9.1)
-      "@opentelemetry/semantic-conventions": 1.43.0
+      "@opentelemetry/semantic-conventions": 1.44.0
 
   "@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.1)":
     dependencies:
@@ -4744,7 +4758,7 @@ snapshots:
       "@opentelemetry/core": 2.12.0(@opentelemetry/api@1.9.1)
       "@opentelemetry/resources": 2.12.0(@opentelemetry/api@1.9.1)
       "@opentelemetry/sdk-trace": 2.12.0(@opentelemetry/api@1.9.1)
-      "@opentelemetry/semantic-conventions": 1.43.0
+      "@opentelemetry/semantic-conventions": 1.44.0
 
   "@opentelemetry/sdk-trace-web@2.12.0(@opentelemetry/api@1.9.1)":
     dependencies:
@@ -4757,11 +4771,11 @@ snapshots:
       "@opentelemetry/api": 1.9.1
       "@opentelemetry/core": 2.12.0(@opentelemetry/api@1.9.1)
       "@opentelemetry/resources": 2.12.0(@opentelemetry/api@1.9.1)
-      "@opentelemetry/semantic-conventions": 1.43.0
+      "@opentelemetry/semantic-conventions": 1.44.0
 
   "@opentelemetry/semantic-conventions@1.28.0": {}
 
-  "@opentelemetry/semantic-conventions@1.43.0": {}
+  "@opentelemetry/semantic-conventions@1.44.0": {}
 
   "@pinojs/redact@0.4.0": {}
 
@@ -4799,21 +4813,21 @@ snapshots:
 
   "@protobufjs/utf8@1.1.2": {}
 
-  "@salesforce/agents@2.3.2(supports-color@8.1.1)":
+  "@salesforce/agents@2.3.3(supports-color@8.1.1)":
     dependencies:
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
-      "@salesforce/source-deploy-retrieve": 13.8.2(supports-color@8.1.1)
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
+      "@salesforce/source-deploy-retrieve": 13.10.0(supports-color@8.1.1)
       "@salesforce/types": 1.8.0
       fast-xml-parser: 5.11.2
       yaml: 2.9.1
     transitivePeerDependencies:
       - supports-color
 
-  "@salesforce/apex-node@9.1.12":
+  "@salesforce/apex-node@9.1.13":
     dependencies:
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@types/istanbul-reports": 3.0.4
       faye: 1.4.3
       istanbul-lib-coverage: 3.2.2
@@ -4822,12 +4836,12 @@ snapshots:
       json-stream-stringify: 3.1.7
       tinyglobby: 0.2.17
 
-  "@salesforce/cli@2.157.6(@types/node@22.20.5)(@types/react@19.3.0)(supports-color@8.1.1)":
+  "@salesforce/cli@2.158.3(@types/node@22.20.5)(@types/react@19.3.0)(supports-color@8.1.1)":
     dependencies:
       "@inquirer/select": 2.5.0
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       "@oclif/plugin-autocomplete": 4.0.6(supports-color@8.1.1)
-      "@oclif/plugin-commands": 5.0.6
+      "@oclif/plugin-commands": 5.0.8
       "@oclif/plugin-help": 7.0.6
       "@oclif/plugin-not-found": 4.0.7(@types/node@22.20.5)
       "@oclif/plugin-plugins": 7.0.13(supports-color@8.1.1)
@@ -4836,26 +4850,26 @@ snapshots:
       "@oclif/plugin-version": 3.0.7
       "@oclif/plugin-warn-if-update-available": 4.0.5(supports-color@8.1.1)
       "@oclif/plugin-which": 4.0.6
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
-      "@salesforce/plugin-agent": 2.2.3(@types/node@22.20.5)(@types/react@19.3.0)(supports-color@8.1.1)
-      "@salesforce/plugin-apex": 4.4.4(@types/node@22.20.5)
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
+      "@salesforce/plugin-agent": 2.2.4(@types/node@22.20.5)(@types/react@19.3.0)(supports-color@8.1.1)
+      "@salesforce/plugin-apex": 4.4.6(@types/node@22.20.5)
       "@salesforce/plugin-api": 2.0.24(@types/node@22.20.5)(supports-color@8.1.1)
-      "@salesforce/plugin-auth": 6.0.0(@types/node@22.20.5)(supports-color@8.1.1)
+      "@salesforce/plugin-auth": 6.0.4(@types/node@22.20.5)(supports-color@8.1.1)
       "@salesforce/plugin-data": 5.1.24(@types/node@22.20.5)
-      "@salesforce/plugin-deploy-retrieve": 4.2.23(@types/node@22.20.5)(supports-color@8.1.1)
+      "@salesforce/plugin-deploy-retrieve": 4.2.26(@types/node@22.20.5)(supports-color@8.1.1)
       "@salesforce/plugin-info": 4.0.22(@types/node@22.20.5)(supports-color@8.1.1)
       "@salesforce/plugin-limits": 4.0.6(@types/node@22.20.5)
       "@salesforce/plugin-marketplace": 2.0.23(@types/node@22.20.5)(supports-color@8.1.1)
-      "@salesforce/plugin-org": 7.0.7(@types/node@22.20.5)(supports-color@8.1.1)
+      "@salesforce/plugin-org": 7.0.10(@types/node@22.20.5)(supports-color@8.1.1)
       "@salesforce/plugin-packaging": 3.0.17(@types/node@22.20.5)(supports-color@8.1.1)
       "@salesforce/plugin-schema": 4.0.16(@types/node@22.20.5)
       "@salesforce/plugin-settings": 3.0.22(@types/node@22.20.5)
-      "@salesforce/plugin-sobject": 2.0.19(@types/node@22.20.5)
+      "@salesforce/plugin-sobject": 2.0.20(@types/node@22.20.5)
       "@salesforce/plugin-telemetry": 4.2.4(@types/node@22.20.5)(supports-color@8.1.1)
-      "@salesforce/plugin-templates": 57.4.13(@types/node@22.20.5)
+      "@salesforce/plugin-templates": 57.5.0(@types/node@22.20.5)
       "@salesforce/plugin-trust": 4.0.28(@types/node@22.20.5)(supports-color@8.1.1)
-      "@salesforce/plugin-user": 6.0.6(@types/node@22.20.5)
+      "@salesforce/plugin-user": 6.0.7(@types/node@22.20.5)
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       ansis: 3.17.0
     transitivePeerDependencies:
@@ -4867,10 +4881,10 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/core@9.4.1":
+  "@salesforce/core@9.4.4":
     dependencies:
-      "@jsforce/jsforce-node": 3.12.0
-      "@salesforce/kit": 4.0.8
+      "@jsforce/jsforce-node": 3.13.1
+      "@salesforce/kit": 4.0.9
       "@salesforce/ts-types": 3.2.3
       ajv: 8.20.0
       change-case: 4.1.2
@@ -4889,22 +4903,22 @@ snapshots:
       ts-retry-promise: 0.8.1
       zod: 4.6.7
 
-  "@salesforce/kit@4.0.8":
+  "@salesforce/kit@4.0.9":
     dependencies:
       "@salesforce/ts-types": 3.2.3
 
   "@salesforce/o11y-reporter@1.11.0":
     dependencies:
-      o11y: 266.25.0
-      o11y_schema: 264.153.0
+      o11y: 266.26.0
+      o11y_schema: 264.155.0
 
-  "@salesforce/packaging@5.0.26(supports-color@8.1.1)":
+  "@salesforce/packaging@5.0.27(supports-color@8.1.1)":
     dependencies:
-      "@jsforce/jsforce-node": 3.12.0
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@jsforce/jsforce-node": 3.13.1
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/schemas": 1.10.3
-      "@salesforce/source-deploy-retrieve": 13.8.2(supports-color@8.1.1)
+      "@salesforce/source-deploy-retrieve": 13.10.0(supports-color@8.1.1)
       "@salesforce/ts-types": 3.2.3
       "@salesforce/types": 1.9.0
       fast-xml-parser: 5.11.2
@@ -4917,17 +4931,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@salesforce/plugin-agent@2.2.3(@types/node@22.20.5)(@types/react@19.3.0)(supports-color@8.1.1)":
+  "@salesforce/plugin-agent@2.2.4(@types/node@22.20.5)(@types/react@19.3.0)(supports-color@8.1.1)":
     dependencies:
       "@inquirer/core": 10.3.2(@types/node@22.20.5)
       "@inquirer/prompts": 7.10.1(@types/node@22.20.5)
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       "@oclif/multi-stage-output": 1.0.9
-      "@salesforce/agents": 2.3.2(supports-color@8.1.1)
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@salesforce/agents": 2.3.3(supports-color@8.1.1)
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
-      "@salesforce/source-deploy-retrieve": 13.8.2(supports-color@8.1.1)
+      "@salesforce/source-deploy-retrieve": 13.10.0(supports-color@8.1.1)
       "@salesforce/types": 1.8.0
       ansis: 3.17.0
       fast-xml-parser: 5.11.2
@@ -4945,11 +4959,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-apex@4.4.4(@types/node@22.20.5)":
+  "@salesforce/plugin-apex@4.4.6(@types/node@22.20.5)":
     dependencies:
-      "@salesforce/apex-node": 9.1.12
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@salesforce/apex-node": 9.1.13
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       ansis: 3.17.0
     transitivePeerDependencies:
@@ -4960,9 +4974,9 @@ snapshots:
 
   "@salesforce/plugin-api@2.0.24(@types/node@22.20.5)(supports-color@8.1.1)":
     dependencies:
-      "@oclif/core": 5.1.9
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@oclif/core": 5.1.10
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       "@salesforce/ts-types": 3.2.3
       ansis: 3.17.0
@@ -4976,13 +4990,13 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-auth@6.0.0(@types/node@22.20.5)(supports-color@8.1.1)":
+  "@salesforce/plugin-auth@6.0.4(@types/node@22.20.5)(supports-color@8.1.1)":
     dependencies:
       "@inquirer/checkbox": 2.5.0
       "@inquirer/select": 2.5.0
-      "@oclif/core": 5.1.9
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@oclif/core": 5.1.10
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/plugin-info": 4.0.22(@types/node@22.20.5)(supports-color@8.1.1)
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       "@salesforce/ts-types": 3.2.3
@@ -4997,10 +5011,10 @@ snapshots:
 
   "@salesforce/plugin-data@5.1.24(@types/node@22.20.5)":
     dependencies:
-      "@jsforce/jsforce-node": 3.12.0
+      "@jsforce/jsforce-node": 3.13.1
       "@oclif/multi-stage-output": 1.0.9
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       "@salesforce/ts-types": 3.2.3
       ansis: 3.17.0
@@ -5017,18 +5031,18 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@salesforce/plugin-deploy-retrieve@4.2.23(@types/node@22.20.5)(supports-color@8.1.1)":
+  "@salesforce/plugin-deploy-retrieve@4.2.26(@types/node@22.20.5)(supports-color@8.1.1)":
     dependencies:
       "@inquirer/prompts": 7.10.1(@types/node@22.20.5)
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       "@oclif/multi-stage-output": 1.0.9
-      "@salesforce/apex-node": 9.1.12
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@salesforce/apex-node": 9.1.13
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/plugin-info": 4.0.22(@types/node@22.20.5)(supports-color@8.1.1)
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
-      "@salesforce/source-deploy-retrieve": 13.8.2(supports-color@8.1.1)
-      "@salesforce/source-tracking": 8.1.7(supports-color@8.1.1)
+      "@salesforce/source-deploy-retrieve": 13.10.0(supports-color@8.1.1)
+      "@salesforce/source-tracking": 8.1.16(supports-color@8.1.1)
       "@salesforce/ts-types": 3.2.3
       ansis: 3.17.0
       terminal-link: 3.0.0
@@ -5042,10 +5056,10 @@ snapshots:
   "@salesforce/plugin-info@4.0.22(@types/node@22.20.5)(supports-color@8.1.1)":
     dependencies:
       "@inquirer/prompts": 7.10.1(@types/node@22.20.5)
-      "@jsforce/jsforce-node": 3.12.0
-      "@oclif/core": 5.1.9
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@jsforce/jsforce-node": 3.13.1
+      "@oclif/core": 5.1.10
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       got: 13.0.0
       marked: 4.3.0
@@ -5063,7 +5077,7 @@ snapshots:
 
   "@salesforce/plugin-limits@4.0.6(@types/node@22.20.5)":
     dependencies:
-      "@salesforce/core": 9.4.1
+      "@salesforce/core": 9.4.4
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
     transitivePeerDependencies:
       - "@types/node"
@@ -5073,8 +5087,8 @@ snapshots:
 
   "@salesforce/plugin-marketplace@2.0.23(@types/node@22.20.5)(supports-color@8.1.1)":
     dependencies:
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       got: 13.0.0
       proxy-agent: 6.5.0(supports-color@8.1.1)
@@ -5085,14 +5099,14 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-org@7.0.7(@types/node@22.20.5)(supports-color@8.1.1)":
+  "@salesforce/plugin-org@7.0.10(@types/node@22.20.5)(supports-color@8.1.1)":
     dependencies:
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       "@oclif/multi-stage-output": 1.0.9
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
-      "@salesforce/source-deploy-retrieve": 13.8.2(supports-color@8.1.1)
+      "@salesforce/source-deploy-retrieve": 13.10.0(supports-color@8.1.1)
       "@salesforce/ts-types": 3.2.3
       ansis: 3.17.0
       change-case: 5.4.4
@@ -5108,10 +5122,10 @@ snapshots:
 
   "@salesforce/plugin-packaging@3.0.17(@types/node@22.20.5)(supports-color@8.1.1)":
     dependencies:
-      "@oclif/core": 5.1.9
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
-      "@salesforce/packaging": 5.0.26(supports-color@8.1.1)
+      "@oclif/core": 5.1.10
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
+      "@salesforce/packaging": 5.0.27(supports-color@8.1.1)
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       "@salesforce/ts-types": 3.2.3
       chalk: 5.6.2
@@ -5124,8 +5138,8 @@ snapshots:
 
   "@salesforce/plugin-schema@4.0.16(@types/node@22.20.5)":
     dependencies:
-      "@oclif/core": 5.1.9
-      "@salesforce/core": 9.4.1
+      "@oclif/core": 5.1.10
+      "@salesforce/core": 9.4.4
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
     transitivePeerDependencies:
       - "@types/node"
@@ -5135,8 +5149,8 @@ snapshots:
 
   "@salesforce/plugin-settings@3.0.22(@types/node@22.20.5)":
     dependencies:
-      "@oclif/core": 5.1.9
-      "@salesforce/core": 9.4.1
+      "@oclif/core": 5.1.10
+      "@salesforce/core": 9.4.4
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       fast-levenshtein: 3.0.0
     transitivePeerDependencies:
@@ -5145,12 +5159,12 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@salesforce/plugin-sobject@2.0.19(@types/node@22.20.5)":
+  "@salesforce/plugin-sobject@2.0.20(@types/node@22.20.5)":
     dependencies:
       "@inquirer/prompts": 7.10.1(@types/node@22.20.5)
-      "@oclif/core": 5.1.9
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@oclif/core": 5.1.10
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       fast-xml-parser: 5.11.2
       js2xmlparser: 4.0.2
@@ -5163,11 +5177,11 @@ snapshots:
 
   "@salesforce/plugin-telemetry@4.2.4(@types/node@22.20.5)(supports-color@8.1.1)":
     dependencies:
-      "@oclif/core": 5.1.9
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@oclif/core": 5.1.10
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
-      "@salesforce/telemetry": 7.1.14(supports-color@8.1.1)
+      "@salesforce/telemetry": 7.1.17(supports-color@8.1.1)
       "@salesforce/ts-types": 3.2.3
       debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
@@ -5178,11 +5192,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-templates@57.4.13(@types/node@22.20.5)":
+  "@salesforce/plugin-templates@57.5.0(@types/node@22.20.5)":
     dependencies:
-      "@salesforce/core": 9.4.1
+      "@salesforce/core": 9.4.4
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
-      "@salesforce/templates": 66.17.4
+      "@salesforce/templates": 66.17.5
     transitivePeerDependencies:
       - "@types/node"
       - bufferutil
@@ -5191,9 +5205,9 @@ snapshots:
 
   "@salesforce/plugin-trust@4.0.28(@types/node@22.20.5)(supports-color@8.1.1)":
     dependencies:
-      "@oclif/core": 5.1.9
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@oclif/core": 5.1.10
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/plugin-info": 4.0.22(@types/node@22.20.5)(supports-color@8.1.1)
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       cross-spawn: 7.0.6
@@ -5210,10 +5224,10 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@salesforce/plugin-user@6.0.6(@types/node@22.20.5)":
+  "@salesforce/plugin-user@6.0.7(@types/node@22.20.5)":
     dependencies:
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/sf-plugins-core": 13.0.8(@types/node@22.20.5)
       "@salesforce/ts-types": 3.2.3
     transitivePeerDependencies:
@@ -5228,10 +5242,10 @@ snapshots:
     dependencies:
       "@inquirer/confirm": 6.3.5(@types/node@22.20.5)
       "@inquirer/password": 5.2.5(@types/node@22.20.5)
-      "@oclif/core": 5.1.9
+      "@oclif/core": 5.1.10
       "@oclif/table": 1.0.8
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/ts-types": 3.2.3
       ansis: 3.17.0
       cli-progress: 3.12.0
@@ -5242,10 +5256,10 @@ snapshots:
       - react-devtools-core
       - utf-8-validate
 
-  "@salesforce/source-deploy-retrieve@13.8.2(supports-color@8.1.1)":
+  "@salesforce/source-deploy-retrieve@13.10.0(supports-color@8.1.1)":
     dependencies:
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/ts-types": 3.2.3
       "@salesforce/types": 1.8.0
       fast-levenshtein: 3.0.0
@@ -5261,23 +5275,23 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@salesforce/source-tracking@8.1.7(supports-color@8.1.1)":
+  "@salesforce/source-tracking@8.1.16(supports-color@8.1.1)":
     dependencies:
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
-      "@salesforce/source-deploy-retrieve": 13.8.2(supports-color@8.1.1)
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
+      "@salesforce/source-deploy-retrieve": 13.10.0(supports-color@8.1.1)
       "@salesforce/ts-types": 3.2.3
       fast-xml-parser: 5.11.2
       graceful-fs: 4.2.11
-      isomorphic-git: 1.44.5
+      isomorphic-git: 1.44.9
       ts-retry-promise: 0.8.1
     transitivePeerDependencies:
       - supports-color
 
-  "@salesforce/telemetry@7.1.14(supports-color@8.1.1)":
+  "@salesforce/telemetry@7.1.17(supports-color@8.1.1)":
     dependencies:
-      "@salesforce/core": 9.4.1
-      "@salesforce/kit": 4.0.8
+      "@salesforce/core": 9.4.4
+      "@salesforce/kit": 4.0.9
       "@salesforce/o11y-reporter": 1.11.0
       applicationinsights: 2.9.8(supports-color@8.1.1)
       got: 11.8.6
@@ -5287,16 +5301,16 @@ snapshots:
       - applicationinsights-native-metrics
       - supports-color
 
-  "@salesforce/templates@66.17.4":
+  "@salesforce/templates@66.17.5":
     dependencies:
-      "@salesforce/kit": 4.0.8
+      "@salesforce/kit": 4.0.9
       ejs: 3.1.10
       got: 11.8.6
       hpagent: 1.2.0
       mime-types: 3.0.2
       proxy-from-env: 1.1.0
       tar: 7.5.22
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   "@salesforce/ts-types@3.2.3": {}
 
@@ -5371,7 +5385,7 @@ snapshots:
     dependencies:
       http-proxy-agent: 7.0.2(supports-color@8.1.1)
       https-proxy-agent: 7.0.6(supports-color@8.1.1)
-      tslib: 2.8.1
+      tslib: 2.9.1
     transitivePeerDependencies:
       - supports-color
 
@@ -5408,13 +5422,15 @@ snapshots:
 
   ansi-regex@5.0.1: {}
 
-  ansi-regex@6.4.0: {}
+  ansi-regex@6.5.0: {}
 
   ansi-styles@4.3.0:
     dependencies:
       color-convert: 2.0.1
 
   ansi-styles@6.2.3: {}
+
+  ansi-styles@7.0.0: {}
 
   ansicolors@0.3.2: {}
 
@@ -5431,7 +5447,7 @@ snapshots:
       "@opentelemetry/api": 1.10.0
       "@opentelemetry/core": 1.30.1(@opentelemetry/api@1.9.1)
       "@opentelemetry/sdk-trace-base": 1.30.1(@opentelemetry/api@1.9.1)
-      "@opentelemetry/semantic-conventions": 1.43.0
+      "@opentelemetry/semantic-conventions": 1.44.0
       cls-hooked: 4.2.2
       continuation-local-storage: 3.2.1
       diagnostic-channel: 1.1.1
@@ -5441,7 +5457,7 @@ snapshots:
 
   ast-types@0.13.4:
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   async-hook-jl@1.7.6:
     dependencies:
@@ -5550,12 +5566,12 @@ snapshots:
   camel-case@4.1.2:
     dependencies:
       pascal-case: 3.1.2
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   capital-case@1.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.8.1
+      tslib: 2.9.1
       upper-case-first: 2.0.2
 
   cardinal@2.1.1:
@@ -5583,7 +5599,7 @@ snapshots:
       path-case: 3.0.4
       sentence-case: 3.0.4
       snake-case: 3.0.4
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   change-case@5.4.4: {}
 
@@ -5624,9 +5640,9 @@ snapshots:
       slice-ansi: 5.0.0
       string-width: 7.2.0
 
-  cli-truncate@6.1.1:
+  cli-truncate@6.2.0:
     dependencies:
-      slice-ansi: 9.0.1
+      slice-ansi: 10.0.0
       string-width: 8.3.0
 
   cli-width@4.1.0: {}
@@ -5665,7 +5681,7 @@ snapshots:
   constant-case@3.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.8.1
+      tslib: 2.9.1
       upper-case: 2.0.2
 
   continuation-local-storage@3.2.1:
@@ -5747,7 +5763,7 @@ snapshots:
   dot-case@3.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   dunder-proto@1.0.1:
     dependencies:
@@ -5794,7 +5810,7 @@ snapshots:
       has-tostringtag: 1.0.2
       hasown: 2.0.4
 
-  es-toolkit@1.53.0: {}
+  es-toolkit@1.53.1: {}
 
   escape-string-regexp@1.0.5: {}
 
@@ -5953,9 +5969,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  glob-to-regex.js@1.3.1(tslib@2.8.1):
+  glob-to-regex.js@1.3.1(tslib@2.9.1):
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   glob@11.1.0:
     dependencies:
@@ -5991,7 +6007,7 @@ snapshots:
       decompress-response: 6.0.0
       form-data-encoder: 2.1.4
       get-stream: 6.0.1
-      http2-wrapper: 2.2.1
+      http2-wrapper: 2.2.4
       lowercase-keys: 3.0.0
       p-cancelable: 3.0.0
       responselike: 3.0.0
@@ -6042,7 +6058,7 @@ snapshots:
   header-case@2.0.4:
     dependencies:
       capital-case: 1.0.4
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   help-me@5.0.0: {}
 
@@ -6070,7 +6086,7 @@ snapshots:
       quick-lru: 5.1.1
       resolve-alpn: 1.2.1
 
-  http2-wrapper@2.2.1:
+  http2-wrapper@2.2.4:
     dependencies:
       quick-lru: 5.1.1
       resolve-alpn: 1.2.1
@@ -6125,9 +6141,9 @@ snapshots:
       chalk: 5.6.2
       cli-boxes: 4.0.1
       cli-cursor: 4.0.0
-      cli-truncate: 6.1.1
+      cli-truncate: 6.2.0
       code-excerpt: 4.0.0
-      es-toolkit: 1.53.0
+      es-toolkit: 1.53.1
       indent-string: 5.0.0
       is-in-ci: 2.0.0
       patch-console: 2.0.0
@@ -6142,7 +6158,7 @@ snapshots:
       type-fest: 5.10.0
       widest-line: 6.0.0
       wrap-ansi: 10.0.2
-      ws: 8.22.0
+      ws: 8.22.1
       yoga-layout: 3.2.1
     optionalDependencies:
       "@types/react": 19.3.0
@@ -6201,7 +6217,7 @@ snapshots:
 
   isexe@3.1.5: {}
 
-  isomorphic-git@1.44.5:
+  isomorphic-git@1.44.9:
     dependencies:
       async-lock: 1.4.1
       clean-git-ref: 2.0.1
@@ -6311,7 +6327,7 @@ snapshots:
 
   lower-case@2.0.2:
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   lowercase-keys@2.0.0: {}
 
@@ -6345,12 +6361,12 @@ snapshots:
 
   memfs@4.38.1:
     dependencies:
-      "@jsonjoy.com/json-pack": 1.21.0(tslib@2.8.1)
-      "@jsonjoy.com/util": 1.9.0(tslib@2.8.1)
-      glob-to-regex.js: 1.3.1(tslib@2.8.1)
-      thingies: 2.6.1(tslib@2.8.1)
-      tree-dump: 1.1.0(tslib@2.8.1)
-      tslib: 2.8.1
+      "@jsonjoy.com/json-pack": 1.21.0(tslib@2.9.1)
+      "@jsonjoy.com/util": 1.9.0(tslib@2.9.1)
+      glob-to-regex.js: 1.3.1(tslib@2.9.1)
+      thingies: 2.6.1(tslib@2.9.1)
+      tree-dump: 1.1.0(tslib@2.9.1)
+      tslib: 2.9.1
 
   mime-db@1.52.0: {}
 
@@ -6426,7 +6442,7 @@ snapshots:
   no-case@3.0.4:
     dependencies:
       lower-case: 2.0.2
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   node-emoji@1.11.0:
     dependencies:
@@ -6519,7 +6535,7 @@ snapshots:
       - validate-npm-package-name
       - which
 
-  o11y@266.25.0:
+  o11y@266.26.0:
     dependencies:
       o11y_schema: 264.105.0
       protobufjs: 7.5.6
@@ -6529,7 +6545,7 @@ snapshots:
 
   o11y_schema@264.105.0: {}
 
-  o11y_schema@264.153.0: {}
+  o11y_schema@264.155.0: {}
 
   object-hash@3.0.0: {}
 
@@ -6594,19 +6610,19 @@ snapshots:
   param-case@3.0.4:
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   pascal-case@3.1.2:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   patch-console@2.0.0: {}
 
   path-case@3.0.4:
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   path-expression-matcher@1.6.2: {}
 
@@ -6820,7 +6836,7 @@ snapshots:
   sentence-case@3.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.8.1
+      tslib: 2.9.1
       upper-case-first: 2.0.2
 
   sequin@0.1.1: {}
@@ -6862,6 +6878,11 @@ snapshots:
       once: 1.4.0
       simple-concat: 1.0.1
 
+  slice-ansi@10.0.0:
+    dependencies:
+      ansi-styles: 7.0.0
+      string-width: 8.3.0
+
   slice-ansi@5.0.0:
     dependencies:
       ansi-styles: 6.2.3
@@ -6877,7 +6898,7 @@ snapshots:
   snake-case@3.0.4:
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   socks-proxy-agent@8.0.5(supports-color@8.1.1):
     dependencies:
@@ -6938,7 +6959,7 @@ snapshots:
 
   strip-ansi@7.2.0:
     dependencies:
-      ansi-regex: 6.4.0
+      ansi-regex: 6.5.0
 
   strip-json-comments@3.1.1: {}
 
@@ -6991,9 +7012,9 @@ snapshots:
 
   terminal-size@4.0.1: {}
 
-  thingies@2.6.1(tslib@2.8.1):
+  thingies@2.6.1(tslib@2.9.1):
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   thread-stream@3.2.0:
     dependencies:
@@ -7004,11 +7025,11 @@ snapshots:
       fdir: 6.5.0(picomatch@4.0.7)
       picomatch: 4.0.7
 
-  tldts-core@7.4.19: {}
+  tldts-core@7.4.20: {}
 
   tldts@7.4.19:
     dependencies:
-      tldts-core: 7.4.19
+      tldts-core: 7.4.20
 
   to-buffer@1.2.2:
     dependencies:
@@ -7020,13 +7041,13 @@ snapshots:
     dependencies:
       tldts: 7.4.19
 
-  tree-dump@1.1.0(tslib@2.8.1):
+  tree-dump@1.1.0(tslib@2.9.1):
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   ts-retry-promise@0.8.1: {}
 
-  tslib@2.8.1: {}
+  tslib@2.9.1: {}
 
   tunnel-agent@0.6.0:
     dependencies:
@@ -7056,11 +7077,11 @@ snapshots:
 
   upper-case-first@2.0.2:
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   upper-case@2.0.2:
     dependencies:
-      tslib: 2.8.1
+      tslib: 2.9.1
 
   util-deprecate@1.0.2: {}
 
@@ -7133,7 +7154,7 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  ws@8.22.0: {}
+  ws@8.22.1: {}
 
   wsl-utils@0.1.0:
     dependencies:
