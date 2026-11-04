@@ -16,9 +16,216 @@ on:
         required: false
 permissions: {}
 jobs:
-  validate_against_pool:
+  detect-changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Read access to repository contents
+    outputs:
+      code: ${{ steps.detect-changes.outputs.code }}
+      metadata: ${{ steps.detect-changes.outputs.metadata }}
+      code_files: ${{ steps.detect-changes.outputs.code_files }}
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+
+      - name: Detect changes
+        id: detect-changes
+        uses: navikt/sf-gha-detect-changes@a24ab9ad8f27c0c479a4f8a992ed02283ab88d21
+        with:
+          base: ${{ github.event.pull_request.base.sha || 'HEAD^' }}
+
+  validate-project:
+    name: Validate Project
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Read access to repository contents
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1 # otherwise, you will failed to push refs to dest repo
+
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          cache: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+      - run: |
+          pnpm install --frozen-lockfile
+          pnpm prettier . --check
+  salesforce-code-validation:
+    name: Salesforce Code Validation
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.code == 'true'
+    permissions:
+      contents: read
+      security-events: write # Required for uploading SARIF results to GitHub Security tab
+      pull-requests: write # Used to create a review of the pull request
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1 # otherwise, you will failed to push refs to dest repo
+
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          cache: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+      - run: pnpm install --frozen-lockfile
+
+      - name: Run Salesforce Code Analyzer
+        id: run-code-analyzer
+        uses: forcedotcom/run-code-analyzer@318e7429b49b97904dc41f7acbd41003db403965
+        with:
+          run-arguments: --workspace ${{ needs.detect-changes.outputs.code_files }} --view detail --output-file sfca_results.html --output-file sfca_results.json --output-file code-analyzer-report.sarif
+          results-artifact-name: salesforce-code-analyzer-results
+          github-token: ${{ github.event_name == 'pull_request' && secrets.GITHUB_TOKEN || '' }}
+
+      # Code Analyser generates an empty SARIF file if no violations are found.
+      # In that case this step ensures that the SARIF file is valid and contains a default structure.
+      # This is required for the SARIF file to be uploaded to GitHub.
+      - name: Check SARIF file
+        run: |
+          echo "::group::Print SARIF file before check"
+          cat code-analyzer-report.sarif
+          echo "::endgroup::"
+          echo "::group::Check SARIF file"
+          jq --arg wd "$GITHUB_WORKSPACE" '
+            if .runs == [] then
+              .runs = [
+                {
+                  "tool": {
+                    "driver": {
+                      "name": "flow",
+                      "rules": []
+                    }
+                  },
+                  "results": [],
+                  "invocations": [
+                    {
+                      "executionSuccessful": true,
+                      "workingDirectory": {
+                        "uri": $wd
+                      }
+                    }
+                  ]
+                },
+                {
+                  "tool": {
+                    "driver": {
+                      "name": "pmd",
+                      "rules": []
+                    }
+                  },
+                  "results": [],
+                  "invocations": [
+                    {
+                      "executionSuccessful": true,
+                      "workingDirectory": {
+                        "uri": $wd
+                      }
+                    }
+                  ]
+                }
+              ]
+            else
+              .
+            end
+          ' code-analyzer-report.sarif > temp.sarif && mv temp.sarif code-analyzer-report.sarif
+          echo "::endgroup::"
+          echo "::group::Print SARIF file after check"
+          cat code-analyzer-report.sarif
+          echo "::endgroup::"
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@7e3036b9cd87fc26dd06747b7aa4b96c27aaef3a
+        if: ${{ github.ref_name == github.event.repository.default_branch }}
+        with:
+          sarif_file: code-analyzer-report.sarif
+          category: salesforce-code-analyzer
+
+      - name: Check the Salesforce Code Analyzer outputs to determine whether to fail
+        if: ${{ steps.run-code-analyzer.outputs.exit-code > 0 || steps.run-code-analyzer.outputs.num-sev1-violations > 0 || steps.run-code-analyzer.outputs.num-violations > 10 }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Normalize (default to 0 if unset/empty)
+          EXIT_CODE=${EXIT_CODE:-0}
+            NUM_SEV1_VIOLATIONS=${NUM_SEV1_VIOLATIONS:-0}
+            NUM_SEV2_VIOLATIONS=${NUM_SEV2_VIOLATIONS:-0}
+            NUM_SEV3_VIOLATIONS=${NUM_SEV3_VIOLATIONS:-0}
+            NUM_SEV4_VIOLATIONS=${NUM_SEV4_VIOLATIONS:-0}
+            NUM_SEV5_VIOLATIONS=${NUM_SEV5_VIOLATIONS:-0}
+            NUM_VIOLATIONS=${NUM_VIOLATIONS:-0}
+
+          # Exclude Sev5 (Info) from total count threshold
+          totalViolations=$(( NUM_VIOLATIONS - NUM_SEV5_VIOLATIONS ))
+
+          if (( EXIT_CODE > 0 )); then
+            echo "::error title=Salesforce Code Analyzer failed::Exit code: ${EXIT_CODE}"
+          fi
+
+          if (( NUM_SEV1_VIOLATIONS > 0 )) || (( totalViolations > MAX_ALLOWED_VIOLATIONS )); then
+            
+          printf -v details \
+            "Number of Sev1 Critical violations: %s\n \
+            Number of Sev2 High violations: %s\n \
+            Number of Sev3 Medium violations: %s\n \
+            Number of Sev4 Low violations: %s\n \
+            Number of Sev5 Info violations: %s\n \
+            Total (excluding Sev5): %s (max %s)" \
+            "$NUM_SEV1_VIOLATIONS" "$NUM_SEV2_VIOLATIONS" "$NUM_SEV3_VIOLATIONS" "$NUM_SEV4_VIOLATIONS" "$NUM_SEV5_VIOLATIONS" "$totalViolations" "$MAX_ALLOWED_VIOLATIONS"
+            
+            # GitHub command: replace literal newlines with %0A
+            echo "::error title=Salesforce Code Analyzer threshold exceeded::${details//$'\n'/%0A}"
+          fi
+
+          if (( EXIT_CODE > 0 )) || (( NUM_SEV1_VIOLATIONS > 0 )) || (( totalViolations > MAX_ALLOWED_VIOLATIONS )); then
+            exit 1
+          fi
+        env:
+          MAX_ALLOWED_VIOLATIONS: 10
+          EXIT_CODE: ${{ steps.run-code-analyzer.outputs.exit-code }}
+          NUM_SEV1_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-sev1-violations }}
+          NUM_SEV2_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-sev2-violations }}
+          NUM_SEV3_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-sev3-violations }}
+          NUM_SEV4_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-sev4-violations }}
+          NUM_SEV5_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-sev5-violations }}
+          NUM_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-violations }}
+
+  validate-against-pool:
     name: Validate against pool
-    if: github.actor != 'dependabot[bot]'
+    needs: detect-changes
+    if: needs.detect-changes.outputs.code == 'true' || needs.detect-changes.outputs.metadata == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read # Read access to repository contents
