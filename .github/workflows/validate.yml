@@ -334,6 +334,7 @@ jobs:
 
       # Authenticate dev hub
       - name: Authenticate Dev Hub
+        id: authenticate-dev-hub
         uses: navikt/sf-gha-authenticateOrg@bb934753f101b4e30086e42c8e7db642ffe05b07
         with:
           auth-url: ${{ secrets.DEV_HUB_SFDX_URL }}
@@ -342,6 +343,7 @@ jobs:
           set-default-devhub-username: true
 
       - name: Fetch from pool
+        id: fetch-from-pool
         run: |
           echo "Fetching from pool..."
           sf pool fetch --alias "$SCRATCH_ORG_ALIAS" --set-default --pool-tag $POOL_TAG --target-dev-hub $DEV_HUB_ALIAS
@@ -379,7 +381,7 @@ jobs:
           IS_CODE_COVERED: ${{ steps.test-run.outputs.is-code-covered }}
 
       - name: Cleanup
-        if: always()
+        if: always() && steps.authenticate-dev-hub.outcome == 'success' && steps.fetch-from-pool.outcome == 'success'
         run: sf org delete scratch --target-org "$SCRATCH_ORG_ALIAS" --no-prompt
 
       - name: Set PR to draft if Scratch org validation failed
