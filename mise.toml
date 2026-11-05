@@ -1,5 +1,6 @@
 min_version = { hard = '2026.1.0', soft = '2026.5.0' }
 [tools]
+java = "temurin-25"
 node = { version = "24", postinstall = "corepack enable" }
 "npm:@salesforce/cli" = { version = "2", trust_policy_excludes = ["pino@9.14.0","fastq@1.20.2"] }
 python = "3.14"
