@@ -8,7 +8,7 @@ on:
         type: string
         default: test-ci
       run-all-validations:
-        description: Whether to run all validations
+        description: Run all validations and scan the full workspace instead of only detected changes
         required: false
         type: boolean
         default: false
@@ -40,8 +40,6 @@ jobs:
       - name: Detect changes
         id: detect-changes
         uses: navikt/sf-gha-detect-changes@a24ab9ad8f27c0c479a4f8a992ed02283ab88d21
-        with:
-          base: ${{ github.event.pull_request.base.sha || 'HEAD^' }}
 
   validate-project:
     name: Validate Project
@@ -76,7 +74,7 @@ jobs:
     name: Salesforce Code Validation
     runs-on: ubuntu-latest
     needs: detect-changes
-    if: needs.detect-changes.outputs.code == 'true' || github.event.inputs.run-all-validations == 'true'
+    if: inputs.run-all-validations || needs.detect-changes.outputs.code == 'true'
     permissions:
       contents: read
       security-events: write # Required for uploading SARIF results to GitHub Security tab
@@ -106,14 +104,68 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
       - run: pnpm install --frozen-lockfile
 
+      - name: Prepare Salesforce Code Analyzer workspace
+        id: prepare-code-analyzer
+        env:
+          RUN_ALL_VALIDATIONS: ${{ inputs.run-all-validations }}
+          CODE_FILES: ${{ needs.detect-changes.outputs.code_files }}
+        run: |
+          set -euo pipefail
+
+          quote_argument() {
+            local value="$1" quoted='"' char i
+            for ((i = 0; i < ${#value}; i++)); do
+              char="${value:i:1}"
+              case "$char" in
+                '\') quoted+='"\"' ;;
+                '"') quoted+='\"' ;;
+                *) quoted+="$char" ;;
+              esac
+            done
+            printf '%s"' "$quoted"
+          }
+
+          files=()
+          if [[ "$RUN_ALL_VALIDATIONS" == "true" ]]; then
+            files=(".")
+          else
+            while IFS= read -r file || [[ -n "$file" ]]; do
+              [[ -z "$file" ]] && continue
+              if [[ -f "$file" ]]; then
+                files+=("$file")
+              else
+                printf 'Skipping removed or non-file path: %s\n' "$file"
+              fi
+            done <<< "$CODE_FILES"
+          fi
+
+          workspace_arguments=()
+          for file in "${files[@]}"; do
+            workspace_arguments+=("--workspace" "$(quote_argument "$file")")
+          done
+
+          has_files=false
+          if (( ${#files[@]} > 0 )); then
+            has_files=true
+          else
+            echo "::notice::No existing changed code files to analyze; skipping Code Analyzer."
+          fi
+
+          {
+            printf 'workspace-arguments=%s\n' "${workspace_arguments[*]}"
+            printf 'has-files=%s\n' "$has_files"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Install Salesforce Code Analyzer Plugin
+        if: steps.prepare-code-analyzer.outputs.has-files == 'true'
         run: sf plugins install code-analyzer@latest
 
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
+        if: steps.prepare-code-analyzer.outputs.has-files == 'true'
         uses: forcedotcom/run-code-analyzer@318e7429b49b97904dc41f7acbd41003db403965
         with:
-          run-arguments: --workspace ${{ needs.detect-changes.outputs.code_files }} --view detail --output-file sfca_results.html --output-file sfca_results.json --output-file code-analyzer-report.sarif
+          run-arguments: ${{ steps.prepare-code-analyzer.outputs.workspace-arguments }} --view detail --output-file sfca_results.html --output-file sfca_results.json --output-file code-analyzer-report.sarif
           results-artifact-name: salesforce-code-analyzer-results
           github-token: ${{ github.event_name == 'pull_request' && secrets.GITHUB_TOKEN || '' }}
 
@@ -121,6 +173,7 @@ jobs:
       # In that case this step ensures that the SARIF file is valid and contains a default structure.
       # This is required for the SARIF file to be uploaded to GitHub.
       - name: Check SARIF file
+        if: steps.run-code-analyzer.outcome == 'success'
         run: |
           echo "::group::Print SARIF file before check"
           cat code-analyzer-report.sarif
@@ -175,7 +228,7 @@ jobs:
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@7e3036b9cd87fc26dd06747b7aa4b96c27aaef3a
-        if: ${{ github.ref_name == github.event.repository.default_branch || github.event.inputs.run-all-validations == 'true' }}
+        if: ${{ steps.run-code-analyzer.outcome == 'success' && github.ref_name == github.event.repository.default_branch }}
         with:
           sarif_file: code-analyzer-report.sarif
           category: salesforce-code-analyzer
@@ -233,7 +286,7 @@ jobs:
   validate-against-pool:
     name: Validate against pool
     needs: detect-changes
-    if: needs.detect-changes.outputs.code == 'true' || needs.detect-changes.outputs.metadata == 'true' || github.event.inputs.run-all-validations == 'true'
+    if: inputs.run-all-validations || needs.detect-changes.outputs.code == 'true' || needs.detect-changes.outputs.metadata == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read # Read access to repository contents
