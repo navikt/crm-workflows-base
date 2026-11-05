@@ -335,7 +335,7 @@ jobs:
       # Authenticate dev hub
       - name: Authenticate Dev Hub
         id: authenticate-dev-hub
-        uses: navikt/sf-gha-authenticateOrg@bb934753f101b4e30086e42c8e7db642ffe05b07
+        uses: navikt/sf-gha-authenticateOrg@5f9328561c0047b60ea099355985ba918b275568
         with:
           auth-url: ${{ secrets.DEV_HUB_SFDX_URL }}
           alias: ${{ env.DEV_HUB_ALIAS }}
