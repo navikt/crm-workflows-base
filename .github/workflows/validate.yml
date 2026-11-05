@@ -7,6 +7,11 @@ on:
         required: true
         type: string
         default: test-ci
+      run-all-validations:
+        description: Whether to run all validations
+        required: false
+        type: boolean
+        default: false
     secrets:
       DEV_HUB_SFDX_URL:
         required: true
@@ -71,7 +76,7 @@ jobs:
     name: Salesforce Code Validation
     runs-on: ubuntu-latest
     needs: detect-changes
-    if: needs.detect-changes.outputs.code == 'true'
+    if: needs.detect-changes.outputs.code == 'true' || github.event.inputs.run-all-validations == 'true'
     permissions:
       contents: read
       security-events: write # Required for uploading SARIF results to GitHub Security tab
@@ -167,7 +172,7 @@ jobs:
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@7e3036b9cd87fc26dd06747b7aa4b96c27aaef3a
-        if: ${{ github.ref_name == github.event.repository.default_branch }}
+        if: ${{ github.ref_name == github.event.repository.default_branch || github.event.inputs.run-all-validations == 'true' }}
         with:
           sarif_file: code-analyzer-report.sarif
           category: salesforce-code-analyzer
@@ -225,7 +230,7 @@ jobs:
   validate-against-pool:
     name: Validate against pool
     needs: detect-changes
-    if: needs.detect-changes.outputs.code == 'true' || needs.detect-changes.outputs.metadata == 'true'
+    if: needs.detect-changes.outputs.code == 'true' || needs.detect-changes.outputs.metadata == 'true' || github.event.inputs.run-all-validations == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read # Read access to repository contents
