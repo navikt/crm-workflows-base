@@ -106,6 +106,9 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
       - run: pnpm install --frozen-lockfile
 
+      - name: Install Salesforce Code Analyzer Plugin
+        run: sf plugins install code-analyzer@latest
+
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
         uses: forcedotcom/run-code-analyzer@318e7429b49b97904dc41f7acbd41003db403965
@@ -307,6 +310,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Verify test results
+        id: verify-test-results
         run: |
           if [ "$IS_TEST_SUCCESS" != "true" ]; then
             echo "Tests failed"
@@ -322,4 +326,14 @@ jobs:
           IS_CODE_COVERED: ${{ steps.test-run.outputs.is-code-covered }}
 
       - name: Cleanup
+        if: always()
         run: sf org delete scratch --target-org "$SCRATCH_ORG_ALIAS" --no-prompt
+
+      - name: Set PR to draft if Scratch org validation failed
+        if: always() && github.event.pull_request && (steps.test-run.outcome == 'failure' || steps.verify-test-results == 'failure')
+        run: |
+          echo "Setting PR to draft due to failed validation"
+          gh pr edit ${{ github.event.pull_request.number }} --draft
+        env:
+          VALIDATION_RESULT: ${{ steps.test-run.outcome }}
+          VERIFY_TEST_RESULTS: ${{ steps.verify-test-results.outputs.is-test-success }}
