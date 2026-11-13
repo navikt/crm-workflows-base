@@ -380,8 +380,13 @@ jobs:
           IS_TEST_SUCCESS: ${{ steps.test-run.outputs.is-test-success }}
           IS_CODE_COVERED: ${{ steps.test-run.outputs.is-code-covered }}
 
-      - name: Cleanup
+      - name: Return Scratch Org
+        id: return-scratch-org
         if: always() && steps.authenticate-dev-hub.outcome == 'success' && steps.fetch-from-pool.outcome == 'success'
+        run: sf pool return --target-org "$SCRATCH_ORG_ALIAS" --target-dev-hub "$DEV_HUB_ALIAS"
+
+      - name: Cleanup
+        if: always() && steps.return-scratch-org.outcome == 'failure'
         run: sf org delete scratch --target-org "$SCRATCH_ORG_ALIAS" --no-prompt
 
       - name: Set PR to draft if Scratch org validation failed
