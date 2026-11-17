@@ -50,7 +50,7 @@
         },
         {
           "package": "crm-platform-access-control",
-          "versionNumber": "0.180.0.2"
+          "versionNumber": "0.181.0.3"
         },
         {
           "package": "crm-platform-reporting",
