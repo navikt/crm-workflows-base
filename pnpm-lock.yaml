@@ -10,7 +10,7 @@ importers:
     devDependencies:
       '@prettier/plugin-xml':
         specifier: ^3.4.2
-        version: 3.4.2(prettier@3.10.0)
+        version: 3.4.2(prettier@3.10.1)
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -18,8 +18,8 @@ importers:
         specifier: ^17.6.0
         version: 17.6.0
       prettier:
-        specifier: 3.10.0
-        version: 3.10.0
+        specifier: 3.10.1
+        version: 3.10.1
 
 packages:
 
@@ -48,8 +48,8 @@ packages:
     resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
     engines: {node: '>=12'}
 
-  prettier@3.10.0:
-    resolution: {integrity: sha512-mBi4765LgjO1PFjlEs7pUeK0nb1bw71c+N4/ItfeUWNdY5cV2pRKaFpbbFRYmDJMO+5ZwzGxHRqHxFZna7iv5w==}
+  prettier@3.10.1:
+    resolution: {integrity: sha512-70vp3ZUYoPlFbF9uiTdXHUUCGEIp7d4+6p+8DYbkm2jP7x/3i/paXVF6dopSI3zd/CEitrZN1rc4i85xWmmXlg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -71,10 +71,10 @@ packages:
 
 snapshots:
 
-  '@prettier/plugin-xml@3.4.2(prettier@3.10.0)':
+  '@prettier/plugin-xml@3.4.2(prettier@3.10.1)':
     dependencies:
       '@xml-tools/parser': 1.0.11
-      prettier: 3.10.0
+      prettier: 3.10.1
 
   '@xml-tools/parser@1.0.11':
     dependencies:
@@ -96,7 +96,7 @@ snapshots:
 
   picomatch@4.0.7: {}
 
-  prettier@3.10.0: {}
+  prettier@3.10.1: {}
 
   regexp-to-ast@0.5.0: {}
 
