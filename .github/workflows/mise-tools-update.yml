@@ -125,7 +125,7 @@ jobs:
             1)
               mise upgrade
 
-              if [ -z "$(git status --short -- mise.toml mise.lock)" ]; then
+              if [ -z "$(git status --short -- mise.toml mise.lock .mise/locks)" ]; then
                 echo "upgrade-available=false" >> "$GITHUB_OUTPUT"
                 echo "mise reported an update but no configuration files changed" >> "$GITHUB_STEP_SUMMARY"
                 exit 0
@@ -161,16 +161,18 @@ jobs:
           fi
 
           expected_head_oid="$(git rev-parse HEAD)"
-          additions="$(jq -n --arg path mise.toml --rawfile contents mise.toml \
-            '[{path: $path, contents: ($contents | @base64)}]')"
+          additions='[]'
           deletions='[]'
 
-          if [ -f mise.lock ]; then
-            additions="$(jq --arg path mise.lock --rawfile contents mise.lock \
-              '. + [{path: $path, contents: ($contents | @base64)}]' <<< "$additions")"
-          elif git cat-file -e HEAD:mise.lock 2>/dev/null; then
-            deletions='[{"path":"mise.lock"}]'
-          fi
+          while IFS= read -r -d '' path; do
+            if [ -f "$path" ]; then
+              additions="$(jq --arg path "$path" --rawfile contents "$path" \
+                '. + [{path: $path, contents: ($contents | @base64)}]' <<< "$additions")"
+            else
+              deletions="$(jq --arg path "$path" \
+                '. + [{path: $path}]' <<< "$deletions")"
+            fi
+          done < <(git ls-files --cached --others --exclude-standard -z -- mise.toml mise.lock .mise/locks)
 
           jq -n \
             --arg query 'mutation($repository: String!, $branch: String!, $expectedHeadOid: GitObjectID!, $message: String!, $additions: [FileAddition!]!, $deletions: [FileDeletion!]!) { createCommitOnBranch(input: {branch: {repositoryNameWithOwner: $repository, branchName: $branch}, expectedHeadOid: $expectedHeadOid, message: {headline: $message}, fileChanges: {additions: $additions, deletions: $deletions}}) { commit { oid url } } }' \

@@ -1,6 +1,6 @@
 # Update mise Tools
 
-This reusable workflow checks the tools declared in `mise.toml` for updates. When updates are available, it runs `mise upgrade` and creates or updates a pull request with the changed `mise.toml` and optional `mise.lock`.
+This reusable workflow checks the tools declared in `mise.toml` for updates. When updates are available, it runs `mise upgrade` and creates or updates a pull request with changes to `mise.toml`, optional `mise.lock`, and files under `.mise/locks/`.
 
 ## Steps
 
@@ -18,11 +18,13 @@ Checks out the configured base branch and prepares the update branch:
 
 ### Upgrade Tools
 
-Runs `mise upgrade --dry-run-code` to check for updates. When updates are available, runs `mise upgrade` to update `mise.toml` and, when enabled, `mise.lock`.
+Runs `mise upgrade --dry-run-code` to check for updates. When updates are available, runs `mise upgrade` to update `mise.toml` and, when enabled, `mise.lock` and files under `.mise/locks/`.
 
 ### Commit and Create Pull Request
 
 Resets an existing remote update branch to the latest base branch with an exact force-with-lease, or creates the branch when it is missing. It then uses GitHub's GraphQL API to create a signed commit containing the changed configuration files directly on the remote branch.
+
+Added, modified, and deleted files under `.mise/locks/` are included, even when the root configuration files are unchanged.
 
 The workflow creates a pull request when none exists. An existing pull request is updated by replacing its generated update commit.
 
